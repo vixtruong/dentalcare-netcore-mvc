@@ -13,5 +13,15 @@ namespace DentalCare.Controllers
         {
             return View();
         }
+
+        public IActionResult Invoice()
+        {
+            return View();
+        }
+
+        public IActionResult InvoiceDetail()
+        {
+            return View();
+        }
     }
 }
