@@ -3,32 +3,38 @@
 }
 
 <style>
-    .container-invoice {
-        width: 95%;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-    }
+        .container-invoice {
+            width: 95%;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
 
-    .container-invoice .search {
-      top:6px;
-      left:10px;
-    }
+        .container-invoice .search {
+          top:6px;
+          left:10px;
+        }
 
-    .container-invoice .form-control {
-        border:none;
-        padding-left:34px;
-    }
+        .container-invoice .form-control {
+            border:none;
+            padding-left:34px;
+        }
 
-    .container-invoice .form-control:focus{
-    
-        border:none;
-        box-shadow:none;
-    }
+        .container-invoice .form-control:focus{
 
-    .container-invoice .green{
-    
-        color:green;
-}
+            border:none;
+            box-shadow:none;
+        }
+
+        .container-invoice .green{
+
+            color:green;
+        }
+
+        .container-invoice .bill-id {
+            text-decoration: none;
+            color: #000;
+        }
+    }
 </style>
 
 <div class="container mt-4 px-2 container-invoice">
@@ -52,8 +58,8 @@
 
                 <thead>
                     <tr class="bg-light">
-                        <th scope="col" width="5%"><input class="form-check-input" type="checkbox"></th>
-                        <th scope="col" width="5%">#</th>
+
+                        <th scope="col" width="5%">ID</th>
                         <th scope="col" width="20%">Date</th>
                         <th scope="col" width="10%">Status</th>
                         <th scope="col" width="20%">Customer</th>
@@ -63,8 +69,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
-                        <td>12</td>
+                        <td><a class="bill-id" target="_blank" href="@Url.Action("InvoiceDetail", "Dashboard")">B000000001</a></td>
                         <td>1 Oct, 21</td>
                         <td>
                             <i class="fa fa-check-circle-o green"></i><span class="ms-1">Paid</span>
@@ -77,7 +82,7 @@
                     </tr>
 
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>14</td>
                         <td>12 Oct, 21</td>
                         <td>
@@ -92,7 +97,7 @@
 
 
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>17</td>
                         <td>1 Nov, 21</td>
                         <td>
@@ -107,7 +112,7 @@
 
 
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>90</td>
                         <td>19 Oct, 21</td>
                         <td>
@@ -122,7 +127,7 @@
 
 
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -136,7 +141,7 @@
                     </tr>
 
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -149,7 +154,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -162,7 +167,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -175,7 +180,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -188,7 +193,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -201,7 +206,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -214,7 +219,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -227,7 +232,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -240,7 +245,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -253,7 +258,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -266,7 +271,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -279,7 +284,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -292,7 +297,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -305,7 +310,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -319,7 +324,7 @@
                     </tr>
 
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -332,7 +337,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -345,7 +350,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
@@ -358,7 +363,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th scope="row"><input class="form-check-input" type="checkbox"></th>
+
                         <td>12</td>
                         <td>1 Oct, 21</td>
                         <td>
