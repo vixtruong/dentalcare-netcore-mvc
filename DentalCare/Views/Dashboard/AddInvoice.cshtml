@@ -1,0 +1,330 @@
+﻿@{
+    Layout = "_DashboardLayout";
+}
+
+<style>
+    .add-invoice .content {
+        padding: 20px;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .add-invoice .content label {
+        padding: 8px;
+        }
+
+    .card-info {
+        background-color: #f8f9fa;
+    }
+
+    .invoice-center table {
+        border: solid #ccc;
+        border: solid #ccc;
+        border: solid #ccc;
+        border-radius: 8px;
+        overflow: hidden;
+        border-collapse: collapse;
+        /* Prevents collapsing of borders which disables rounding */
+    }
+
+    .add-invoice label {
+        padding-left: 2px !important;
+        padding-top: 0px !important;
+    }
+</style>
+
+
+<div class="container-fluid mt-4 add-invoice">
+    <!-- Use container-fluid or container for better alignment -->
+    <div class="content">
+        <div class="page-header mb-4 text-primary">
+            <div class="page-title">
+                <h4>Add Invoice</h4>
+                <h6>Invoice information</h6>
+            </div>
+        </div>
+
+        <div class="card card-info">
+            <div class="card-body">
+                <form>
+                    <div class="row g-3">
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="city">Medical Report</label>
+                                <select id="city" class="form-select">
+                                    <option selected>New York</option>
+                                    <option>City</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-12">
+                            <div class="form-group">
+                                <label for="address">Doctor</label>
+                                <input type="text" id="address" class="form-control"
+                                       value="132, My Street, Kingston, New York">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-12">
+                            <div class="form-group">
+                                <label for="address">Date</label>
+                                <input type="text" id="address" class="form-control"
+                                       value="132, My Street, Kingston, New York">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="customerName">Customer Name</label>
+                                <input type="text" id="customerName" class="form-control"
+                                       value="Thomas">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" class="form-control"
+                                       value="Thomas@example.com">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="text" id="phone" class="form-control"
+                                       value="+12163547758">
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="country">Choose Country</label>
+                                <select id="country" class="form-select">
+                                    <option selected>United States</option>
+                                    <option>India</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <select id="city" class="form-select">
+                                    <option selected>New York</option>
+                                    <option>City</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 col-12">
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" class="form-control"
+                                       value="132, My Street, Kingston, New York">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea id="description" class="form-control"
+                                          rows="3">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text</textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 d-flex">
+                            <div class="col-6" style="padding-right : 2px !important;">
+                                <div class="invoice-center">
+                                    <h4>Medicine</h4>
+                                    <div class="table-responsive">
+                                        <table class="table mb-0 table-striped invoice-table">
+                                            <thead class="bg-active">
+                                                <tr class="tr">
+                                                    <th>No.</th>
+                                                    <th class="pl0 text-start">Item Description</th>
+                                                    <th class="text-center">Price</th>
+                                                    <th class="text-center">Unit</th>
+                                                    <th class="text-center">Quantity</th>
+                                                    <th class="text-end">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="tr">
+                                                    <td>
+                                                        <div class="item-desc-1">
+                                                            <span>01</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl0">Businesscard Design</td>
+                                                    <td class="text-center">$300</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-end">$600.00</td>
+                                                </tr>
+                                                <tr class="bg-grea">
+                                                    <td>
+                                                        <div class="item-desc-1">
+                                                            <span>02</span>
+
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl0">Fruit Flayer Design</td>
+                                                    <td class="text-center">$400</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-end">$60.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="item-desc-1">
+                                                            <span>03</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl0">
+                                                        Application Interface Design
+                                                    </td>
+                                                    <td class="text-center">$240</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">3</td>
+                                                    <td class="text-end">$640.00</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="item-desc-1">
+                                                            <span>04</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl0">Theme Development</td>
+                                                    <td class="text-center">$720</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">4</td>
+                                                    <td class="text-end">$640.00</td>
+                                                </tr>
+                                                <tr class="tr2">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center">SubTotal</td>
+                                                    <td class="text-end">$710.99</td>
+                                                </tr>
+                                                <tr class="tr2">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center">Tax</td>
+                                                    <td class="text-end">$85.99</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-6" style="padding-left : 2px !important;">
+                                <div class="invoice-center">
+                                    <h4>Technique</h4>
+                                    <div class="table-responsive">
+                                        <table class="table mb-0 table-striped invoice-table .table-bordered">
+                                            <thead class="bg-active">
+                                                <tr class="tr">
+                                                    <th>No.</th>
+                                                    <th class="pl0 text-start">Item Description</th>
+                                                    <th class="text-center">Position</th>
+                                                    <th class="text-center">Price</th>
+                                                    <th class="text-center">Unit</th>
+                                                    <th class="text-center">Quantity</th>
+                                                    <th class="text-end">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="tr">
+                                                    <td>
+                                                        <div class="item-desc-1">
+                                                            <span>01</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl0">Businesscard Design</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">$300</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">2</td>
+                                                    <td class="text-end">$600.00</td>
+                                                </tr>
+                                                <tr class="bg-grea">
+                                                    <td>
+                                                        <div class="item-desc-1">
+                                                            <span>02</span>
+
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl0">Fruit Flayer Design</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">$400</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">1</td>
+                                                    <td class="text-end">$60.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="item-desc-1">
+                                                            <span>03</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl0">
+                                                        Application Interface Design
+                                                    </td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">$240</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">3</td>
+                                                    <td class="text-end">$640.00</td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <div class="item-desc-1">
+                                                            <span>04</span>
+                                                        </div>
+                                                    </td>
+                                                    <td class="pl0">Theme Development</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">$720</td>
+                                                    <td class="text-center"></td>
+                                                    <td class="text-center">4</td>
+                                                    <td class="text-end">$640.00</td>
+                                                </tr>
+                                                <tr class="tr2">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center">SubTotal</td>
+                                                    <td class="text-end">$710.99</td>
+                                                </tr>
+                                                <tr class="tr2">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-center">Tax</td>
+                                                    <td class="text-end">$85.99</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 text-end" style="font-size: 20px; font-weight: 600">
+                            <label>Grand total: 12300$</label>
+                        </div>
+
+                        <div class="col-lg-12 text-end">
+                            <button type="submit" class="btn btn-primary me-2">Add</button>
+                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
