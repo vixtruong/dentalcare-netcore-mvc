@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Doctor>
+
+@{
+    Layout = null;
+}
+
+<style>
+    .fired {
+        opacity: 0.5;
+    }
+
+    .table-action tr:hover {
+        background-color: #eee;
+    }
+</style>
+
+<div class="table-responsive">
+    <table class="table table-responsive table-action table-borderless">
+        <thead>
+            <tr class="bg-light">
+                <th scope="col" width="5%">ID</th>
+                <th scope="col" width="20%">Name</th>
+                <th scope="col" width="15%">Faculty</th>
+                <th scope="col" width="5%">Gender</th>
+                <th scope="col" width="12.5%">Birthday</th>
+                <th scope="col" width="15%">Phone</th>
+                <th scope="col" width="15%">Email</th>
+                <th scope="col" width="12.5%">Join Time</th>
+                <th scope="col" class="text-end" width="5%">Action</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: 0.9rem !important;">
+            @foreach (var i in Model)
+            {
+                <tr class="@(i.Fired == true ? "fired" : "")">
+                    <td>@i.Id</td>
+                    <td><img src="@i.Avatar" width="16">    @i.Name</td>
+                    <td>@i.FacultyName</td>
+                    <td>@(i.Gender ? "Male" : "Female")</td>
+                    <td>@i.Birthday.ToString("dd/MM/yyyy")</td>
+                    <td>@i.Phone</td>
+                    <td>@i.Email</td>
+                    <td>@i.Firstdayofwork.ToString("dd/MM/yyyy")</td>
+                    <td class="text-end table-action" style="cursor: pointer;">
+                        <a href="@Url.Action("Edit", "Employee", new { id = @i.Id})"><i class="fa fa-edit ms-2 text-primary"></i></a>
+                        <a href="@Url.Action("Fire", "Employee", new { id = i.Id })" title="Toggle Fire Status">
+                            <i class="fa @(i.Fired == true ? "fa-toggle-off text-primary" : "fa-toggle-on text-primary")"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

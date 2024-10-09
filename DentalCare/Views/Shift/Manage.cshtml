@@ -1,0 +1,125 @@
+﻿@model IEnumerable<Shift>
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+<style>
+    .container-invoice {
+        width: 95%;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .container-employee {
+        padding-bottom: 6px !important;
+    }
+
+    .container-invoice .search {
+        top: 6px;
+        left: 10px;
+    }
+
+    .container-invoice .form-control {
+        border: none;
+        padding-left: 34px;
+    }
+
+        .container-invoice .form-control:focus {
+            border: none;
+            box-shadow: none;
+        }
+
+    .container-invoice .green {
+        color: green;
+    }
+
+    .container-invoice .bill-id {
+        text-decoration: none;
+        color: #000;
+    }
+
+    .page-header {
+        padding-top: 24px;
+        padding-left: 32px;
+    }
+
+    .table-action tr:hover {
+        background-color: #eee;
+    }
+
+    .table-action i:hover {
+        opacity: 0.5;
+    }
+</style>
+
+<div class="page-header text-primary">
+    <div class="page-title">
+        <h4>Shifts Management</h4>
+    </div>
+</div>
+
+<div class="container mt-4 px-2 container-invoice">
+    <div class="p-4 container-employee">
+        <div class="mb-2 d-flex justify-content-between align-items-center">
+
+            <div class="position-relative">
+                <span class="position-absolute search text-primary"><i class="fa fa-search"></i></span>
+                <input class="form-control w-100 fst-italic" placeholder="Search by id, name...">
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-responsive table-borderless table-action">
+                <thead>
+                    <tr class="bg-light">
+                        <th scope="col" width="10%">ID</th>
+                        <th scope="col" width="10%">Date</th>
+                        <th scope="col" width="15%">Doctor</th>
+                        <th scope="col" width="10%">Doctor ID</th>
+                        <th scope="col" width="13%">Faculty</th>
+                        <th scope="col" width="15%">Nurse</th>
+                        <th scope="col" width="10%">Nurse ID</th>
+                        <th scope="col" class="text-end" width="7%">Action</th>
+                    </tr>
+                </thead>
+                <tbody style="font-size: 0.9rem !important;">
+                    @{
+                        foreach (var s in Model)
+                        {
+                            <tr>
+                                <td>@s.Id</td>
+                                <td>@s.Date.ToString("dd/MM/yyyy")</td>
+                                @{
+                                    foreach (var d in ViewBag.Doctors)
+                                    {
+                                        if (d.Id == s.Doctorid)
+                                        {
+                                            <td><img src="@d.Avatar" width="16">    @d.Name</td>
+                                            <td>@s.Doctorid</td>
+                                            <td>@d.FacultyName</td>
+                                        }
+                                    }
+
+                                    foreach (var n in ViewBag.Nurses)
+                                    {
+                                        if (n.Id == s.Nurseid)
+                                        {
+                                            <td><img src="@n.Avatar" width="16">   @n.Name</td>
+                                            <td>@s.Doctorid</td>
+                                        }
+                                    }
+                                }
+                                <td class="text-end">
+                                    <a href="@Url.Action("Edit", "Shift", new { id = s.Id })"><i class="fa fa-edit ms-2 text-primary"></i></a>
+                                    <a href="@Url.Action("Delete", "Shift", new { id = s.Id })"><i class="fa fa-trash ms-2 text-primary"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,169 @@
+﻿@model DentalCare.Models.Employee;
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+@section Profile
+{
+    <link href="~/css/dashboard/profile.css" rel="stylesheet">
+}
+
+<div class="page-header text-primary" style="padding-top: 24px !important;">
+    <div class="page-title">
+        <h4>Add Employee</h4>
+        <h6>Employee's information</h6>
+    </div>
+</div>
+
+<form asp-action="Add" asp-controller="Employee" enctype="multipart/form-data">
+    <div class="row custom-gutters container-profile">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="profile-card card-body">
+                    <div class="account-settings">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <img id="avatarImage" src="https://bootdey.com/img/Content/avatar/avatar7.png">
+                            </div>
+                            <h5 class="user-name">Name</h5>
+                            <div class="input-group mb-3">
+                                <input asp-for="Avatar" type="file" class="form-control" id="avatar" accept="image/*" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="profile-card card-body">
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="mb-2 text-primary">Personal Details</h6>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Role">Role</label>
+                                <select asp-for="Role" class="form-control bg-light" id="Role" name="Role" onchange="toggleFacultyField()" required>
+                                    <option value="" disabled selected>Select your role</option>
+                                    <option value="doctor">Doctor</option>
+                                    <option value="receptionist">Receptionist</option>
+                                    <option value="nurse">Nurse</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Faculty" for="faculty">Faculty</label>
+                                <select asp-for="Faculty" class="form-control bg-light" id="faculty" name="Faculty" disabled>
+                                    <option value="" disabled selected>Select your faculty</option>
+                                    @if (ViewBag.Faculties != null)
+                                    {
+                                        @foreach (var faculty in ViewBag.Faculties)
+                                        {
+                                            <option value="@faculty.Id">@faculty.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="FullName">Full Name</label>
+                                <input asp-for="FullName" type="text" class="form-control" id="fullName" placeholder="Enter full name" required>
+
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Email">Email</label>
+                                <input asp-for="Email" type="email" class="form-control" id="eMail"
+                                       placeholder="Enter email ID" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Phone">Phone</label>
+                                <input asp-for="Phone" type="text" class="form-control" id="phone"
+                                       placeholder="Enter phone number" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Birthday">Birthday</label>
+                                <input asp-for="Birthday" type="date" class="form-control" id="birthday"
+                                       placeholder="Your birthday" required>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Gender">Gender</label>
+                                <select asp-for="Gender" class="form-control bg-light" id="gender" required>
+                                    <option value="" disabled selected>Select your gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="JoinTime">Join Time</label>
+                                <input asp-for="JoinTime" type="date" class="form-control" id="joinTime" placeholder="Your join time" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="padding-bottom: 0px !important;">
+                            <div class="text-right">
+                                <button type="submit" id="submit" name="submit" class="btn btn-primary">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    const inputFile = document.getElementById('avatar');
+    const avatarImage = document.getElementById('avatarImage');
+    const roleSelect = document.getElementById("Role");
+    const facultySelect = document.getElementById("faculty");
+
+    // Bắt sự kiện khi file được chọn
+    inputFile.addEventListener('change', function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                avatarImage.src = event.target.result; // Thay đổi src của ảnh
+            };
+            reader.readAsDataURL(file); // Đọc file dưới dạng URL
+        }
+    });
+
+    // Bật/tắt trường Faculty dựa vào giá trị Role
+    function toggleFacultyField() {
+        if (roleSelect.value === "doctor") {
+            facultySelect.disabled = false;
+            facultySelect.setAttribute("required", "required"); // Đặt thuộc tính 'required'
+        } else {
+            facultySelect.disabled = true;
+            facultySelect.removeAttribute("required"); // Xóa thuộc tính 'required'
+            facultySelect.value = ""; // Reset giá trị của faculty
+        }
+    }
+
+    // Gọi hàm khi tải trang và khi Role thay đổi
+    window.onload = toggleFacultyField;
+    roleSelect.addEventListener('change', toggleFacultyField);
+</script>
+

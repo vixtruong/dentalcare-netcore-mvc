@@ -1,0 +1,179 @@
+﻿<style>
+    /* Customize the scrollbar for WebKit browsers (Chrome, Safari) */
+    .sidebar {
+        overflow-y: scroll;
+    }
+
+        /* Hide scrollbar arrows for WebKit (Chrome, Safari) */
+        .sidebar::-webkit-scrollbar-button {
+            display: none; /* Hides the scrollbar arrows */
+        }
+
+        /* Optional: Customize the appearance of the scrollbar track and thumb */
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #ddd; /* Custom scrollbar color */
+            border-radius: 10px;
+        }
+
+            .sidebar::-webkit-scrollbar-thumb:hover {
+                background-color: #555;
+            }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: #f8f9fa;
+        }
+
+        .sidebar .dropdown-menu .active {
+        background-color: #eee;
+        color: black !important;
+    }
+</style>
+
+<!-- Sidebar Start -->
+<div class="sidebar bg-light pe-4 pb-3">
+    <nav class="navbar bg-light navbar-light">
+        <a href="@Url.Action("Index", "Dashboard")" class="navbar-brand mx-4 mb-3">
+            <h3 class="text-primary"><i class="fa fa-tooth me-2"></i>DentalCare</h3>
+        </a>
+        <div class="d-flex align-items-center ms-4 mb-4">
+            <div class="position-relative">
+                <img class="rounded-circle" src="~/img/dashboard/user.jpg" alt="" style="width: 40px; height: 40px;">
+                <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+            </div>
+
+            <div class="ms-3">
+                <h6 class="mb-0">Jhon Doe</h6>
+                <span>Admin</span>
+            </div>
+        </div>
+        <div class="navbar-nav w-100">
+            <a href="@Url.Action("Index", "Dashboard")" class="nav-item nav-link @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+
+            <div class="nav-item dropdown" id="employeeDropdown">
+                <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Employee" &&
+                                                              (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" || 
+                                                               ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
+                    <i class="fa fa-users me-2"></i>Employee
+                </a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a style="padding-left: 50px !important" href="@Url.Action("Add", "Employee")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Employee" &&
+                                                                                                                          ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ? "active" : "")">Add</a>
+                    <a style="padding-left: 50px !important" href="@Url.Action("Manage", "Employee")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Employee" &&
+                                                                                                                             ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage" ? "active" : "")">Manage</a>
+                </div>
+            </div>
+
+            <div class="nav-item dropdown" id="shiftDropdown">
+                <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Shift" &&
+                                                              (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" || 
+                                                               ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
+                    <i class="far fa-calendar"></i>Shift
+                </a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a style="padding-left: 50px !important" href="@Url.Action("Add", "Shift")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Shift" &&
+                                                                                                                       ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ? "active" : "")">Add</a>
+                    <a style="padding-left: 50px !important" href="@Url.Action("Manage", "Shift")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Shift" &&
+                                                                                                                          ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage" ? "active" : "")">Manage</a>
+                </div>
+            </div>
+            
+            <div class="nav-item dropdown" id="invoiceDropdown">
+                <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Invoice" &&
+                                                              (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
+                                                               ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
+                    <i class="far fa-file-alt me-2"></i>Invoice
+                </a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a style="padding-left: 50px !important" href="@Url.Action("Add", "Invoice")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Invoice" &&
+                                                                                                                         ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ? "active" : "")">Add</a>
+                    <a style="padding-left: 50px !important" href="@Url.Action("Manage", "Invoice")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Invoice" &&
+                                                                                                                            ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage" ? "active" : "")">Manage</a>
+                </div>
+            </div>
+
+            <div class="nav-item dropdown" id="appointmentDropdown">
+                <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Appointment" &&
+                                                              (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" || 
+                                                               ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
+                    <i class="fa fa-calendar"></i>Appointment
+                </a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a style="padding-left: 50px !important" href="@Url.Action("Add", "Appointment")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Appointment" &&
+                                                                                                                             ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ? "active" : "")">Add</a>
+                    <a style="padding-left: 50px !important" href="@Url.Action("Manage", "Appointment")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Appointment" &&
+                                                                                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage" ? "active" : "")">Manage</a>
+                </div>
+            </div>
+
+            <div class="nav-item dropdown" id="inventoryDropdown">
+                <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["action"]?.ToString() == "AddAppointment" ||
+                                                              ViewContext?.RouteData?.Values["action"]?.ToString() == "AppointmentManage" ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-table me-2"></i>Inventory</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a style="padding-left: 50px !important" href="@Url.Action("", "")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ? "active" : "")">Medicine</a>
+                    <a style="padding-left: 50px !important" href="@Url.Action("", "Appointment")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage" ? "active" : "")">Technique</a>
+                    <a style="padding-left: 50px !important" href="@Url.Action("", "Appointment")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage" ? "active" : "")">Equipment</a>
+                </div>
+            </div>
+            <a href="#" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Invoice</a>
+            <a href="widget.html" class="nav-item nav-link"><i class="fa fa-users me-2"></i>Widgets</a>
+            <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
+            <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
+            <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a href="signin.html" class="dropdown-item">Sign In</a>
+                    <a href="signup.html" class="dropdown-item">Sign Up</a>
+                    <a href="404.html" class="dropdown-item">404 Error</a>
+                    <a href="blank.html" class="dropdown-item">Blank Page</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<!-- Sidebar End -->
+
+<script>
+    function handleDropdownState(dropdownId) {
+        const dropdownElement = document.getElementById(dropdownId);
+
+        if (localStorage.getItem('openDropdown') === dropdownId) {
+            const dropdown = new bootstrap.Dropdown(dropdownElement.querySelector('.dropdown-toggle'));
+            dropdown.show();
+        }
+
+        dropdownElement.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                localStorage.setItem('openDropdown', dropdownId); // Store this dropdown as open
+            });
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        handleDropdownState('invoiceDropdown');
+        handleDropdownState('employeeDropdown');
+        handleDropdownState('shiftDropdown');
+        handleDropdownState('appointmentDropdown');
+
+        document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
+            link.addEventListener('click', () => {
+                localStorage.removeItem('openDropdown');
+            });
+        });
+    });
+
+    document.querySelectorAll('.dropdown-toggle').forEach(item => {
+        item.addEventListener('click', function () {
+            const dropdownId = item.closest('.dropdown').id;
+            if (localStorage.getItem('openDropdown') === dropdownId) {
+                localStorage.removeItem('openDropdown');
+            } else {
+                localStorage.setItem('openDropdown', dropdownId);
+            }
+        });
+    });
+</script>
