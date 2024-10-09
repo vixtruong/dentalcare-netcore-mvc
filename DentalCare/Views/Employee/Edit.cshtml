@@ -1,0 +1,310 @@
+﻿@model DentalCare.Models.Employee;
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+@section Profile
+{
+    <style>
+        .container-profile {
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: #f8f9fa !important;
+            border-radius: 8px;
+            padding: 2rem 2rem !important
+        }
+
+        .row.custom-gutters {
+            padding-left: 30px !important;
+            padding-right: 30px !important;
+        }
+
+            .row.custom-gutters > [class*="col-"] {
+                padding-left: 0px !important; /* or adjust this value */
+                padding-right: 0px !important;
+                padding-bottom: 0px !important;
+            }
+
+        .container-profile * {
+            padding-bottom: 8px;
+        }
+
+        .container-profile button {
+            padding: 8px !important;
+        }
+
+        .account-settings .user-profile {
+            margin: 0 0 1rem 0;
+            padding-bottom: 1rem;
+            text-align: center;
+            padding: 10px !important;
+        }
+
+            .account-settings .user-profile .user-avatar {
+                margin: 0 0 1rem 0;
+                padding: 10px !important;
+            }
+
+                .account-settings .user-profile .user-avatar img {
+                    width: 90px;
+                    height: 90px;
+                    -webkit-border-radius: 100px;
+                    -moz-border-radius: 100px;
+                    border-radius: 100px;
+                    padding: 10px !important;
+                }
+
+            .account-settings .user-profile h5.user-name {
+                margin: 0 0 0.5rem 0;
+                padding: 10px !important;
+            }
+
+            .account-settings .user-profile h6.user-email {
+                margin: 0;
+                font-size: 0.8rem;
+                font-weight: 400;
+                color: #9fa8b9;
+                padding: 10px !important;
+            }
+
+        .account-settings .about {
+            margin: 2rem 0 0 0;
+            text-align: center;
+            padding: 10px !important;
+        }
+
+            .account-settings .about h5 {
+                margin: 0 0 15px 0;
+                color: #007ae1;
+                padding: 10px !important;
+            }
+
+            .account-settings .about p {
+                font-size: 0.825rem;
+                padding: 10px !important;
+            }
+
+        .form-control {
+            border: 1px solid #cfd1d8;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 6px;
+            font-size: .825rem;
+            background: #ffffff;
+            color: #2e323c;
+            padding: 10px !important;
+        }
+
+        .card {
+            /* background: #ffffff; */
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border: 0;
+            margin-bottom: 1rem;
+            padding: 10px !important;
+        }
+
+        .page-header {
+            padding-top: 24px;
+            padding-left: 32px;
+            margin-bottom: -16px !important;
+        }
+    </style>
+}
+
+<div class="page-header text-primary">
+    <div class="page-title">
+        <h4>Employee profile</h4>
+        <h6>Edit/Update profile</h6>
+    </div>
+</div>
+<form asp-action="Edit" asp-controller="Employee" method="post" enctype="multipart/form-data">
+    <div class="row custom-gutters container-profile">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="profile-card card-body">
+                    <div class="account-settings">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <img id="avatarImage" src="@Model.AvatarPath">
+                            </div>
+                            <h5 class="user-name">@Model.FullName</h5>
+                            <div class="input-group mb-3">
+                                <input asp-for="Avatar" type="file" class="form-control" id="avatar" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="profile-card card-body">
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="mb-2 text-primary">Personal Details</h6>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Role">Role</label>
+                                <select asp-for="Role" class="form-control bg-light" id="Role" name="Role" onchange="toggleFacultyField()" required>
+                                    <option value="" disabled selected>Select your role</option>
+                                    <option value="manager">Manager</option>
+                                    <option value="doctor">Doctor</option>
+                                    <option value="receptionist">Receptionist</option>
+                                    <option value="nurse">Nurse</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Faculty" for="faculty">Faculty</label>
+                                <select asp-for="Faculty" class="form-control bg-light" id="faculty" name="Faculty" disabled>
+                                    @if (ViewBag.Faculties != null)
+                                    {
+                                        @foreach (var faculty in ViewBag.Faculties)
+                                        {
+                                            <option value="@faculty.Name">@faculty.Name</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="FullName">Full Name</label>
+                                <input asp-for="FullName" type="text" class="form-control" id="fullName" placeholder="Enter full name" required>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Email">Email</label>
+                                <input asp-for="Email" type="email" class="form-control" id="eMail"
+                                       placeholder="Enter email ID" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Phone">Phone</label>
+                                <input asp-for="Phone" type="text" class="form-control" id="phone"
+                                       placeholder="Enter phone number" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Birthday">Birthday</label>
+                                <input asp-for="Birthday" type="date" class="form-control" id="birthday"
+                                       placeholder="Your birthday" required>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Gender">Gender</label>
+                                <select asp-for="Gender" class="form-control bg-light" id="gender" required>
+                                    <option value="" disabled selected>Select your gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    @if (Model.Gender != null)
+                                    {
+                                        @if (@Model.Gender.Equals("Male"))
+                                        {
+                                            <option value="male" selected="">Male</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="female" selected="">Female</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="JoinTime">Join Time</label>
+                                <input asp-for="JoinTime" type="date" class="form-control" id="joinTime" placeholder="Your join time" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="padding-bottom: 0px !important;">
+                            <div class="text-right">
+                                @if (Model.id.Contains("D"))
+                                {
+                                    <a asp-action="Manage" asp-controller="Employee" asp-route-role="Doctor" class="btn btn-secondary" id="cancel">
+                                        Cancel
+                                    </a>
+                                }
+                                else if (Model.id.Contains("N"))
+                                {
+                                    <a asp-action="Manage" asp-controller="Employee" asp-route-role="Nurse" class="btn btn-secondary" id="cancel">
+                                        Cancel
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Manage" asp-controller="Employee" asp-route-role="Receptionist" class="btn btn-secondary" id="cancel">
+                                        Cancel
+                                    </a>
+                                }
+                                <button type="submit" id="submit" name="submit" class="btn btn-primary">
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    const inputFile = document.getElementById('avatar');
+    const avatarImage = document.getElementById('avatarImage');
+
+    // Bắt sự kiện khi file được chọn
+    inputFile.addEventListener('change', function () {
+        // Kiểm tra nếu người dùng đã chọn file
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            // Khi file được đọc hoàn tất
+            reader.onload = function (event) {
+                // Thay đổi src của ảnh
+                avatarImage.src = event.target.result;
+            };
+
+            // Đọc file dưới dạng URL
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function toggleFacultyField() {
+        var roleSelect = document.getElementById("Role");
+        var facultySelect = document.getElementById("faculty");
+
+        // Kiểm tra xem giá trị của trường Role có phải là 'doctor' không
+        if (roleSelect.value === "doctor") {
+            facultySelect.disabled = false; // Bật trường faculty
+        } else {
+            facultySelect.disabled = true; // Tắt trường faculty
+            facultySelect.value = ""; // Đặt lại giá trị trường faculty
+        }
+    }
+
+    // Gọi hàm ngay khi tải trang để đảm bảo trường faculty tắt nếu không phải doctor
+    window.onload = function () {
+        toggleFacultyField();
+    };
+</script>

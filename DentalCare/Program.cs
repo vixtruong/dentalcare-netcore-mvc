@@ -1,3 +1,7 @@
+﻿using DentalCare.Models;
+using DentalCare.Services;
+using Microsoft.EntityFrameworkCore;
+
 namespace DentalCare
 {
     public class Program
@@ -6,8 +10,18 @@ namespace DentalCare
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<DentalcareContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DBDefault")));
+
+            builder.Services.AddScoped<NurseService>();
+            builder.Services.AddScoped<DoctorService>();
+            builder.Services.AddScoped<ReceptionistService>();
+            builder.Services.AddScoped<FacultyService>();
+            builder.Services.AddScoped<CustomerService>();
+            builder.Services.AddScoped<AccountService>();
+            builder.Services.AddScoped<ShiftService>();
+
 
             var app = builder.Build();
 

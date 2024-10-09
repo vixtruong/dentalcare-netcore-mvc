@@ -1,0 +1,111 @@
+﻿@model IEnumerable<object>
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+<style>
+    .container-invoice {
+        width: 95%;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .container-employee {
+        padding-bottom: 6px !important;
+    }
+
+        .container-invoice .search {
+            top: 6px;
+            left: 10px;
+        }
+
+        .container-invoice .form-control {
+            border: none;
+            padding-left: 34px;
+        }
+
+            .container-invoice .form-control:focus {
+                border: none;
+                box-shadow: none;
+            }
+
+        .container-invoice .green {
+            color: green;
+        }
+
+        .container-invoice .bill-id {
+            text-decoration: none;
+            color: #000;
+        }
+
+    .page-header {
+        padding-top: 24px;
+        padding-left: 32px;
+    }
+
+    .table-action tr:hover {
+        background-color: #ccc;
+    }
+
+    .table-action i:hover {
+        opacity: 0.5;
+    }
+</style>
+
+<div class="page-header text-primary">
+    <div class="page-title">
+        <h4>Employees Management</h4>
+    </div>
+</div>
+
+<div class="container mt-4 px-2 container-invoice">
+    <div class="p-4  container-employee">
+        <div class="mb-2 d-flex justify-content-between align-items-center">
+
+            <div class="position-relative">
+                <span class="position-absolute search text-primary"><i class="fa fa-search"></i></span>
+                <input class="form-control w-100 fst-italic" placeholder="Search by id, name...">
+            </div>
+
+            <div class="px-2 d-flex">
+                <a asp-action="Add" asp-controller="Faculty" class="btn btn-light fw-bold @(Model is IEnumerable<DentalCare.Models.Doctor> ? "" : "d-none")">Add Faculty</a>
+                <div class="nav-item dropdown" id="roleDropdown">
+                    <a href="#" class="nav-link dropdown-toggle text-dark fw-bold" data-bs-toggle="dropdown">
+                        <i class="fa fa-users me-2"></i>
+                        @if (Model is IEnumerable<DentalCare.Models.Doctor>)
+                        {
+                            <span id="roleText">Doctor</span>
+                        }
+                        else if (Model is IEnumerable<DentalCare.Models.Nurse>)
+                        {
+                            <span id="roleText">Nurse</span>
+                        }
+                        else
+                        {
+                            <span id="roleText">Receptionist</span>
+                        }
+                    </a>
+                    <div class="dropdown-menu bg-light border-0" style="cursor: pointer">
+                        <a class="dropdown-item" href="@Url.Action("Manage", "Employee", new { role = "Doctor" })">Doctor</a>
+                        <a class="dropdown-item" href="@Url.Action("Manage", "Employee", new { role = "Receptionist" })">Receptionist</a>
+                        <a class="dropdown-item" href="@Url.Action("Manage", "Employee", new { role = "Nurse" })">Nurse</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model is IEnumerable<DentalCare.Models.Doctor>)
+        {
+            @Html.Partial("DoctorList", Model as IEnumerable<DentalCare.Models.Doctor>)
+        }
+        else if (Model is IEnumerable<DentalCare.Models.Nurse>)
+        {
+            @Html.Partial("NurseList", Model as IEnumerable<DentalCare.Models.Nurse>)
+        }
+        else
+        {
+            @Html.Partial("ReceptionistList", Model as IEnumerable<DentalCare.Models.Receptionist>)
+        }
+    </div>
+</div>

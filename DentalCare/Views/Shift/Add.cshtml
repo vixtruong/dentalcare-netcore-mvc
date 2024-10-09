@@ -1,0 +1,129 @@
+﻿@model DentalCare.Models.Shift
+
+@{
+    Layout = "_DashboardLayout";
+}
+
+<style>
+    .add-invoice .content {
+        padding: 20px;
+        padding-top: 0px;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+        .add-invoice .content label {
+            padding: 8px;
+            padding-left: 2px !important;
+        }
+
+    .add-invoice .card-body {
+        background-color: #f8f9fa;
+    }
+</style>
+
+
+<div class="container-fluid mt-4 add-invoice">
+    <!-- Use container-fluid or container for better alignment -->
+    <div class="content">
+        <div class="page-header mb-4 text-primary">
+            <div class="page-title">
+                <h4>Add Shirt</h4>
+                <h6>For Doctor And Nurse</h6>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-action="Add" asp-controller="Shift" method="post">
+                    <div class="row g-3">
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Date">Date</label>
+                                <input asp-for="Date" type="date" class="form-control" id="date"
+                                       placeholder="Shift Date" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label for="faculty">Faculty</label>
+                                <select id="faculty" class="form-select" onchange="loadDoctorsByFaculty()" required>
+                                    <option selected disabled="">Select faculty</option>
+                                    @if (ViewBag.Faculties != null)
+                                    {
+                                        foreach (var f in ViewBag.Faculties)
+                                        {
+                                            <option value="@f.Id">@f.Name</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="">No Faculties Available</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Doctorid">Doctor</label>
+                                <select asp-for="Doctorid" id="doctor" class="form-select" required>
+                                   
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Nurseid">Nurse</label>
+                                <select asp-for="Nurseid" id="city" class="form-select" required>
+                                    @if (ViewBag.Nurses != null)
+                                    {
+                                        foreach (var n in ViewBag.Nurses)
+                                        {
+                                            <option value="@n.Id">@n.Name</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option value="">No Nurses Available</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 text-end">
+                            <button type="submit" class="btn btn-primary me-2">Add</button>
+                            <a href="@Url.Action("Index", "Dashboard")" type="reset" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loadDoctorsByFaculty() {
+        var facultyId = document.getElementById("faculty").value;
+
+        fetch(`/Shift/GetDoctorsByFaculty?facultyId=` + facultyId)
+            .then(response => response.json())
+            .then(data => {
+                var doctorSelect = document.getElementById("doctor");
+                doctorSelect.innerHTML = ''; // Xóa các option hiện tại
+
+                var selectOption = document.createElement("option");
+                selectOption.text = "Select Doctor";
+                selectOption.value = "";
+                selectOption.selected = true;
+                selectOption.disabled = true;
+                doctorSelect.appendChild(selectOption);
+                // Thêm các bác sĩ mới vào select
+                data.forEach(function (doctor) {
+                    var option = document.createElement("option");
+                    option.value = doctor.id;
+                    option.text = doctor.name;
+                    doctorSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
