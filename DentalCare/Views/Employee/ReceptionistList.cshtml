@@ -44,7 +44,8 @@
                     <td>@i.Firstdayofwork.ToString("dd/MM/yyyy")</td>
                     <td class="text-end table-action" style="cursor: pointer;">
                         <a href="@Url.Action("Edit", "Employee", new { id = @i.Id})"><i class="fa fa-edit ms-2 text-primary"></i></a>
-                        <a href="@Url.Action("Fire", "Employee", new { id = @i.Id })">
+                        <a href="@Url.Action("Fire", "Employee", new { id = i.Id })" 
+                           onclick="return confirm('@(i.Fired == false ? "Are you sure you want to fire this employee? If you fire, this employee account will be disabled." : "This employee is already fired.")');">
                             @if (i.Fired == false)
                             {
                                 <i class="fa fa-toggle-on text-primary"></i>

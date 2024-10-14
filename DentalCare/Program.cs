@@ -1,5 +1,6 @@
 ﻿using DentalCare.Models;
 using DentalCare.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace DentalCare
@@ -9,6 +10,14 @@ namespace DentalCare
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<DentalcareContext>(options =>
@@ -22,6 +31,13 @@ namespace DentalCare
             builder.Services.AddScoped<AccountService>();
             builder.Services.AddScoped<ShiftService>();
 
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Index";
+                    options.LogoutPath = "/Account/Logout";
+                });
+
 
             var app = builder.Build();
 
@@ -33,16 +49,19 @@ namespace DentalCare
                 app.UseHsts();
             }
 
+            app.UseSession();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Dashboard}/{action=Index}/{id?}");
+                pattern: "{controller=Account}/{action=Index}/{id?}");
 
             app.Run();
         }

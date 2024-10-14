@@ -1,12 +1,33 @@
-﻿@{
+﻿@using DentalCare.Services
+@inject DoctorService _doctorService
+@inject ReceptionistService _receptionistService
+@model Employee
+
+@{
     Layout = "_DashboardLayout";
+}
+
+@{
+    var userId = Context.Session.GetString("UserId") ?? string.Empty;
+    var role = Context.Session.GetString("UserRole");
+    string userRole = (role == "D") ? "Doctor" : "Receptionist";
+
+    dynamic user = null;
+    if (userId.Contains("D"))
+    {
+        user = _doctorService.Get(userId);
+    }
+    else
+    {
+        user = _receptionistService.Get(userId);
+    }
 }
 
 @section Profile
 {
     <style>
         .container-profile {
-            padding: 20px;
+            padding-bottom: 20px;
         }
 
         .profile-card {
@@ -20,11 +41,11 @@
             padding-right: 30px !important;
         }
 
-        .row.custom-gutters > [class*="col-"] {
-            padding-left: 0px !important; /* or adjust this value */
-            padding-right: 0px !important;
-            padding-bottom: 0px !important;
-        }
+            .row.custom-gutters > [class*="col-"] {
+                padding-left: 0px !important; /* or adjust this value */
+                padding-right: 0px !important;
+                padding-bottom: 0px !important;
+            }
 
         .container-profile * {
             padding-bottom: 8px;
@@ -41,32 +62,31 @@
             padding: 10px !important;
         }
 
-        .account-settings .user-profile .user-avatar {
-            margin: 0 0 1rem 0;
-            padding: 10px !important;
-        }
+            .account-settings .user-profile .user-avatar {
+                padding: 10px !important;
+            }
 
-        .account-settings .user-profile .user-avatar img {
-            width: 90px;
-            height: 90px;
-            -webkit-border-radius: 100px;
-            -moz-border-radius: 100px;
-            border-radius: 100px;
-            padding: 10px !important;
-        }
+                .account-settings .user-profile .user-avatar img {
+                    width: 90px;
+                    height: 90px;
+                    -webkit-border-radius: 100px;
+                    -moz-border-radius: 100px;
+                    border-radius: 100px;
+                    padding: 10px !important;
+                }
 
-        .account-settings .user-profile h5.user-name {
-            margin: 0 0 0.5rem 0;
-            padding: 10px !important;
-        }
+            .account-settings .user-profile h5.user-name {
+                margin: 0 0 0.5rem 0;
+                padding: 10px !important;
+            }
 
-        .account-settings .user-profile h6.user-email {
-            margin: 0;
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: #9fa8b9;
-            padding: 10px !important;
-        }
+            .account-settings .user-profile h6.user-email {
+                margin: 0;
+                font-size: 0.8rem;
+                font-weight: 400;
+                color: #9fa8b9;
+                padding: 10px !important;
+            }
 
         .account-settings .about {
             margin: 2rem 0 0 0;
@@ -74,16 +94,16 @@
             padding: 10px !important;
         }
 
-        .account-settings .about h5 {
-            margin: 0 0 15px 0;
-            color: #007ae1;
-            padding: 10px !important;
-        }
+            .account-settings .about h5 {
+                margin: 0 0 15px 0;
+                color: #007ae1;
+                padding: 10px !important;
+            }
 
-        .account-settings .about p {
-            font-size: 0.825rem;
-            padding: 10px !important;
-        }
+            .account-settings .about p {
+                font-size: 0.825rem;
+                padding: 10px !important;
+            }
 
         .form-control {
             border: 1px solid #cfd1d8;
@@ -109,7 +129,7 @@
         .page-header {
             padding-top: 24px;
             padding-left: 32px;
-            margin-bottom: -16px !important;
+            padding-bottom: -16px !important;
         }
     </style>
 }
@@ -121,108 +141,157 @@
     </div>
 </div>
 
-<div class="row custom-gutters container-profile">
-    <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-        <div class="card h-100">
-            <div class="profile-card card-body">
-                <div class="account-settings">
-                    <div class="user-profile">
-                        <div class="user-avatar">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                                alt="Maxwell Admin">
+<form asp-action="Edit" asp-controller="Account" method="post" enctype="multipart/form-data">
+    <div class="row custom-gutters container-profile">
+        <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="profile-card card-body">
+                    <div class="account-settings">
+                        <div class="user-profile">
+                            <div class="user-avatar">
+                                <img id="avatarImage" src="@user.Avatar" alt="Profile Picture">
+                            </div>
+                            <h5 class="user-name">@user.Name</h5>
+                            <div class="input-group mb-3">
+                                <input asp-for="Avatar" type="file" class="form-control" id="avatar" accept="image/*" disabled>
+                            </div>
                         </div>
-                        <h5 class="user-name">Yuki Hayashi</h5>
-                        <div class="input-group mb-3">
-                            <input type="file" class="form-control" id="inputGroupFile01" class="avatar" accept="image/*">
-                        </div>
-                    </div>
-                    <div class="about">
-                        <h5>About</h5>
-                        <p>
-                            I'm Yuki. Full Stack Designer I enjoy creating user-centric,
-                            delightful and human experiences.
-                        </p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-        <div class="card h-100">
-            <div class="profile-card card-body">
-                <div class="row gutters">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="mb-2 text-primary">Personal Details</h6>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="fullName">Full Name</label>
-                            <input type="text" class="form-control" id="fullName"
-                                placeholder="Enter full name">
+        <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+            <div class="card h-100">
+                <div class="profile-card card-body">
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="mb-2 text-primary">Personal Details</h6>
+                        </div>
+
+                        <!-- Role Dropdown -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Role">Role</label>
+                                <select asp-for="Role" class="form-control bg-light role" id="Role" name="Role" onchange="toggleFacultyField()" required disabled>
+                                    @if (userRole == "Doctor")
+                                    {
+                                        <option value="doctor" selected>Doctor</option>
+                                        <option value="receptionist">Receptionist</option>
+                                        <option value="nurse">Nurse</option>
+                                    }
+                                    else if (userRole == "Receptionist")
+                                    {
+                                        <option value="doctor">Doctor</option>
+                                        <option value="receptionist" selected>Receptionist</option>
+                                        <option value="nurse">Nurse</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="doctor">Doctor</option>
+                                        <option value="receptionist">Receptionist</option>
+                                        <option value="nurse">Nurse</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Faculty Dropdown (if available) -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Faculty" for="faculty">Faculty</label>
+                                <select asp-for="Faculty" class="form-control bg-light" id="faculty" name="Faculty" disabled>
+                                    @if (ViewBag.Faculties != null)
+                                    {
+                                        @foreach (var faculty in ViewBag.Faculties)
+                                        {
+                                            if (user.Id.Contains("D"))
+                                            {
+                                                if (faculty.Id == user.Facultyid)
+                                                {
+                                                    <option value="@faculty.Id" selected>@faculty.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@faculty.Id">@faculty.Name</option>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Name -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="FullName">Full Name</label>
+                                <input asp-for="FullName" type="text" class="form-control" id="fullName" value="@user.Name" required disabled>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Email">Email</label>
+                                <input asp-for="Email" type="email" class="form-control" id="eMail" value="@user.Email" required disabled>
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Phone">Phone</label>
+                                <input asp-for="Phone" type="text" class="form-control phone" id="phone" value="@user.Phone" required disabled>
+                            </div>
+                        </div>
+
+                        <!-- Birthday -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Birthday">Birthday</label>
+                                <input asp-for="Birthday" type="date" class="form-control" id="birthday" value="@user.Birthday?.ToString("yyyy-MM-dd")" required disabled>
+                            </div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="Gender">Gender</label>
+                                <select asp-for="Gender" class="form-control bg-light" id="gender" disabled required>
+                                    <option value="" disabled>Select your gender</option>
+                                    @if (user.Gender == true)
+                                    {
+                                        <option value="male" selected>Male</option>
+                                        <option value="female">Female</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="male">Male</option>
+                                        <option value="female" selected>Female</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Join Date -->
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                            <div class="form-group">
+                                <label asp-for="JoinTime">Join Time</label>
+                                <input asp-for="JoinTime" type="date" class="form-control" id="joinTime" value="@user.Firstdayofwork?.ToString("yyyy-MM-dd")" required disabled>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="eMail">Email</label>
-                            <input type="email" class="form-control" id="eMail"
-                                placeholder="Enter email ID">
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="text" class="form-control" id="phone"
-                                placeholder="Enter phone number">
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="website">Website URL</label>
-                            <input type="url" class="form-control" id="website"
-                                placeholder="Website url">
-                        </div>
-                    </div>
-                </div>
-                <div class="row gutters">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <h6 class="mt-3 mb-2 text-primary">Address</h6>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="Street">Street</label>
-                            <input type="name" class="form-control" id="Street"
-                                placeholder="Enter Street">
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="ciTy">City</label>
-                            <input type="name" class="form-control" id="ciTy"
-                                placeholder="Enter City">
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="sTate">State</label>
-                            <input type="text" class="form-control" id="sTate"
-                                placeholder="Enter State">
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                        <div class="form-group">
-                            <label for="zIp">Zip Code</label>
-                            <input type="text" class="form-control" id="zIp" placeholder="Zip Code">
-                        </div>
-                    </div>
-                </div>
-                <div class="row gutters">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <div class="text-right">
-                            <button type="button" id="submit" name="submit"
-                                class="btn btn-secondary">
-                                Cancel
+
+                    <!-- Update Buttons -->
+                    <div class="row gutters">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                            <button type="button" id="editButton" name="editButton" class="btn btn-primary" onclick="enableEditMode()">
+                                Edit
                             </button>
-                            <button type="button" id="submit" name="submit" class="btn btn-primary">
+                            <a asp-action="Edit" asp-controller="Account" class="btn btn-secondary d-none" id="cancelButton">
+                                Cancel
+                            </a>
+                            <button type="submit" id="submitButton" name="submitButton" class="btn btn-primary d-none">
                                 Update
                             </button>
                         </div>
@@ -231,4 +300,53 @@
             </div>
         </div>
     </div>
-</div>
+</form>
+
+<!-- Role - Faculty -->
+<script>
+    const inputFile = document.getElementById('avatar');
+    const avatarImage = document.getElementById('avatarImage');
+
+    // Bắt sự kiện khi file được chọn
+    inputFile.addEventListener('change', function () {
+        // Kiểm tra nếu người dùng đã chọn file
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+
+            // Khi file được đọc hoàn tất
+            reader.onload = function (event) {
+                // Thay đổi src của ảnh
+                avatarImage.src = event.target.result;
+            };
+
+            // Đọc file dưới dạng URL
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Gọi hàm ngay khi tải trang để đảm bảo trường faculty tắt nếu không phải doctor
+    window.onload = function () {
+        toggleFacultyField();
+    };
+</script>
+
+<!-- Edit button -->
+<script>
+    // Enable edit mode
+    function enableEditMode() {
+        // Enable all form fields except for the role dropdown
+        document.querySelectorAll('.form-control').forEach((field) => {
+            field.removeAttribute('disabled');
+        });
+
+        // Keep the role dropdown always disabled
+        document.querySelector('.role').setAttribute('disabled', true);
+
+        // Show Cancel and Update buttons, hide Edit button
+        document.getElementById('editButton').classList.add('d-none');
+        document.getElementById('cancelButton').classList.remove('d-none');
+        document.getElementById('submitButton').classList.remove('d-none');
+        }
+</script>
+

@@ -3,9 +3,12 @@ using DentalCare.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using System.Numerics;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly DoctorService _doctorService;
@@ -39,13 +42,17 @@ namespace DentalCare.Controllers
                 return View(model);
             }
 
-            if (model.Faculty == null)
+            foreach (var d in _accountService.GetAll())
             {
-                Console.WriteLine($"Không tìm thấy khoa với tên: {model.Faculty.Trim()}");
-            }
-            else
-            {
-                Console.WriteLine($"tìm thấy khoa với tên: {model.Faculty.Trim()}");
+                if (model.Phone == d.Phone)
+                {
+                    return View(model);
+                }
+
+                if (model.Email == d.Email)
+                {
+                    return View();
+                }
             }
 
             try
@@ -82,7 +89,7 @@ namespace DentalCare.Controllers
                     Birthday = model.Birthday.Value,
                     Gender = model.Gender.Equals("Male", StringComparison.OrdinalIgnoreCase),
                     Firstdayofwork = model.JoinTime.Value,
-                    Falcutyid = model.Faculty,
+                    Facultyid = model.Faculty,
                     Avatar = model.AvatarPath,
                     Fired = false,
                     FacultyName = _facultyService.Get(model.Faculty).Name
@@ -218,11 +225,6 @@ namespace DentalCare.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(Employee model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
             try
             {
                 if (model.Avatar != null && model.Avatar.Length > 0)
@@ -255,6 +257,23 @@ namespace DentalCare.Controllers
                     model.AvatarPath = doctor.Avatar;
                 }
 
+                if (doctor.Phone != model.Phone)
+                {
+                    var account = _accountService.GetByDoctorId(doctor.Id);
+
+                    var newAccount = new Account
+                    {
+                        DoctorId = account.DoctorId,
+                        Phone = model.Phone,
+                        Email = model.Email,
+                        Password = account.Password,
+                        Role = account.Role,
+                    };
+
+                    _accountService.Delete(account.Phone);
+                    _accountService.Add(newAccount);
+                }
+
                 doctor.Name = model.FullName;
                 doctor.Phone = model.Phone;
                 doctor.Email = model.Email;
@@ -262,6 +281,8 @@ namespace DentalCare.Controllers
                 doctor.Gender = model.Gender.Equals("Male", StringComparison.OrdinalIgnoreCase);
                 doctor.Firstdayofwork = model.JoinTime.Value;
                 doctor.Avatar = model.AvatarPath;
+                doctor.Facultyid = model.Faculty;
+                doctor.FacultyName = _facultyService.Get(model.Faculty).Name;
 
                 _doctorService.Update(doctor);
                 return RedirectToAction("Manage", "Employee", new { role = "Doctor" });
@@ -293,6 +314,23 @@ namespace DentalCare.Controllers
                 if (model.AvatarPath == null)
                 {
                     model.AvatarPath = receptionist.Avatar;
+                }
+
+                if (receptionist.Phone != model.Phone)
+                {
+                    var account = _accountService.GetByReceptionistId(receptionist.Id);
+
+                    var newAccount = new Account
+                    {
+                        ReceptionistId = account.ReceptionistId,
+                        Phone = model.Phone,
+                        Email = model.Email,
+                        Password = account.Password,
+                        Role = account.Role,
+                    };
+
+                    _accountService.Delete(account.Phone);
+                    _accountService.Add(newAccount);
                 }
 
                 receptionist.Name = model.FullName;
@@ -413,7 +451,7 @@ namespace DentalCare.Controllers
                         <h2 style='color: #0066cc;'>Personal Information</h2>
                         <p><strong>Full Name:</strong> {doctor.Name}</p>
                         <p><strong>Role:</strong> Doctor</p>
-                        <p><strong>Faculty:</strong> {_facultyService.Get(doctor.Falcutyid).Name}</p>
+                        <p><strong>Faculty:</strong> {_facultyService.Get(doctor.Facultyid).Name}</p>
                         <p><strong>Birthday:</strong> {doctor.Birthday.ToString("dd/MM/yyyy")}</p>
                         <p><strong>Gender:</strong> {(doctor.Gender ? "Male" : "Female")}</p>
                         <p><strong>First Day of Work:</strong> {doctor.Firstdayofwork.ToString("dd/MM/yyyy")}</p>
