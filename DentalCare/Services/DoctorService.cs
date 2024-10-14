@@ -19,9 +19,10 @@ namespace DentalCare.Services
             return list;
         }
 
+
         public List<Doctor> GetByFacultyId(string id)
         {
-            return _context.Doctors.Where(x => x.Falcutyid == id).ToList();
+            return _context.Doctors.Where(x => x.Facultyid == id).ToList();
         }
         public Doctor? Get(string id)
         {

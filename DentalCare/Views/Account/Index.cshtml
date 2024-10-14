@@ -1,6 +1,26 @@
-﻿@{
+﻿@model DentalCare.Models.Account
+
+@{
     Layout = "_AccountLayout";
 }
+
+<style>
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .error-message {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        padding: 15px;
+        opacity: 1;
+        transition: opacity 1s ease-out;
+    }
+</style>
 
 <div class="container-fluid position-relative bg-white d-flex p-0">
     <!-- Spinner Start -->
@@ -15,32 +35,59 @@
         <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
             <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
                 <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <a href="#" class="">
-                            <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>ACCOUNT</h3>
-                        </a>
-                        <h3>Sign In</h3>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">Email address</label>
-                    </div>
-                    <div class="form-floating mb-4">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                        <label for="floatingPassword">Password</label>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mb-4">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                    <!-- Hiển thị thông báo lỗi nếu có -->
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="error-message alert alert-danger" id="errorMessage">
+                            <strong>Error:</strong> @ViewBag.ErrorMessage
                         </div>
-                        <a href="@Url.Action("Recover", "Account")">Forgot Password</a>
-                    </div>
-                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
-                    <p class="text-center mb-0">Don't have an Account? <a href="@Url.Action("Register", "Account")">Sign Up</a></p>
+                    }
+
+                    <form asp-action="Index" asp-controller="Account" method="post">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <a href="#" class="" style="text-decoration: none;">
+                                <h3 class="text-primary">DENTALDASH</h3>
+                            </a>
+                            <h3>Sign In</h3>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="Phone" type="number" class="form-control" id="floatingInput" placeholder="Your phone number" required>
+                            <label asp-for="Phone" for="floatingInput">Phone Number</label>
+                        </div>
+                        <div class="form-floating mb-4 position-relative">
+                            <input asp-for="Password" type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                            <label asp-for="Password" for="floatingPassword">Password</label>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            </div>
+                            <a href="@Url.Action("Recover", "Account")">Forgot Password</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
     <!-- Sign In End -->
 </div>
+
+<script>
+    // Tự động ẩn thông báo sau 5 giây
+    window.onload = function () {
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            // Sau 5 giây bắt đầu ẩn thông báo
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            // Hoàn toàn ẩn sau khi fade-out (1s sau khi opacity chuyển sang 0)
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000); // 1s sau khi bắt đầu chuyển opacity
+        }
+    };
+</script>

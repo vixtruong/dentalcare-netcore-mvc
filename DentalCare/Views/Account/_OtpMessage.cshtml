@@ -1,0 +1,10 @@
+﻿@model dynamic
+
+@if (Model.success)
+{
+    <div class="text-success"><p>@Model.message</p></div>
+}
+else
+{
+    <div class="text-danger"><p>@Model.message</p></div>
+}

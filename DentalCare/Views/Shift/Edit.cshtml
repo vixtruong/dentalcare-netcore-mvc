@@ -3,7 +3,6 @@
 @{
     Layout = "_DashboardLayout";
 }
-
 <style>
     .add-invoice .content {
         padding: 20px;
@@ -12,10 +11,10 @@
         margin-left: 0 !important;
     }
 
-        .add-invoice .content label {
-            padding: 8px;
-            padding-left: 2px !important;
-        }
+    .add-invoice .content label {
+        padding: 8px;
+        padding-left: 2px !important;
+    }
 
     .add-invoice .card-body {
         background-color: #f8f9fa;
@@ -53,7 +52,7 @@
                                         {
                                             foreach (var f in ViewBag.Faculties)
                                             {
-                                                if (f.Id == ViewBag.Doctor.Falcutyid)
+                                                if (f.Id == ViewBag.Doctor.Facultyid)
                                                 {
                                                     <option value="@f.Id" selected="">@f.Name</option>
                                                 }

@@ -21,6 +21,16 @@ namespace DentalCare.Services
             return _context.Accounts.FirstOrDefault(x => x.Phone.Equals(username) || x.Email.Equals(username));
         }
 
+        public Account? GetByDoctorId(string doctorId)
+        {
+            return _context.Accounts.FirstOrDefault(x => x.DoctorId == doctorId);
+        }
+
+        public Account? GetByReceptionistId(string receptionistId)
+        {
+            return _context.Accounts.FirstOrDefault(x => x.ReceptionistId == receptionistId);
+        }
+
         public void Add(Account account)
         {
             _context.Accounts.Add(account);

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class TechniqueController : Controller
     {
         public IActionResult Add()

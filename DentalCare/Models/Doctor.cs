@@ -19,7 +19,7 @@ public partial class Doctor
 
     public bool Gender { get; set; }
 
-    public string Falcutyid { get; set; } = null!;
+    public string Facultyid { get; set; } = null!;
 
     public string? Avatar { get; set; }
 
@@ -29,7 +29,7 @@ public partial class Doctor
 
     public string FacultyName { get; set; }
 
-    public virtual Faculty Falcuty { get; set; } = null!;
+    public virtual Faculty Faculty { get; set; } = null!;
 
     public virtual ICollection<Healthreport> Healthreports { get; set; } = new List<Healthreport>();
 

@@ -44,7 +44,7 @@
         }
 
             .account-settings .user-profile .user-avatar {
-                margin: 0 0 1rem 0;
+                margin: 0 0 0 0;
                 padding: 10px !important;
             }
 
@@ -151,7 +151,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Role">Role</label>
-                                <select asp-for="Role" class="form-control bg-light" id="Role" name="Role" onchange="toggleFacultyField()" required>
+                                <select asp-for="Role" class="form-control bg-light" id="Role" name="Role" onchange="toggleFacultyField()" disabled="true" required>
                                     <option value="" disabled selected>Select your role</option>
                                     <option value="manager">Manager</option>
                                     <option value="doctor">Doctor</option>
@@ -169,7 +169,7 @@
                                     {
                                         @foreach (var faculty in ViewBag.Faculties)
                                         {
-                                            <option value="@faculty.Name">@faculty.Name</option>
+                                            <option value="@faculty.Id">@faculty.Name</option>
                                         }
                                     }
                                 </select>

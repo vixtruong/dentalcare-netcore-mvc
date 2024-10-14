@@ -112,7 +112,7 @@
                                 }
                                 <td class="text-end">
                                     <a href="@Url.Action("Edit", "Shift", new { id = s.Id })"><i class="fa fa-edit ms-2 text-primary"></i></a>
-                                    <a href="@Url.Action("Delete", "Shift", new { id = s.Id })"><i class="fa fa-trash ms-2 text-primary"></i></a>
+                                    <a href="@Url.Action("Delete", "Shift", new { id = s.Id })" onclick="return confirm('Are you sure you want to delete this shift?');"><i class="fa fa-trash ms-2 text-primary"></i></a>
                                 </td>
                             </tr>
                         }

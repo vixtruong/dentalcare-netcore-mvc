@@ -226,7 +226,7 @@ public partial class DentalcareContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("EMAIL");
-            entity.Property(e => e.Falcutyid)
+            entity.Property(e => e.Facultyid)
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("FALCUTYID");
@@ -243,8 +243,8 @@ public partial class DentalcareContext : DbContext
                 .HasColumnName("PHONE");
             entity.Property(e => e.Fired).HasColumnName("FIRED");
 
-            entity.HasOne(d => d.Falcuty).WithMany(p => p.Doctors)
-                .HasForeignKey(d => d.Falcutyid)
+            entity.HasOne(d => d.Faculty).WithMany(p => p.Doctors)
+                .HasForeignKey(d => d.Facultyid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_DOCTOR_FALCUTY");
         });

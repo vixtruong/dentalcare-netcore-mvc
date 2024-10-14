@@ -1,9 +1,11 @@
 ﻿using DentalCare.Models;
 using DentalCare.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class FacultyController : Controller
     {
         private readonly FacultyService _facultyService;
