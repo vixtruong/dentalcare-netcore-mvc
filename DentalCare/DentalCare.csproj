@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\dashboard\invoice\" />
     <Folder Include="wwwroot\uploads\avatars\" />
   </ItemGroup>
 
