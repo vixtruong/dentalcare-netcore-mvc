@@ -2,50 +2,41 @@
 
 namespace DentalCare.Services
 {
-    public class CustomerService
+    public class EquipmentService
     {
         private readonly DentalcareContext _context;
 
-        public CustomerService(DentalcareContext context)
+        public EquipmentService(DentalcareContext context)
         {
             _context = context;
         }
-        public List<Customer> GetAll()
-        {
 
-            return _context.Customers.ToList();
+        public List<Equipment> GetAll()
+        {
+            return _context.Equipments.ToList();
         }
 
-        public Customer? Get(String id)
+        public Equipment? Get(string id)
         {
-
-            return _context.Customers.FirstOrDefault(x => x.Id.Equals(id));
+            return _context.Equipments.FirstOrDefault(x => x.Id == id);
         }
 
-        public Customer? GetByPhone(string phone)
+        public void Add(Equipment equipment)
         {
-            return _context.Customers.FirstOrDefault(x => x.Phone.Equals(phone));
-        }
-
-        public void Add(Customer customer)
-        {
-
-            _context.Customers.Add(customer);
+            _context.Equipments.Add(equipment);
             _context.SaveChanges();
         }
 
-        public void Delete(String id)
+        public void Delete(string id)
         {
-
-            var customer = Get(id);
-            _context.Customers.Remove(customer);
+            var e = Get(id);
+            _context.Equipments.Remove(e);
             _context.SaveChanges();
         }
 
-        public void Update(Customer customer)
+        public void Update(Equipment equipment)
         {
-
-            _context.Customers.Update(customer);
+            _context.Equipments.Update(equipment);
             _context.SaveChanges();
         }
 
@@ -62,12 +53,12 @@ namespace DentalCare.Services
 
                 idNumber++;
 
-                string newID = "C" + idNumber.ToString("D9");
+                string newID = "E" + idNumber.ToString("D9");
 
                 return newID;
             }
 
-            return "C000000001";
+            return "E000000001";
         }
     }
 }

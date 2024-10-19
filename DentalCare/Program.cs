@@ -23,13 +23,25 @@ namespace DentalCare
             builder.Services.AddDbContext<DentalcareContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DBDefault")));
 
-            builder.Services.AddScoped<NurseService>();
-            builder.Services.AddScoped<DoctorService>();
-            builder.Services.AddScoped<ReceptionistService>();
-            builder.Services.AddScoped<FacultyService>();
-            builder.Services.AddScoped<CustomerService>();
-            builder.Services.AddScoped<AccountService>();
-            builder.Services.AddScoped<ShiftService>();
+            // Đăng ký services
+            if (true)
+            {
+                builder.Services.AddScoped<NurseService>();
+                builder.Services.AddScoped<DoctorService>();
+                builder.Services.AddScoped<ReceptionistService>();
+                builder.Services.AddScoped<FacultyService>();
+                builder.Services.AddScoped<CustomerService>();
+                builder.Services.AddScoped<AccountService>();
+                builder.Services.AddScoped<ShiftService>();
+                builder.Services.AddScoped<AppointmentService>();
+                builder.Services.AddScoped<MedicalExamService>();
+                builder.Services.AddScoped<MedicineService>();
+                builder.Services.AddScoped<MedicineTypeService>();
+                builder.Services.AddScoped<TechWorkService>();
+                builder.Services.AddScoped<TechniqueService>();
+                builder.Services.AddScoped<EquipmentService>();
+                builder.Services.AddScoped<EquipmentTypeService>();
+            }
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -37,7 +49,6 @@ namespace DentalCare
                     options.LoginPath = "/Account/Index";
                     options.LogoutPath = "/Account/Logout";
                 });
-
 
             var app = builder.Build();
 

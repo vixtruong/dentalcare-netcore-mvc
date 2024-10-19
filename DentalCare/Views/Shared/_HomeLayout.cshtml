@@ -21,10 +21,7 @@
           rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="~/lib/home/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="~/lib/home/animate/animate.min.css" rel="stylesheet">
-    <link href="~/lib/home/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-    <link href="~/lib/home/twentytwenty/twentytwenty.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
@@ -95,7 +92,6 @@
                     <div class="dropdown-menu m-0">
                         <a href="@Url.Action("Pricing", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Pricing" ? "active" : "")">Pricing Plan</a>
                         <a href="@Url.Action("Team", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Team" ? "active" : "")">Our Dentist</a>
-                        <a href="@Url.Action("Testimonial", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Testimonial" ? "active" : "")">Testimonial</a>
                         <a href="@Url.Action("Appointment", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Appointment" ? "active" : "")">Appointment</a>
                     </div>
                 </div>
