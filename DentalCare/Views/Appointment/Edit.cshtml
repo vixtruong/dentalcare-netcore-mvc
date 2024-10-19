@@ -1,4 +1,4 @@
-﻿@model AppointmentViewModel
+﻿@model Appointment
 
 @{
     Layout = "_DashboardLayout";
@@ -12,21 +12,13 @@
         margin-left: 0 !important;
     }
 
-    .add-invoice .content label {
-        padding: 8px;
-        padding-left: 2px !important;
-    }
+        .add-invoice .content label {
+            padding: 8px;
+            padding-left: 2px !important;
+        }
 
     .add-invoice .card-body {
         background-color: #f8f9fa;
-    }
-
-    .text-success {
-        color: #28a745 !important; /* Màu xanh lá cây */
-    }
-
-    .text-danger {
-        color: #dc3545 !important; /* Màu đỏ */
     }
 
     h6 {
@@ -40,55 +32,61 @@
     <div class="content">
         <div class="page-header mb-4 text-primary">
             <div class="page-title">
-                <h4>Add Appointment</h4>
+                <h4>Edit Appointment</h4>
             </div>
         </div>
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <form asp-action="Add" asp-controller="Appointment" method="post">
+                <form asp-action="Edit" asp-controller="Appointment" method="post">
                     <div class="row g-3 p-1">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <h6 class="text-primary">Customer Detail</h6>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
-                                <label asp-for="CustomerName">Name</label>
-                                <input asp-for="CustomerName" type="text" id="customerName" class="form-control" placeholder="Full Name" required>
+                                <label>Customer Name</label>
+                                <input type="text" id="customerName" class="form-control bg-light" placeholder="Customer name" value="@ViewBag.Customer.Name" disabled>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
-                                <label asp-for="Phone" for="phone">Phone</label>
-                                <input asp-for="Phone" type="text" id="phone" class="form-control" placeholder="Phone Number" onblur="checkCustomerPhone()" required>
-                                <small id="phoneMessage" class="form-text text-muted"></small>
+                                <label for="phone">Phone</label>
+                                <input type="text" id="phone" class="form-control bg-light" placeholder="Customer phone number" value="@ViewBag.Customer.Phone" disabled>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
-                                <label asp-for="Email" for="email">Email</label>
-                                <input asp-for="Email" type="email" id="email" class="form-control" placeholder="Email" required>
+                                <label for="email">Email</label>
+                                <input type="email" id="email" class="form-control bg-light" placeholder="Customer email" value="@ViewBag.Customer.Email" disabled>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
-                                <label asp-for="Birthday" for="email">Birthday</label>
-                                <input asp-for="Birthday" type="date" id="birthday" class="form-control" placeholder="Customer birthday" required>
+                                <label for="birthday">Birthday</label>
+                                <input type="date" id="birthday" class="form-control bg-light" placeholder="Customer birthday" value="@ViewBag.Customer.Birthday.ToString("yyyy-MM-dd")" disabled>
                             </div>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12  mt-4">
                             <h6 class="text-primary">Doctor Detail</h6>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label for="faculty">Faculty</label>
                                 <select id="faculty" class="form-select" onchange="loadDoctorsByFaculty()" required required>
-                                    <option selected disabled="">Select faculty</option>
+                                    <option disabled="">Select faculty</option>
                                     @if (ViewBag.Faculties != null)
                                     {
                                         foreach (var f in ViewBag.Faculties)
                                         {
-                                            <option value="@f.Id">@f.Name</option>
+                                            if (f.Id == ViewBag.Doctor.Facultyid)
+                                            {
+                                                <option value="@f.Id" selected>@f.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@f.Id">@f.Name</option>
+                                            }
                                         }
                                     }
                                     else
@@ -101,9 +99,9 @@
 
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
-                                <label asp-for="DoctorId">Doctor</label>
-                                <select asp-for="DoctorId" id="doctor" class="form-select" required>
-
+                                <label asp-for="Doctorid">Doctor</label>
+                                <select asp-for="Doctorid" id="doctor" class="form-select" required>
+                                    <option value="@ViewBag.Doctor.Id" selected>@ViewBag.Doctor.Name</option>
                                 </select>
                             </div>
                         </div>
@@ -114,25 +112,27 @@
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Date">Date</label>
-                                <input asp-for="Date" type="date" id="phone" class="form-control" placeholder="Date" required>
+                                <input asp-for="Date" type="date" id="date" class="form-control" placeholder="Date" required>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Time">Time</label>
-                                <select asp-for="Time" id="timeSelect" class="form-control bg-white" required></select>
+                                <select id="timeSelect" class="form-control bg-white" required>
+                                    <option selected value="@Model.Time.ToString("HH:mm")">@Model.Time.ToString("HH:mm")</option>
+                                </select>
+                                <input type="hidden" asp-for="Time" id="hiddenTime"/>
                             </div>
                         </div>
-
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label asp-for="Demand" for="description">Demand Description</label>
-                                <textarea asp-for="Demand" id="description" class="form-control" rows="3" placeholder="Customer demand" required></textarea>
+                                <textarea asp-for="Demand" id="description" class="form-control" rows="3" required></textarea>
                             </div>
                         </div>
                         <div class="col-lg-12 text-end">
-                            <button type="submit" class="btn btn-primary me-2">Add</button>
-                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                            <button type="submit" class="btn btn-primary me-2">Update</button>
+                            <a href="@Url.Action("Manage")" type="reset" class="btn btn-secondary">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -149,7 +149,7 @@
             .then(response => response.json())
             .then(data => {
                 var doctorSelect = document.getElementById("doctor");
-                doctorSelect.innerHTML = '';
+                doctorSelect.innerHTML = ''; // Xóa các option hiện tại
 
                 var selectOption = document.createElement("option");
                 selectOption.text = "Select Doctor";
@@ -171,51 +171,22 @@
 
 <script>
     const timeSelect = document.getElementById('timeSelect');
+    const hiddenTime = document.getElementById('hiddenTime');
 
     for (let hour = 7; hour <= 17; hour++) { // Giới hạn từ 7:00 sáng đến 5:30 chiều
         for (let minute = 0; minute < 60; minute += 30) { // Tăng phút theo từng 30 phút
             const timeOption = document.createElement('option');
             const formattedHour = String(hour).padStart(2, '0'); // Đảm bảo giờ luôn có 2 chữ số
             const formattedMinute = String(minute).padStart(2, '0'); // Đảm bảo phút luôn có 2 chữ số
-            timeOption.value = `${formattedHour}:${formattedMinute}`;
-            timeOption.textContent = `${formattedHour}:${formattedMinute}`;
+            const timeValue = `${formattedHour}:${formattedMinute}`;
+            timeOption.value = timeValue;
+            timeOption.textContent = timeValue;
             timeSelect.appendChild(timeOption);
         }
     }
+
+    // Cập nhật giá trị của trường ẩn mỗi khi chọn thời gian
+    timeSelect.addEventListener('change', function () {
+        hiddenTime.value = timeSelect.value; // Cập nhật giá trị cho trường ẩn
+    });
 </script>
-
-<script>
-    function checkCustomerPhone() {
-        var phone = document.getElementById("phone").value;
-        var phoneMessage = document.getElementById("phoneMessage");
-        phoneMessage.textContent = '';
-        phoneMessage.classList.remove('text-success', 'text-danger');
-
-        if (phone.length > 0) {
-            fetch(`/Appointment/GetCustomerByPhone?phone=` + phone)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById("customerName").value = data.customer.name;
-                        document.getElementById("email").value = data.customer.email;
-                        document.getElementById("birthday").value = data.customer.birthday;
-
-                        phoneMessage.textContent = 'This customer already exists in the system.';
-                        phoneMessage.classList.add('text-success');
-                    } else {
-                        phoneMessage.textContent = 'This phone number does not exist in the system.';
-                        phoneMessage.classList.add('text-danger');
-                        document.getElementById("customerName").value = "";
-                        document.getElementById("email").value = "";
-                        document.getElementById("birthday").value = "";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    phoneMessage.textContent = 'An error occurred while checking the phone number.';
-                    phoneMessage.classList.add('text-danger');
-                });
-        }
-    }
-</script>
-

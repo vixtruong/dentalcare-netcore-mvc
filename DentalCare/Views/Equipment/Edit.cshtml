@@ -1,5 +1,127 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Equipment
+
 @{
+    Layout = "_DashboardLayout";
 }
+
+<style>
+    .price input[type="number"]::-webkit-outer-spin-button,
+    .price input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .add-invoice .content {
+        padding: 20px;
+        padding-top: 0px;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+    .add-invoice .content label {
+        padding: 8px;
+        padding-left: 2px !important;
+    }
+
+    .add-invoice .card-body {
+        background-color: #f8f9fa;
+    }
+
+    .text-success {
+        color: #28a745 !important;
+    }
+
+    .text-danger {
+        color: #dc3545 !important;
+    }
+
+    h6 {
+        margin-bottom: 0px !important;
+    }
+</style>
+
+
+<div class="container-fluid mt-4 add-invoice">
+    <div class="content">
+        <div class="page-header mb-4 text-primary">
+            <div class="page-title">
+                <h4>Edit Equipment</h4>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-action="Edit" asp-controller="Equipment" method="post">
+                    <div class="row g-3 p-1">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="text-primary">Equipment Detail</h6>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12 ">
+                            <div class="form-group">
+                                <label asp-for="Name">Name</label>
+                                <input asp-for="Name" type="text" id="name" class="form-control" placeholder="Name" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12 ">
+                            <div class="form-group">
+                                <label asp-for="Equipmenttypeid">Type</label>
+                                <select asp-for="Equipmenttypeid" id="type" class="form-select" required>
+                                    <option value="" selected disabled>Select type</option>
+                                    @{
+                                        if (ViewBag.Types != null)
+                                        {
+                                            foreach (var t in ViewBag.Types)
+                                            {
+                                                if (Model.Equipmenttypeid == t.Id)
+                                                {
+                                                    <option selected value="@t.Id">@t.Name</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@t.Id">@t.Name</option>
+                                                }
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-12 ">
+                            <div class="form-group">
+                                <label asp-for="Unit" for="unit">Unit</label>
+                                <input asp-for="Unit" type="text" id="unit" class="form-control" placeholder="Unit" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-12 ">
+                            <div class="form-group">
+                                <label asp-for="Quantity" for="quantity">Quantity</label>
+                                <input asp-for="Quantity" type="number" id="quantity" class="form-control" placeholder="Quantity" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-6 col-12 ">
+                            <div class="form-group price">
+                                <label asp-for="Price">Price</label>
+                                <input asp-for="Price" type="number" id="price" class="form-control" placeholder="Price" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 text-end">
+                            <button type="submit" class="btn btn-primary me-2">Update</button>
+                            <a href="@Url.Action("Index", "Equipment")" type="reset" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        var selectType = document.getElementById('type');
+        if (selectType.value === "" || selectType.value === "Select type") {
+            e.preventDefault(); // Ngăn chặn gửi form
+            alert('Please select a valid tech type.'); // Hiển thị cảnh báo cho người dùng
+            selectType.focus(); // Đưa con trỏ đến dropdown
+        }
+    });
+</script>

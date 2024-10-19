@@ -2,50 +2,45 @@
 
 namespace DentalCare.Services
 {
-    public class CustomerService
+    public class MedicineService
     {
         private readonly DentalcareContext _context;
 
-        public CustomerService(DentalcareContext context)
+        public MedicineService(DentalcareContext context)
         {
             _context = context;
         }
-        public List<Customer> GetAll()
-        {
 
-            return _context.Customers.ToList();
+        public List<Medicine> GetAll()
+        {
+            return _context.Medicines.ToList();
         }
 
-        public Customer? Get(String id)
+        public Medicine? Get(string id)
         {
-
-            return _context.Customers.FirstOrDefault(x => x.Id.Equals(id));
+            return _context.Medicines.FirstOrDefault(x => x.Id.Equals(id));
         }
 
-        public Customer? GetByPhone(string phone)
+        public string? GetType(string typeId)
         {
-            return _context.Customers.FirstOrDefault(x => x.Phone.Equals(phone));
+            return _context.Medicinetypes.FirstOrDefault(x => x.Id.Equals(typeId))?.Name;
         }
 
-        public void Add(Customer customer)
+        public void Add(Medicine medicine)
         {
-
-            _context.Customers.Add(customer);
+            _context.Medicines.Add(medicine);
             _context.SaveChanges();
         }
 
-        public void Delete(String id)
+        public void Delete(string id)
         {
-
-            var customer = Get(id);
-            _context.Customers.Remove(customer);
+            var m = Get(id);
+            _context.Medicines.Remove(m);
             _context.SaveChanges();
         }
 
-        public void Update(Customer customer)
-        {
-
-            _context.Customers.Update(customer);
+        public void Update(Medicine medicine) { 
+            _context.Medicines.Update(medicine);
             _context.SaveChanges();
         }
 
@@ -62,12 +57,12 @@ namespace DentalCare.Services
 
                 idNumber++;
 
-                string newID = "C" + idNumber.ToString("D9");
+                string newID = "M" + idNumber.ToString("D9");
 
                 return newID;
             }
 
-            return "C000000001";
+            return "M000000001";
         }
     }
 }

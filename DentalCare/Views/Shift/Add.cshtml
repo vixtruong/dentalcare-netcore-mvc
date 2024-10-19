@@ -36,15 +36,18 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <form asp-action="Add" asp-controller="Shift" method="post">
-                    <div class="row g-3">
-                        <div class="col-lg-3 col-sm-6 col-12">
+                    <div class="row g-3 p-1">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h6 class="text-primary mb-0">Shift Detail</h6>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Date">Date</label>
                                 <input asp-for="Date" type="date" class="form-control" id="date"
                                        placeholder="Shift Date" required>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label for="faculty">Faculty</label>
                                 <select id="faculty" class="form-select" onchange="loadDoctorsByFaculty()" required>
@@ -63,15 +66,15 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Doctorid">Doctor</label>
                                 <select asp-for="Doctorid" id="doctor" class="form-select" required>
-                                   
+
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Nurseid">Nurse</label>
                                 <select asp-for="Nurseid" id="city" class="form-select" required>

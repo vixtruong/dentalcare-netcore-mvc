@@ -550,6 +550,5 @@ namespace DentalCare.Controllers
                 }
             }
         }
-
     }
 }

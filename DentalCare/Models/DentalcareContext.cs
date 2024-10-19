@@ -26,7 +26,7 @@ public partial class DentalcareContext : DbContext
 
     public virtual DbSet<Doctor> Doctors { get; set; }
 
-    public virtual DbSet<Equipment> Equipment { get; set; }
+    public virtual DbSet<Equipment> Equipments { get; set; }
 
     public virtual DbSet<Equipmentdetail> Equipmentdetails { get; set; }
 
@@ -129,7 +129,12 @@ public partial class DentalcareContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("DOCTORID");
-            entity.Property(e => e.Time).HasColumnName("TIME");
+            entity.Property(e => e.Time)
+                .HasColumnName("TIME");
+
+            entity.Property(e => e.Demand)
+                .HasMaxLength(200)
+                .HasColumnName("DEMAND");
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.Customerid)

@@ -29,7 +29,6 @@ namespace DentalCare.Controllers
             return Json(doctorList);
         }
 
-
         [HttpGet]
         public IActionResult Add()
         {

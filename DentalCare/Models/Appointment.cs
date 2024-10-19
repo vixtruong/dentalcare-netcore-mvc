@@ -15,6 +15,8 @@ public partial class Appointment
 
     public TimeOnly Time { get; set; }
 
+    public string Demand { get; set; } = null!;
+
     public virtual Customer Customer { get; set; } = null!;
 
     public virtual Doctor Doctor { get; set; } = null!;
