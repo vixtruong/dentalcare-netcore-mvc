@@ -1,7 +1,7 @@
 # DentalCare Website
 
 ## Author
-- vixtruongit
+- vixtruong
 
 ## Technologies Used
 - **ASP.NET Core MVC**
