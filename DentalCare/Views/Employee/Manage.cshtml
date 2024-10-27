@@ -1,4 +1,4 @@
-﻿@model IEnumerable<object>
+﻿@model X.PagedList.IPagedList<object>
 
 @{
     Layout = "_DashboardLayout";
@@ -58,25 +58,24 @@
     </div>
 </div>
 
-<div class="container mt-4 px-2 container-invoice shadow-sm card">
+<div class="container container-lg mt-4 px-2 mb-4 container-invoice shadow-sm card">
     <div class="p-4  container-employee">
         <div class="mb-2 d-flex justify-content-between align-items-center">
-
             <div class="position-relative">
                 <span class="position-absolute search text-primary"><i class="fa fa-search"></i></span>
                 <input class="form-control w-100 fst-italic" placeholder="Search by id, name...">
             </div>
 
             <div class="px-2 d-flex">
-                <a asp-action="Add" asp-controller="Faculty" class="btn btn-light fw-bold @(Model is IEnumerable<DentalCare.Models.Doctor> ? "" : "d-none")">Add Faculty</a>
+                <a asp-action="Add" asp-controller="Faculty" class="btn btn-light fw-bold @(Model is X.PagedList.IPagedList<Doctor> ? "" : "d-none")">Add Faculty</a>
                 <div class="nav-item dropdown" id="roleDropdown">
                     <a href="#" class="nav-link dropdown-toggle text-dark fw-bold" data-bs-toggle="dropdown">
                         <i class="fa fa-users me-2"></i>
-                        @if (Model is IEnumerable<DentalCare.Models.Doctor>)
+                        @if (Model is X.PagedList.IPagedList<Doctor>)
                         {
                             <span id="roleText">Doctor</span>
                         }
-                        else if (Model is IEnumerable<DentalCare.Models.Nurse>)
+                        else if (Model is X.PagedList.IPagedList<Nurse>)
                         {
                             <span id="roleText">Nurse</span>
                         }
@@ -94,17 +93,18 @@
             </div>
         </div>
 
-        @if (Model is IEnumerable<DentalCare.Models.Doctor>)
+        @if (Model is X.PagedList.IPagedList<Doctor>)
         {
-            @Html.Partial("DoctorList", Model as IEnumerable<DentalCare.Models.Doctor>)
+            @Html.Partial("DoctorList", Model as X.PagedList.IPagedList<Doctor>)
         }
-        else if (Model is IEnumerable<DentalCare.Models.Nurse>)
+        else if (Model is X.PagedList.IPagedList<Nurse>)
         {
-            @Html.Partial("NurseList", Model as IEnumerable<DentalCare.Models.Nurse>)
+            @Html.Partial("NurseList", Model as X.PagedList.IPagedList<Nurse>)
         }
         else
         {
-            @Html.Partial("ReceptionistList", Model as IEnumerable<DentalCare.Models.Receptionist>)
+            @Html.Partial("ReceptionistList", Model as X.PagedList.IPagedList<Receptionist>)
         }
     </div>
+    <a href="@Url.Action("Add", "Employee")" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-plus"></i></a>
 </div>

@@ -21,6 +21,8 @@ public partial class Bill
 
     public string Medicalexaminationid { get; set; } = null!;
 
+    public bool Status { get; set; }
+
     public virtual Medicalexamination Medicalexamination { get; set; } = null!;
 
     public virtual Receptionist Receptionist { get; set; } = null!;

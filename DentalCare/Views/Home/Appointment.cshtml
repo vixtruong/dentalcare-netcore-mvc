@@ -1,5 +1,48 @@
-﻿@{
-}
+﻿@model AppointmentViewModel
+
+<style>
+    #errorMessage {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        max-width: 500px;
+        transition: opacity 1s ease-out, transform 0.5s ease-in-out;
+        font-size: 1.2rem;
+        padding: 15px;
+        z-index: 1000;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    #errorMessage.show {
+        transform: translateY(0);
+        opacity: 1;
+    }    
+
+    .alert-success {
+        background-color: #ffcc80;
+        color: #333;
+        border-left: 6px solid #ffa726;
+    }
+
+    .alert-danger {
+        background-color: #ef9a9a;
+        color: #fff;
+        border-left: 6px solid #e53935;
+    }
+</style>
+
+
+<div class="error-message-container">
+    @if (ViewBag.Message != null)
+    {
+        <div class="message @(ViewBag.Error != null && (bool)ViewBag.Error ? "alert alert-danger" : "alert alert-success")" id="errorMessage">
+            <strong>@(ViewBag.Error != null && (bool)ViewBag.Error ? "Error:" : "Success:")</strong> @ViewBag.Message
+        </div>
+    }
+</div>
 
 
 <!-- Full Screen Search Start -->
@@ -35,55 +78,66 @@
 <div class="container-fluid bg-primary bg-appointment mb-5 wow fadeInUp" data-wow-delay="0.1s" style="margin-top: 90px;">
     <div class="container">
         <div class="row gx-5">
-            <div class="col-lg-6 py-5">
+            <div class="col-lg-4 py-5">
                 <div class="py-5">
                     <h1 class="display-5 text-white mb-4">We Are A Certified and Award Winning Dental Clinic You Can Trust</h1>
                     <p class="text-white mb-0">Eirmod sed tempor lorem ut dolores. Aliquyam sit sadipscing kasd ipsum. Dolor ea et dolore et at sea ea at dolor, justo ipsum duo rebum sea invidunt voluptua. Eos vero eos vero ea et dolore eirmod et. Dolores diam duo invidunt lorem. Elitr ut dolores magna sit. Sea dolore sanctus sed et. Takimata takimata sanctus sed.</p>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="appointment-form h-100 d-flex flex-column justify-content-center text-center p-5 wow zoomIn" data-wow-delay="0.6s">
                     <h1 class="text-white mb-4">Make Appointment</h1>
-                    <form>
+                    <form asp-action="Appointment" asp-controller="Home" method="post">
                         <div class="row g-3">
+                            <small id="phoneMessage" class="form-text text-dark"></small>
+                            <div class="col-12 col-sm-3">
+                                <input asp-for="Phone" id="phone" type="text" class="form-control bg-light border-0" placeholder="Your Phone" style="height: 55px;" onblur="checkCustomerPhone()" required>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <input asp-for="CustomerName" id="customerName" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" required>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <input asp-for="Email" id="email" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
+                            </div>
+                            <div class="col-12 col-sm-3">
+                                <input asp-for="Birthday" id="birthday" type="date" class="form-control bg-light border-0" placeholder="Your Birthday" style="height: 55px;" required>
+                            </div>
                             <div class="col-12 col-sm-6">
-                                <select class="form-select bg-light border-0" style="height: 55px;">
-                                    <option selected>Select A Service</option>
-                                    <option value="1">Service 1</option>
-                                    <option value="2">Service 2</option>
-                                    <option value="3">Service 3</option>
+                                <select id="faculty" class="form-select bg-light border-0" style="height: 55px;" onchange="loadDoctorsByFaculty()" required>
+                                    <option disabled selected>Select Doctor Faculty</option>
+                                    @foreach (var f in ViewBag.Faculties)
+                                    {
+                                        <option value="@f.Id">@f.Name</option>
+                                    }
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <select class="form-select bg-light border-0" style="height: 55px;">
-                                    <option selected>Select Doctor</option>
-                                    <option value="1">Doctor 1</option>
-                                    <option value="2">Doctor 2</option>
-                                    <option value="3">Doctor 3</option>
+                                <select asp-for="DoctorId" id="doctor" class="form-select bg-light border-0" style="height: 55px;" required>
                                 </select>
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;">
-                            </div>
-                            <div class="col-12 col-sm-6">
-                                <input type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;">
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="date" id="date1" data-target-input="nearest">
-                                    <input type="text"
-                                           class="form-control bg-light border-0 datetimepicker-input"
-                                           placeholder="Appointment Date" data-target="#date1" data-toggle="datetimepicker" style="height: 55px;">
+                                    <input asp-for="Date" type="date"
+                                           class="form-control bg-light border-0"
+                                           placeholder="Appointment Date" data-target="#date1" data-toggle="datetimepicker" style="height: 55px;" required>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <div class="time" id="time1" data-target-input="nearest">
-                                    <input type="text"
-                                           class="form-control bg-light border-0 datetimepicker-input"
-                                           placeholder="Appointment Time" data-target="#time1" data-toggle="datetimepicker" style="height: 55px;">
+                                <select asp-for="Time" id="timeSelect" class="form-select bg-light border-0" style="height: 55px;" required>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <div class="description" id="description" data-target-input="nearest">
+                                    <textarea asp-for="Demand" type="text"
+                                              class="form-control bg-light border-0"
+                                              placeholder="Your Demand Description" data-target="#time1" data-toggle="datetimepicker" style="height: 55px;" required></textarea>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-dark w-100 py-3" type="submit">Make Appointment</button>
+                                <button class="btn btn-dark w-100 py-3" type="submit"
+                                        onclick="return confirm('Do you sure make an appointment?')">
+                                    Make Appointment
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -93,3 +147,93 @@
     </div>
 </div>
 <!-- Appointment End -->
+
+<script>
+    const timeSelect = document.getElementById('timeSelect');
+
+    for (let hour = 7; hour <= 17; hour++) {
+        for (let minute = 0; minute < 60; minute += 30) {
+            const timeOption = document.createElement('option');
+            const formattedHour = String(hour).padStart(2, '0');
+            const formattedMinute = String(minute).padStart(2, '0');
+            timeOption.value = `${formattedHour}:${formattedMinute}`;
+            timeOption.textContent = `${formattedHour}:${formattedMinute}`;
+            timeSelect.appendChild(timeOption);
+        }
+    }
+</script>
+
+<script>
+    function loadDoctorsByFaculty() {
+        var facultyId = document.getElementById("faculty").value;
+
+        fetch(`/Appointment/GetDoctorsByFaculty?facultyId=` + facultyId)
+            .then(response => response.json())
+            .then(data => {
+                var doctorSelect = document.getElementById("doctor");
+                doctorSelect.innerHTML = '';
+
+                var selectOption = document.createElement("option");
+                selectOption.text = "Select Doctor";
+                selectOption.value = "";
+                selectOption.selected = true;
+                selectOption.disabled = true;
+                doctorSelect.appendChild(selectOption);
+                data.forEach(function (doctor) {
+                    var option = document.createElement("option");
+                    option.value = doctor.id;
+                    option.text = doctor.name;
+                    doctorSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+
+<script>
+    function checkCustomerPhone() {
+        var phone = document.getElementById("phone").value;
+        var phoneMessage = document.getElementById("phoneMessage");
+        phoneMessage.textContent = '';
+
+        if (phone.length > 0) {
+            fetch(`/Appointment/GetCustomerByPhone?phone=` + phone)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("customerName").value = data.customer.name;
+                        document.getElementById("email").value = data.customer.email;
+                        document.getElementById("birthday").value = data.customer.birthday;
+
+                        phoneMessage.textContent = 'This customer already exists in the system.';
+                    } else {
+                        phoneMessage.textContent = 'This phone number does not exist in the system.';
+                        document.getElementById("customerName").value = "";
+                        document.getElementById("email").value = "";
+                        document.getElementById("birthday").value = "";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    phoneMessage.textContent = 'An error occurred while checking the phone number.';
+                });
+        }
+        else {
+            document.getElementById("customerName").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("birthday").value = "";
+        }
+    }
+</script>
+
+<script>
+    window.onload = function () {
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            errorMessage.classList.add("show");
+            setTimeout(function () {
+                errorMessage.style.opacity = 0;
+            }, 5000); // Tự động ẩn sau 5 giây
+        }
+    }
+</script>

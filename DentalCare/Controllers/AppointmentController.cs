@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
-using Microsoft.EntityFrameworkCore;
+using X.PagedList.Extensions;
 
 namespace DentalCare.Controllers
 {
@@ -25,6 +25,7 @@ namespace DentalCare.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public JsonResult GetDoctorsByFaculty(string facultyId)
         {
             var doctors = _doctorService.GetByFacultyId(facultyId);
@@ -51,7 +52,6 @@ namespace DentalCare.Controllers
             }
             return Json(new { success = false });
         }
-
 
         public IActionResult Add()
         {
@@ -111,13 +111,17 @@ namespace DentalCare.Controllers
         }
 
         [HttpGet]
-        public IActionResult Manage()
+        [Route("appointment")]
+        public IActionResult Manage(int? page)
         {
             ViewBag.Customers = _customerService.GetAll();
             ViewBag.Doctors = _doctorService.GetAll();
 
-            var model = _appointmentService.GetAll();
-            return View(model);
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            var appointments = _appointmentService.GetAll();
+            var pagedList = appointments.ToPagedList(pageNumber, pageSize);
+            return View(pagedList);
         }
 
         [HttpGet]

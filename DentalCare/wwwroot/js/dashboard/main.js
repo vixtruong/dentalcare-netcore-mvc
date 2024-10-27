@@ -1,4 +1,4 @@
-(function ($) {
+﻿(function ($) {
     "use strict";
 
     // Spinner
@@ -17,7 +17,7 @@
         if ($(this).scrollTop() > 300) {
             $('.back-to-top').fadeIn('slow');
         } else {
-            $('.back-to-top').fadeOut('slow');
+            /*$('.back-to-top').fadeOut('slow');*/
         }
     });
     $('.back-to-top').click(function () {

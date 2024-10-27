@@ -79,7 +79,7 @@
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Shift" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" || 
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
-                    <i class="far fa-calendar"></i>Shift
+                    <i class="fas fa-calendar me-2"></i>Shift
                 </a>
                 <div class="dropdown-menu bg-transparent border-0">
                     <a style="padding-left: 50px !important" href="@Url.Action("Add", "Shift")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Shift" &&
@@ -93,7 +93,7 @@
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Invoice" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
-                    <i class="far fa-file-alt me-2"></i>Invoice
+                    <i class="fas fa-file-alt me-2"></i>Invoice
                 </a>
                 <div class="dropdown-menu bg-transparent border-0">
                     <a style="padding-left: 50px !important" href="@Url.Action("Add", "Invoice")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Invoice" &&
@@ -107,7 +107,7 @@
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Appointment" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" || 
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
-                    <i class="fa fa-calendar"></i>Appointment
+                    <i class="fa fa-calendar me-2"></i>Appointment
                 </a>
                 <div class="dropdown-menu bg-transparent border-0">
                     <a style="padding-left: 50px !important" href="@Url.Action("Add", "Appointment")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Appointment" &&
@@ -118,14 +118,29 @@
             </div>
 
             <div class="nav-item dropdown" id="inventoryDropdown">
-                <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")" data-bs-toggle="dropdown"><i class="fa fa-table me-2"></i>Inventory</a>
+                <a href="#" class="nav-link dropdown-toggle @((ViewContext?.RouteData?.Values["controller"]?.ToString() == "Medicine" || ViewContext?.RouteData?.Values["controller"]?.ToString() == "Equipment" || ViewContext?.RouteData?.Values["controller"]?.ToString() == "Technique") && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")" data-bs-toggle="dropdown">
+                    <i class="fa fa-table me-2"></i>Inventory
+                </a>
                 <div class="dropdown-menu bg-transparent border-0">
                     <a style="padding-left: 50px !important" href="@Url.Action("Index", "Medicine")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Medicine" && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")">Medicine</a>
                     <a style="padding-left: 50px !important" href="@Url.Action("Index", "Technique")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Technique" && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")">Technique</a>
                     <a style="padding-left: 50px !important" href="@Url.Action("Index", "Equipment")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Equipment" && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")">Equipment</a>
                 </div>
             </div>
-            <a href="#" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Invoice</a>
+
+            <div class="nav-item dropdown" id="prescriptionDropdown">
+                <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Prescription" &&
+                                                              (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
+                                                               ViewContext?.RouteData?.Values["action"]?.ToString() == "Index") ? "active" : "")" data-bs-toggle="dropdown">
+                    <i class="fas fa-prescription me-2"></i>Prescription
+                </a>
+                <div class="dropdown-menu bg-transparent border-0">
+                    <a style="padding-left: 50px !important" href="@Url.Action("Add", "Prescription")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Prescription" &&
+                                                                                                                             ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ? "active" : "")">Add</a>
+                    <a style="padding-left: 50px !important" href="@Url.Action("Index", "Prescription")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Prescription" &&
+                                                                                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")">Manage</a>
+                </div>
+            </div>
             <a href="widget.html" class="nav-item nav-link"><i class="fa fa-users me-2"></i>Widgets</a>
             <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
             <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
@@ -155,7 +170,7 @@
 
         dropdownElement.querySelectorAll('.dropdown-item').forEach(item => {
             item.addEventListener('click', () => {
-                localStorage.setItem('openDropdown', dropdownId); // Store this dropdown as open
+                localStorage.setItem('openDropdown', dropdownId);
             });
         });
     }
@@ -165,6 +180,7 @@
         handleDropdownState('employeeDropdown');
         handleDropdownState('shiftDropdown');
         handleDropdownState('appointmentDropdown');
+        handleDropdownState('prescriptionDropdown');
         handleDropdownState('inventoryDropdown');
 
         document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {

@@ -2,6 +2,7 @@
 using DentalCare.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList.Extensions;
 
 namespace DentalCare.Controllers
 {
@@ -17,11 +18,15 @@ namespace DentalCare.Controllers
             _equipmentTypeService = equipmentTypeService;
         }
 
-        public IActionResult Index()
+        [Route("equipment")]
+        public IActionResult Index(int? page)
         {
+            var pageNumber = (page ?? 1);
+            var pageSize = 10;
             var equipments = _equipmentService.GetAll();
+            var pagedList = equipments.ToPagedList(pageNumber, pageSize);
             ViewBag.Types = _equipmentTypeService.GetAll();
-            return View(equipments);
+            return View(pagedList);
         }
 
         [HttpGet]

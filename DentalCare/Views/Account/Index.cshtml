@@ -23,6 +23,12 @@
 </style>
 
 <div class="container-fluid position-relative bg-white d-flex p-0">
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="error-message alert alert-danger" id="errorMessage">
+            <strong>Error:</strong> @ViewBag.ErrorMessage
+        </div>
+    }
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -36,12 +42,7 @@
             <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 card shadow-sm bg-light">
                 <div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
                     <!-- Hiển thị thông báo lỗi nếu có -->
-                    @if (ViewBag.ErrorMessage != null)
-                    {
-                        <div class="error-message alert alert-danger" id="errorMessage">
-                            <strong>Error:</strong> @ViewBag.ErrorMessage
-                        </div>
-                    }
+
 
                     <form asp-action="Index" asp-controller="Account" method="post">
                         <div class="d-flex align-items-center justify-content-between mb-3">

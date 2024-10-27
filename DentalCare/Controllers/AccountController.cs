@@ -3,7 +3,6 @@ using DentalCare.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
-using System.Numerics;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -28,67 +27,75 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("UserId") != null)
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(Account account)
         {
-            foreach (var a in _accountService.GetAll())
+            var allAccounts = _accountService.GetAll();
+            var existingAccount = allAccounts.FirstOrDefault(a => a.Phone == account.Phone && a.Password == account.Password);
+
+            if (existingAccount != null)
             {
-                if (account.Phone == a.Phone && account.Password == a.Password)
+                bool isDoctor = existingAccount.DoctorId != null;
+                string userId;
+                string userName;
+                string userAvatar;
+
+                if (isDoctor)
                 {
-                    if (a.DoctorId != null)
+                    var doctor = _doctorService.Get(existingAccount.DoctorId);
+                    if (doctor.Fired == true)
                     {
-                        var user = _doctorService.Get(a.DoctorId);
-                        if (user.Fired == true)
-                        {
-                            ViewBag.Error = true;
-                            ViewBag.ErrorMessage = "You have been terminated.";
-                            return View();
-                        }
-
-                        HttpContext.Session.SetString("UserId", a.DoctorId);
-                        HttpContext.Session.SetString("UserName", user.Name);
-                        HttpContext.Session.SetString("UserAvatar", user.Avatar);
-                        HttpContext.Session.SetString("UserRole", a.Role);
+                        ViewBag.Error = true;
+                        ViewBag.ErrorMessage = "You have been terminated.";
+                        return View();
                     }
-                    else
-                    {
-                        var user = _receptionistService.Get(a.ReceptionistId);
-                        if (user.Fired == true)
-                        {
-                            ViewBag.Error = true;
-                            ViewBag.ErrorMessage = "You have been terminated.";
-                            return View();
-                        }
-                        HttpContext.Session.SetString("UserId", a.ReceptionistId);
-                        HttpContext.Session.SetString("UserName", user.Name);
-                        HttpContext.Session.SetString("UserAvatar", user.Avatar);
-                        HttpContext.Session.SetString("UserRole", a.Role);
-                    }
-
-                    HttpContext.Session.SetString("Phone", a.Phone);
-                    HttpContext.Session.SetString("Password", a.Password);
-
-                    var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name, a.Phone),
-                        };
-
-                    var claimsIdentity =
-                        new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var authProperties = new AuthenticationProperties
-                    {
-                        // Add properties if needed
-                    };
-
-                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                        new ClaimsPrincipal(claimsIdentity), authProperties);
-
-                    return RedirectToAction("Index", "Dashboard");
-
+                    userId = existingAccount.DoctorId;
+                    userName = doctor.Name;
+                    userAvatar = doctor.Avatar;
                 }
+                else
+                {
+                    var receptionist = _receptionistService.Get(existingAccount.ReceptionistId);
+                    if (receptionist.Fired == true)
+                    {
+                        ViewBag.Error = true;
+                        ViewBag.ErrorMessage = "You have been terminated.";
+                        return View();
+                    }
+                    userId = existingAccount.ReceptionistId;
+                    userName = receptionist.Name;
+                    userAvatar = receptionist.Avatar;
+                }
+
+                HttpContext.Session.SetString("UserId", userId);
+                HttpContext.Session.SetString("UserName", userName);
+                HttpContext.Session.SetString("UserAvatar", userAvatar);
+                HttpContext.Session.SetString("UserRole", existingAccount.Role);
+
+                var claims = new List<Claim>
+                                    {
+                                        new Claim(ClaimTypes.Name, existingAccount.Phone),
+                                        new Claim(ClaimTypes.Role, existingAccount.Role)
+                                    };
+
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var authProperties = new AuthenticationProperties
+                {
+                    IsPersistent = true,
+                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+                };
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                    new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                return RedirectToAction("Index", "Dashboard");
             }
 
             ViewBag.ErrorMessage = "Incorrect login information. Please try again.";
@@ -103,7 +110,6 @@ namespace DentalCare.Controllers
 
             return RedirectToAction("Index", "Account");
         }
-
 
         [HttpGet]
         public IActionResult Edit()
@@ -365,7 +371,6 @@ namespace DentalCare.Controllers
                 return PartialView("_OtpMessage", new { success = false, message = "Failed to send OTP. Please try again." });
             }
         }
-
 
         public IActionResult SendOTPToResetPassword(string email)
         {

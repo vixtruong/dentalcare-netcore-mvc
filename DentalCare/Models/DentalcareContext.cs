@@ -167,6 +167,7 @@ public partial class DentalcareContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("MEDICALEXAMINATIONID");
             entity.Property(e => e.Payment).HasColumnName("PAYMENT");
+            entity.Property(e => e.Status).HasColumnName("STATUS");
             entity.Property(e => e.Receptionistid)
                 .HasMaxLength(10)
                 .IsUnicode(false)

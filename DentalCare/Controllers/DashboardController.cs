@@ -20,6 +20,7 @@ namespace DentalCare.Controllers
             _receptionistService = receptionistService;
         }
 
+        [Route("dashboard")]
         public IActionResult Index()
         {
             return View();

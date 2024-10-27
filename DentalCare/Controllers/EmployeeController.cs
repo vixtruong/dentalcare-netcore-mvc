@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using System.Numerics;
+using X.PagedList.Extensions;
 
 namespace DentalCare.Controllers
 {
@@ -46,12 +46,16 @@ namespace DentalCare.Controllers
             {
                 if (model.Phone == d.Phone)
                 {
+                    ViewBag.Error = true;
+                    ViewBag.Message = "Phone number already exists!";
                     return View(model);
                 }
 
                 if (model.Email == d.Email)
                 {
-                    return View();
+                    ViewBag.Error = true;
+                    ViewBag.Message = "Email already exists!";
+                    return View(model);
                 }
             }
 
@@ -106,7 +110,10 @@ namespace DentalCare.Controllers
 
                 _doctorService.Add(doctor);
                 _accountService.Add(account);
+                ViewBag.Error = false;
+                ViewBag.Message = "Employee has been added successfully";
                 SendAccountToEmail(doctor.Id);
+                return View(model);
             }
             else if (model.Role.Equals("Nurse", StringComparison.OrdinalIgnoreCase))
             {
@@ -124,6 +131,9 @@ namespace DentalCare.Controllers
                 };
 
                 _nurseService.Add(nurse);
+                ViewBag.Error = false;
+                ViewBag.Message = "Employee has been added successfully";
+                return View(model);
             }
             else if (model.Role.Equals("Receptionist", StringComparison.OrdinalIgnoreCase))
             {
@@ -152,8 +162,13 @@ namespace DentalCare.Controllers
                 _receptionistService.Add(receptionist);
                 _accountService.Add(account);
                 SendAccountToEmail(receptionist.Id);
+                ViewBag.Error = false;
+                ViewBag.Message = "Employee has been added successfully";
+                return View(model);
             }
 
+            ViewBag.Error = false;
+            ViewBag.Message = "Employee has been added failed";
             return View(model);
         }
 
@@ -397,28 +412,35 @@ namespace DentalCare.Controllers
         }
 
         [HttpGet]
-        public IActionResult Manage(string role)
+        [Route("employee")]
+        public IActionResult Manage(string role, int? page)
         {
+            int pagenumber = (page ?? 1);
+            int pageSize = 10;
             if (string.IsNullOrEmpty(role))
-            { 
+            {
                 var receptionistList = _receptionistService.GetAll();
-                return View(receptionistList);
+                var pagedList = receptionistList.ToPagedList(pagenumber, pageSize);
+                return View(pagedList);
             }
 
             if (role.ToLower().Equals("doctor"))
             {
                 var doctorList = _doctorService.GetAll();
-                return View(doctorList);
+                var pagedList = doctorList.ToPagedList(pagenumber, pageSize);
+                return View(pagedList);
             }
             else if (role.ToLower().Equals("nurse"))
             {
                 var nurseList = _nurseService.GetAll();
-                return View(nurseList);
+                var pagedList = nurseList.ToPagedList(pagenumber, pageSize);
+                return View(pagedList);
             }
             else
             {
                 var receptionistList = _receptionistService.GetAll();
-                return View(receptionistList);
+                var pagedList = receptionistList.ToPagedList(pagenumber, pageSize);
+                return View(pagedList);
             }
         }
 

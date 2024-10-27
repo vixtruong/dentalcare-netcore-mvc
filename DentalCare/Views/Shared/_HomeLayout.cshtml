@@ -85,9 +85,9 @@
                 <a href="@Url.Action("Service", "Home")" class="nav-item nav-link @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Service" ? "active" : "")">Service</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Pricing" ||
-                                                                  ViewContext?.RouteData?.Values["action"]?.ToString() == "Team" ||
-                                                                  ViewContext?.RouteData?.Values["action"]?.ToString() == "Testimonial" ||
-                                                                  ViewContext?.RouteData?.Values["action"]?.ToString() == "Appointment" ? "active" : "")"
+                                                              ViewContext?.RouteData?.Values["action"]?.ToString() == "Team" ||
+                                                              ViewContext?.RouteData?.Values["action"]?.ToString() == "Testimonial" ||
+                                                              ViewContext?.RouteData?.Values["action"]?.ToString() == "Appointment" ? "active" : "")"
                        data-bs-toggle="dropdown">Pages</a>
                     <div class="dropdown-menu m-0">
                         <a href="@Url.Action("Pricing", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Pricing" ? "active" : "")">Pricing Plan</a>
@@ -125,10 +125,9 @@
         </div>
     </div>
     <!-- Full Screen Search End -->
-    
     <!-- Sub Body -->
     @RenderBody()
-    
+
     <!-- Newsletter Start -->
     <div class="container-fluid position-relative pt-5 wow fadeInUp" data-wow-delay="0.1s"
          style="z-index: 1;">
@@ -145,7 +144,6 @@
         </div>
     </div>
     <!-- Newsletter End -->
-
     <!-- Footer Start -->
     <div class="footer container-fluid bg-dark text-light py-5 wow fadeInUp" data-wow-delay="0.3s"
          style="margin-top: -75px;">
@@ -192,7 +190,7 @@
                         <a class="text-light" href="https://www.google.com/maps?q=123+Street,+New+York,+USA" target="_blank">
                             123 Street, New York, USA
                         </a>
-                        
+
                     </address>
                     <p class="mb-2">
                         <i class="bi bi-envelope-open text-primary me-2"></i>

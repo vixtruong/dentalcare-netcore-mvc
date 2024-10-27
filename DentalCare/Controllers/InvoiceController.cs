@@ -11,6 +11,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("invoice")]
         public IActionResult Manage()
         {
             return View();

@@ -9,12 +9,30 @@
     <link href="~/css/dashboard/profile.css" rel="stylesheet">
 }
 
+<style>
+    .message {
+        position: absolute;
+        right: 10px;
+        top: 80px;
+        z-index: 1051;
+        max-width: 500px;
+        transition: opacity 1s ease-out;
+    }
+</style>
+
 <div class="page-header text-primary" style="padding-top: 24px !important;">
     <div class="page-title">
         <h4>Add Employee</h4>
         <h6>Employee's information</h6>
     </div>
 </div>
+
+@if (ViewBag.Message != null)
+{
+    <div class="message @(ViewBag.Error != null && (bool)ViewBag.Error ? "alert alert-danger" : "alert alert-success")" id="errorMessage">
+        <strong>@(ViewBag.Error != null && (bool)ViewBag.Error ? "Error:" : "Success:")</strong> @ViewBag.Message
+    </div>
+}
 
 <form asp-action="Add" asp-controller="Employee" enctype="multipart/form-data">
     <div class="row custom-gutters container-profile">
@@ -26,7 +44,6 @@
                             <div class="user-avatar">
                                 <img id="avatarImage" src="https://bootdey.com/img/Content/avatar/avatar7.png">
                             </div>
-                            <h5 class="user-name">Name</h5>
                             <div class="input-group mb-3">
                                 <input asp-for="Avatar" type="file" class="form-control" id="avatar" accept="image/*" required>
                             </div>
@@ -167,3 +184,17 @@
     roleSelect.addEventListener('change', toggleFacultyField);
 </script>
 
+<script>
+    window.onload = function () {
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
+    };
+</script>
