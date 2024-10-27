@@ -49,19 +49,19 @@
                 <form asp-action="Add" asp-controller="Appointment" method="post">
                     <div class="row g-3 p-1">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <h6 class="text-primary">Customer Detail</h6>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 col-12 mt-0">
-                            <div class="form-group">
-                                <label asp-for="CustomerName">Name</label>
-                                <input asp-for="CustomerName" type="text" id="customerName" class="form-control" placeholder="Full Name" required>
-                            </div>
+                            <h5 class="text-primary">Customer Detail</h5>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Phone" for="phone">Phone</label>
                                 <input asp-for="Phone" type="text" id="phone" class="form-control" placeholder="Phone Number" onblur="checkCustomerPhone()" required>
                                 <small id="phoneMessage" class="form-text text-muted"></small>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-6 col-12 mt-0">
+                            <div class="form-group">
+                                <label asp-for="CustomerName">Name</label>
+                                <input asp-for="CustomerName" type="text" id="customerName" class="form-control" placeholder="Full Name" required>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">

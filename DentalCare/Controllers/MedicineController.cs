@@ -2,6 +2,7 @@
 using DentalCare.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList.Extensions;
 
 namespace DentalCare.Controllers
 {
@@ -17,11 +18,22 @@ namespace DentalCare.Controllers
             _medicineTypeService = medicineTypeService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult GetQuantityForMedicine(string medicineId)
         {
+            var quantity = _medicineService.GetQuantityForMedicine(medicineId);
+            return Json(new { quantity });
+        }
+
+        [Route("medicine")]
+        public IActionResult Index(int? page)
+        {
+            var pageNumber = (page ?? 1);
+            var pageSize = 10;
             var medicines = _medicineService.GetAll();
+            var pagedList = medicines.ToPagedList(pageNumber, pageSize);
             ViewBag.MedicineTypes = _medicineTypeService.GetAll();
-            return View(medicines);
+            return View(pagedList);
         }
 
         [HttpGet]

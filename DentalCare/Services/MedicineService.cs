@@ -16,6 +16,11 @@ namespace DentalCare.Services
             return _context.Medicines.ToList();
         }
 
+        public List<Medicine> GetByType(string id)
+        {
+            return _context.Medicines.Where(x => x.Medicinetypeid == id).ToList();
+        }
+
         public Medicine? Get(string id)
         {
             return _context.Medicines.FirstOrDefault(x => x.Id.Equals(id));
@@ -42,6 +47,18 @@ namespace DentalCare.Services
         public void Update(Medicine medicine) { 
             _context.Medicines.Update(medicine);
             _context.SaveChanges();
+        }
+
+        public void UpdateRange(List<Medicine> list)
+        {
+            _context.Medicines.UpdateRange(list);
+            _context.SaveChanges();
+        }
+
+        public int GetQuantityForMedicine(string medicineId)
+        {
+            var m = Get(medicineId);
+            return m.Quantity;
         }
 
         public string GenerateID()

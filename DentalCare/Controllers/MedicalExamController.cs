@@ -1,10 +1,12 @@
 ﻿using DentalCare.Models;
 using DentalCare.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SelectPdf;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class MedicalExamController : Controller
     {
         private readonly DoctorService _doctorService;

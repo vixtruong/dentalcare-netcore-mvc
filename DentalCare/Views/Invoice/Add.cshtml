@@ -3,6 +3,13 @@
 }
 
 <style>
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
     .add-invoice .content {
         padding: 20px;
         width: 100% !important;
@@ -10,10 +17,10 @@
         padding-top: 0px;
     }
 
-    .add-invoice .content label {
-        padding: 8px;
-        padding-left: 2px !important;
-    }
+        .add-invoice .content label {
+            padding: 8px;
+            padding-left: 2px !important;
+        }
 
     .card-info {
         background-color: #f8f9fa;
@@ -21,12 +28,15 @@
 
     .invoice-center table {
         border: solid #ccc;
-        border: solid #ccc;
-        border: solid #ccc;
         border-radius: 8px;
         overflow: hidden;
         border-collapse: collapse;
-        /* Prevents collapsing of borders which disables rounding */
+    }
+
+    .form-group button {
+        background: #fff !important;
+        border: #cccccc solid 1px;
+        border-radius: 4px;
     }
 </style>
 
@@ -45,85 +55,55 @@
             <div class="card-body">
                 <form>
                     <div class="row g-3 p-1 pt-0">
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="col-12 mb-0">
+                            <h5 class="text-primary">Invoice Detail</h5>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
-                                <label for="city">Medical Report</label>
-                                <select id="city" class="form-select">
-                                    <option selected>New York</option>
-                                    <option>City</option>
+                                <label for="">MES</label>
+                                <select id="medicalExam" class="form-control" data-live-search="true">
+                                    <option value="1">Medical Slip 1</option>
+                                    <option value="2">Medical Slip 2</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-12">
+                        <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
-                                <label for="address">Doctor</label>
-                                <input type="text" id="address" class="form-control"
-                                       value="132, My Street, Kingston, New York">
+                                <label>Date</label>
+                                <input type="date" id="dateInput" class="form-control bg-white"
+                                       disabled>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-12">
+                        <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
-                                <label for="address">Date</label>
-                                <input type="text" id="address" class="form-control"
-                                       value="132, My Street, Kingston, New York">
+                                <label for="">Customer ID</label>
+                                <input type="text" id="address" class="form-control bg-white"
+                                       disabled>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label for="customerName">Customer Name</label>
-                                <input type="text" id="customerName" class="form-control"
-                                       value="Thomas">
+                                <input type="text" id="customerName" class="form-control bg-white" disabled>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" class="form-control"
-                                       value="Thomas@example.com">
+                                <label for="">Doctor ID</label>
+                                <input type="text" id="" class="form-control bg-white"
+                                       disabled>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
+                        <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
-                                <label for="phone">Phone</label>
-                                <input type="text" id="phone" class="form-control"
-                                       value="+12163547758">
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label for="country">Choose Country</label>
-                                <select id="country" class="form-select">
-                                    <option selected>United States</option>
-                                    <option>India</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-sm-6 col-12">
-                            <div class="form-group">
-                                <label for="city">City</label>
-                                <select id="city" class="form-select">
-                                    <option selected>New York</option>
-                                    <option>City</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-9 col-12">
-                            <div class="form-group">
-                                <label for="address">Address</label>
-                                <input type="text" id="address" class="form-control"
-                                       value="132, My Street, Kingston, New York">
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea id="description" class="form-control"
-                                          rows="3">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text</textarea>
+                                <label for="">Doctor Name</label>
+                                <input type="text" id="" class="form-control bg-white"
+                                       disabled>
                             </div>
                         </div>
 
                         <div class="col-lg-12 d-flex">
-                            <div class="col-6" style="padding-right : 2px !important;">
+                            <div class="col-6" style="padding-right: 2px !important;">
                                 <div class="invoice-center">
                                     <h4>Medicine</h4>
                                     <div class="table-responsive">
@@ -213,7 +193,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-6" style="padding-left : 2px !important;">
+                            <div class="col-6" style="padding-left: 2px !important;">
                                 <div class="invoice-center">
                                     <h4>Technique</h4>
                                     <div class="table-responsive">
@@ -310,10 +290,40 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-12 d-flex justify-content-end" style="font-size: 20px; font-weight: 600">
+                            <!-- Wrapper bên phải cho Grand Total, Discount, và Total Payable -->
+                            <div class="col-6 ms-auto">
+                                <!-- Sử dụng ms-auto để đẩy toàn bộ về bên phải -->
+                                <!-- Grand Total -->
+                                <div class="form-group row g-3 align-items-center mb-3 text-end">
+                                    <label for="grandTotal" class="col-6 col-form-label text-end">Grand Total:</label>
+                                    <div class="col">
+                                        <input type="text" id="grandTotal" class="form-control text-end" value="0.00" readonly>
+                                    </div>
+                                </div>
 
-                        <div class="col-lg-12 text-end" style="font-size: 20px; font-weight: 600">
-                            <label>Grand total: 12300$</label>
+                                <!-- Discount -->
+                                <div class="form-group row g-3 align-items-center mb-3 text-end">
+                                    <label for="discount" class="col-6 col-form-label text-end">Discount:</label>
+                                    <div class="col">
+                                        <input type="number" id="discount" class="form-control text-end" value="0" min="0" max="100">
+                                    </div>
+                                    <div class="col-auto">
+                                        <span>%</span>
+                                    </div>
+                                </div>
+
+                                <!-- Total Payable -->
+                                <div class="form-group row g-3 align-items-center text-end">
+                                    <label for="totalPayable" class="col-6 col-form-label text-end">Total Due:</label>
+                                    <div class="col">
+                                        <input type="text" id="totalPayable" class="form-control text-end" value="0.00" readonly>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
 
                         <div class="col-lg-12 text-end">
                             <button type="submit" class="btn btn-primary me-2">Add</button>
@@ -325,3 +335,24 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <script>
+        $('#medicalExam').selectpicker();
+    </script>
+
+    <script>
+        // Lấy ngày hiện tại
+        const today = new Date().toISOString().split('T')[0];
+
+        // Gán giá trị ngày hiện tại vào input
+        document.getElementById('dateInput').value = today;
+    </script>
+}

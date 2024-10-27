@@ -2,6 +2,7 @@
 using DentalCare.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList.Extensions;
 
 namespace DentalCare.Controllers
 {
@@ -95,12 +96,17 @@ namespace DentalCare.Controllers
             return RedirectToAction("Manage");
         }
 
-        public IActionResult Manage()
+        [Route("shift")]
+        public IActionResult Manage(int? page)
         {
             var shiftList = _shiftService.GetAll();
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            var pagedList = shiftList.ToPagedList(pageNumber, pageSize);
+
             ViewBag.Doctors = _doctorService.GetAll();
             ViewBag.Nurses = _nurseService.GetAll();
-            return View(shiftList);
+            return View(pagedList);
         }
     }
 }
