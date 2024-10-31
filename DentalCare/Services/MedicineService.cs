@@ -13,7 +13,9 @@ namespace DentalCare.Services
 
         public List<Medicine> GetAll()
         {
-            return _context.Medicines.ToList();
+            var list = _context.Medicines.ToList();
+            SortListByQuantity(list);
+            return list;
         }
 
         public List<Medicine> GetByType(string id)
@@ -80,6 +82,17 @@ namespace DentalCare.Services
             }
 
             return "M000000001";
+        }
+
+        public void SortListByQuantity(List<Medicine> list)
+        {
+            list.Sort((x, y) =>
+            {
+                if (x.Quantity == 0) return 1;
+                if (y.Quantity == 0) return -1;
+
+                return x.Quantity.CompareTo(y.Quantity);
+            });
         }
     }
 }

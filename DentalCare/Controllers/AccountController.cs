@@ -56,6 +56,7 @@ namespace DentalCare.Controllers
                         ViewBag.ErrorMessage = "You have been terminated.";
                         return View();
                     }
+
                     userId = existingAccount.DoctorId;
                     userName = doctor.Name;
                     userAvatar = doctor.Avatar;

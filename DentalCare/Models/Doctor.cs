@@ -31,8 +31,6 @@ public partial class Doctor
 
     public virtual Faculty Faculty { get; set; } = null!;
 
-    public virtual ICollection<Healthreport> Healthreports { get; set; } = new List<Healthreport>();
-
     public virtual ICollection<Medicalexamination> Medicalexaminations { get; set; } = new List<Medicalexamination>();
 
     public virtual ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();

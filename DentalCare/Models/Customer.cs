@@ -17,7 +17,5 @@ public partial class Customer
 
     public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
 
-    public virtual ICollection<Healthreportdetail> Healthreportdetails { get; set; } = new List<Healthreportdetail>();
-
     public virtual ICollection<Medicalexamination> Medicalexaminations { get; set; } = new List<Medicalexamination>();
 }

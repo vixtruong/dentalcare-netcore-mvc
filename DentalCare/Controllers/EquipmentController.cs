@@ -30,6 +30,13 @@ namespace DentalCare.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetQuantityForEquipment(string medicineId)
+        {
+            var quantity = _equipmentService.GetQuantityForEquipment(medicineId);
+            return Json(new { quantity });
+        }
+
+        [HttpGet]
         public IActionResult AddType()
         {
             return View();

@@ -32,8 +32,29 @@
         color: #fff;
         border-left: 6px solid #e53935;
     }
-</style>
 
+    .bootstrap-select  {
+        height: 100% !important;
+    }
+
+    .bootstrap-select .dropdown {
+        height: 100% !important;
+    }
+
+    .bootstrap-select button {
+        height: 100% !important;
+        background: #fff !important;
+        border: #cccccc solid 1px;
+        border-radius: 4px;
+        font-weight: normal !important;
+        font-family: inherit !important;
+    }
+
+    .filter-option {
+        display: flex;
+        align-items: center;
+    }
+</style>
 
 <div class="error-message-container">
     @if (ViewBag.Message != null)
@@ -43,7 +64,6 @@
         </div>
     }
 </div>
-
 
 <!-- Full Screen Search Start -->
 <div class="modal fade" id="searchModal" tabindex="-1">
@@ -91,19 +111,19 @@
                         <div class="row g-3">
                             <small id="phoneMessage" class="form-text text-dark"></small>
                             <div class="col-12 col-sm-3">
-                                <input asp-for="Phone" id="phone" type="text" class="form-control bg-light border-0" placeholder="Your Phone" style="height: 55px;" onblur="checkCustomerPhone()" required>
+                                <input asp-for="Phone" id="phone" type="text" class="form-control bg-light border-0" placeholder="Your Phone"  onblur="checkCustomerPhone()" required>
                             </div>
                             <div class="col-12 col-sm-3">
-                                <input asp-for="CustomerName" id="customerName" type="text" class="form-control bg-light border-0" placeholder="Your Name" style="height: 55px;" required>
+                                <input asp-for="CustomerName" id="customerName" type="text" class="form-control bg-light border-0" placeholder="Your Name"  required>
                             </div>
                             <div class="col-12 col-sm-3">
-                                <input asp-for="Email" id="email" type="email" class="form-control bg-light border-0" placeholder="Your Email" style="height: 55px;" required>
+                                <input asp-for="Email" id="email" type="email" class="form-control bg-light border-0" placeholder="Your Email"  required>
                             </div>
                             <div class="col-12 col-sm-3">
-                                <input asp-for="Birthday" id="birthday" type="date" class="form-control bg-light border-0" placeholder="Your Birthday" style="height: 55px;" required>
+                                <input asp-for="Birthday" id="birthday" type="date" class="form-control bg-light border-0" placeholder="Your Birthday"  required>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <select id="faculty" class="form-select bg-light border-0" style="height: 55px;" onchange="loadDoctorsByFaculty()" required>
+                                <select id="faculty" class="form-control select-picker bg-light border-0"  data-live-search="true" onchange="loadDoctorsByFaculty()" required>
                                     <option disabled selected>Select Doctor Faculty</option>
                                     @foreach (var f in ViewBag.Faculties)
                                     {
@@ -112,25 +132,25 @@
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <select asp-for="DoctorId" id="doctor" class="form-select bg-light border-0" style="height: 55px;" required>
+                                <select asp-for="DoctorId" id="doctor" class="form-control select-picker bg-light border-0" data-live-search="true" title="Select Doctor" required>
                                 </select>
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="date" id="date1" data-target-input="nearest">
                                     <input asp-for="Date" type="date"
                                            class="form-control bg-light border-0"
-                                           placeholder="Appointment Date" data-target="#date1" data-toggle="datetimepicker" style="height: 55px;" required>
+                                           placeholder="Appointment Date" data-target="#date1" data-toggle="datetimepicker"  required>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <select asp-for="Time" id="timeSelect" class="form-select bg-light border-0" style="height: 55px;" required>
+                                <select asp-for="Time" id="timeSelect" class="form-control select-picker bg-light border-0" data-live-search="true" data-dropup-auto="false" required>
                                 </select>
                             </div>
                             <div class="col-12">
                                 <div class="description" id="description" data-target-input="nearest">
                                     <textarea asp-for="Demand" type="text"
                                               class="form-control bg-light border-0"
-                                              placeholder="Your Demand Description" data-target="#time1" data-toggle="datetimepicker" style="height: 55px;" required></textarea>
+                                              placeholder="Your Demand Description"  required></textarea>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -147,6 +167,18 @@
     </div>
 </div>
 <!-- Appointment End -->
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <script>
+        $('.select-picker').selectpicker();
+    </script>
+}
 
 <script>
     const timeSelect = document.getElementById('timeSelect');
@@ -185,6 +217,7 @@
                     option.text = doctor.name;
                     doctorSelect.appendChild(option);
                 });
+                $('.select-picker').selectpicker('refresh');
             })
             .catch(error => console.error('Error:', error));
     }

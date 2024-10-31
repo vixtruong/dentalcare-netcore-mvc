@@ -12,6 +12,11 @@ namespace DentalCare.Services
             _context = context;
         }
 
+        public bool IsExistMes(string mesId)
+        {
+            return _context.Prescriptions.Any(x => x.Medicalexaminationid == mesId);
+        }
+
         public List<Prescription> GetAll()
         {
             return _context.Prescriptions.ToList();

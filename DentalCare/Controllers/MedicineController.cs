@@ -86,7 +86,15 @@ namespace DentalCare.Controllers
 
         public IActionResult Delete(string id)
         {
-            _medicineService.Delete(id);
+            try
+            {
+                _medicineService.Delete(id);
+            }
+            catch (Exception e)
+            {
+                TempData["ErrorMessage"] = "This medicine relate to your business database! Can not delete";
+                return RedirectToAction("Index");
+            }
             return RedirectToAction("Index");
         }
     }

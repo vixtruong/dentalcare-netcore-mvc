@@ -89,10 +89,10 @@
                 <thead>
                 <tr class="bg-light">
                     <th scope="col" width="10%">ID</th>
+                    <th scope="col" width="10%">MES</th>
                     <th scope="col" width="10%">Date</th>
                     <th scope="col" width="15%">Doctor</th>
                     <th scope="col" width="10%">Doctor ID</th>
-                    <th scope="col" width="13%">Faculty</th>
                     <th scope="col" width="15%">Customer</th>
                     <th scope="col" width="10%">Customer ID</th>
                     <th scope="col" class="text-end" width="7%">Action</th>
@@ -106,6 +106,7 @@
                         {
                             <tr>
                                 <td>@s.Id</td>
+                                <td>@s.Medicalexaminationid</td>
                                 <td>@s.Date.ToString("dd/MM/yyyy")</td>
                                 @{
                                     foreach (var d in ViewBag.Doctors)
@@ -114,7 +115,6 @@
                                         {
                                             <td><img src="@d.Avatar" width="16"> @d.Name</td>
                                             <td>@s.Doctorid</td>
-                                            <td>@d.FacultyName</td>
                                         }
                                     }
 

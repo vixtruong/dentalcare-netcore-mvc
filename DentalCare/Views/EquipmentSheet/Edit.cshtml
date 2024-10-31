@@ -1,0 +1,412 @@
+﻿@model DentalCare.Models.EquipmentSheetViewModel
+
+@{
+    Layout = "_DashboardLayout";
+    var medicines = ViewBag.Medicines as List<Equipment>;
+    var types = ViewBag.Types as List<Equipmenttype>;
+}
+
+<style>
+    .add-invoice .content {
+        padding: 20px;
+        padding-top: 0px;
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+
+        .add-invoice .content label {
+            padding: 8px;
+            padding-left: 2px !important;
+        }
+
+    .form-group button {
+        background: #fff !important;
+        border: #cccccc solid 1px;
+        border-radius: 4px;
+    }
+
+    .add-invoice .card-body {
+        background-color: #f8f9fa;
+    }
+
+    table {
+        width: 98.4% !important;
+    }
+
+        table td {
+            vertical-align: middle; /* Căn giữa theo chiều dọc */
+            font-weight: 400;
+        }
+</style>
+
+<div class="container-fluid mt-4 add-invoice">
+    <!-- Use container-fluid or container for better alignment -->
+    <div class="content">
+        <div class="page-header mb-4 text-primary">
+            <div class="page-title">
+                <h4>Edit Prescription</h4>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-action="Edit" asp-controller="EquipmentSheet" method="post">
+                    <div class="row g-3 p-1">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h5 class="text-primary mb-0">EquipmentSheet Detail: <label asp-for="Id">@Model.Id</label></h5>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12 mt-0">
+                            <div class="form-group">
+                                <label asp-for="MedicalExamId" for="medicine">MES ID</label>
+                                <select asp-for="MedicalExamId" id="mes-id" class="select-picker form-control" data-live-search="true" title="Select MES" required>
+                                    @if (ViewBag.MedicalExams != null)
+                                    {
+                                        @foreach (var e in ViewBag.MedicalExams)
+                                        {
+                                            <option value="@e.Id">@e.Id</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12 mt-0">
+                            <div class="form-group">
+                                <label asp-for="Date">Date</label>
+                                <input asp-for="Date" type="date" class="form-control" id="date"
+                                       placeholder="Prescription Date" required>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h5 class="text-primary mb-0">Equipment</h5>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12 mt-0">
+                            <div class="form-group">
+                                <label for="medicine">Type</label>
+                                <select id="type" class="select-picker form-control" onchange="GetMedicinesByType()" data-live-search="true">
+                                    <option selected disabled>Select Type</option>
+                                    @{
+                                        if (ViewBag.Types != null)
+                                        {
+                                            @foreach (var t in ViewBag.Types)
+                                            {
+                                                <option value="@t.Id">@t.Name</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 col-12 mt-0">
+                            <div class="form-group">
+                                <label for="medicine">Medicine</label>
+                                <select id="medicine" class="select-picker form-control" data-live-search="true" title="Select Equipment">
+                                    <option selected disabled>Select Equipment</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 col-sm-12 col-12 text-end">
+                            <button type="button" class="btn btn-primary" onclick="addMedicineToTable()">Add Medicine</button>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <h5 class="text-primary mb-0">Table List Equipments</h5>
+                        </div>
+                        <table class="table table-bordered mt-2 mb-4 m-auto text-center">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Medicine</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                @*Load list thuoc*@
+                            </tbody>
+                        </table>
+
+                        @* Prescription Detail *@
+                        <div class="test">
+                        </div>
+
+                        <div class="col-lg-12 text-end mt-0">
+                            <button type="submit" class="btn btn-primary me-2" onclick="clearLocalStorage()">Save</button>
+                            <a href="@Url.Action("Index", "Dashboard")" type="reset" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <script>
+        $('.select-picker').selectpicker();
+    </script>
+}
+
+@* Xử lý thêm danh sách thuốc *@
+<script>
+    clearLocalStorage();
+    var medicineIndex = 0;
+    var addedMedicines = new Set();
+
+    window.onload = function () {
+        loadMedicinesFromLocalStorage();
+        loadMedicinesForEdit();
+    }
+
+    async function addMedicineToTable() {
+        // Lấy giá trị và tên của loại thuốc và thuốc đã chọn
+        var medicineTypeSelect = document.querySelector('#type');
+        var medicineSelect = document.querySelector('#medicine');
+
+        var medicineTypeId = medicineTypeSelect.value;
+        var medicineId = medicineSelect.value;
+
+        var medicineTypeName = medicineTypeSelect.options[medicineTypeSelect.selectedIndex].text;
+        var medicineName = medicineSelect.options[medicineSelect.selectedIndex].text;
+
+        // Kiểm tra nếu chưa chọn loại thuốc hoặc thuốc
+        if (!medicineId || !medicineTypeId || medicineTypeName == "Select Type" || medicineName == "Select Equipment") {
+            alert("Please choose a medicine and its type.");
+            return;
+        }
+
+        // Kiểm tra nếu thuốc đã có trong Local Storage
+        if (isMedicineInLocalStorage(medicineId)) {
+            alert("This medicine is already added.");
+            return;
+        }
+
+        var maxQuantity = await getQuantityForMedicine(medicineId);
+            console.log(maxQuantity);
+
+        // Kiểm tra nếu thuốc đã có trong bảng
+        if (isMedicineInTable(medicineName)) {
+            alert("This medicine is already in the table.");
+            return;
+        }
+
+        medicineIndex++;
+
+        addedMedicines.add(medicineId);
+
+        addRowToTable(medicineIndex, medicineName, medicineTypeName, 1, maxQuantity);
+
+        addHiddenInputs(medicineId, medicineName, medicineIndex - 1, 1);
+
+        // Lưu vào Local Storage
+        saveMedicineToLocalStorage(medicineId, medicineName, medicineTypeName);
+    }
+
+    // Kiểm tra xem thuốc đã có trong Local Storage hay chưa
+    function isMedicineInLocalStorage(medicineId) {
+        var medicines = JSON.parse(localStorage.getItem('equipments')) || [];
+        return medicines.some(medicine => medicine.id === medicineId); // Trả về true nếu thuốc tồn tại
+    }
+
+    // Hàm kiểm tra thuốc đã tồn tại trong bảng
+    function isMedicineInTable(medicineName) {
+        var table = document.querySelector('table tbody');
+        var rows = table.rows;
+
+        for (var i = 0; i < rows.length; i++) {
+            var cellMedicine = rows[i].cells[2].innerHTML; // Giả sử tên thuốc ở ô thứ 2 (index 1)
+            if (cellMedicine === medicineName) {
+                return true; // Nếu thuốc đã tồn tại, trả về true
+            }
+        }
+        return false; // Nếu không tìm thấy thuốc, trả về false
+    }
+
+    function addRowToTable(index, medicineName, medicineTypeName, quantity, maxQuantity) {
+        // Tạo một dòng mới cho bảng
+        var table = document.querySelector('table tbody');
+        var newRow = table.insertRow();
+
+        // Thêm các ô vào dòng mới
+        var cellIndex = newRow.insertCell(0);
+        var cellType = newRow.insertCell(1);
+        var cellMedicine = newRow.insertCell(2);
+        var cellQuantity = newRow.insertCell(3);
+        var cellAction = newRow.insertCell(4);
+
+        // Gán nội dung cho các ô
+        cellIndex.innerHTML = index;
+        cellMedicine.innerHTML = medicineName;
+        cellType.innerHTML = medicineTypeName;
+        cellQuantity.innerHTML = `<input type="number" class="w-25 form-control m-auto quantity" placeholder="Quantity" required min="1" max="${maxQuantity}" value="${quantity}" oninput="checkMaxQuantity(this, ${maxQuantity})">`;
+        cellAction.innerHTML = '<button class="btn btn-danger" onclick="deleteRow(this, \'' + medicineName + '\')">Delete</button>';
+
+        cellQuantity.querySelector(".quantity").addEventListener("change", function () {
+            var quantityInputs = document.querySelectorAll(".quantity-input");
+            quantityInputs[index - 1].value = this.value;
+        });
+    }
+
+    function deleteRow(button, medicineName) {
+        var row = button.parentNode.parentNode;
+        var medicineId = row.cells[2].innerHTML;
+        var safeMedicineId = medicineId.replace(/\s+/g, "_");
+
+        var medicineDiv = document.querySelector(`.test .${safeMedicineId}`);
+        if (medicineDiv) {
+            medicineDiv.parentNode.removeChild(medicineDiv);
+        }
+
+        // Xóa thuốc khỏi tập hợp đã thêm
+        addedMedicines.delete(medicineId);
+
+        // Xóa thuốc khỏi Local Storage
+        deleteMedicineFromLocalStorage(medicineName);
+
+        // Xóa dòng trong bảng
+        row.parentNode.removeChild(row);
+
+        // Cập nhật lại số thứ tự sau khi xóa
+        var table = document.querySelector('table tbody');
+        var rows = table.rows;
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].cells[0].innerHTML = i + 1;
+        }
+        medicineIndex = rows.length;
+    }
+
+    // Lưu thuốc vào Local Storage
+    function saveMedicineToLocalStorage(medicineId, medicineName, medicineTypeName, quantity, maxQuantity) {
+        var medicines = JSON.parse(localStorage.getItem('equipments')) || [];
+        medicines.push({
+            id: medicineId,
+            name: medicineName,
+            type: medicineTypeName,
+            quatity: quantity,
+            maxQuantity: maxQuantity
+        });
+        localStorage.setItem('equipments', JSON.stringify(medicines));
+    }
+
+    // Xóa thuốc khỏi Local Storage
+    function deleteMedicineFromLocalStorage(medicineName) {
+        var medicines = JSON.parse(localStorage.getItem('equipments')) || [];
+        medicines = medicines.filter(medicine => medicine.name !== medicineName);
+        localStorage.setItem('equipments', JSON.stringify(medicines));
+    }
+
+    // Load dữ liệu thuốc từ Local Storage và hiển thị trong bảng
+    function loadMedicinesFromLocalStorage() {
+        var medicines = JSON.parse(localStorage.getItem('equipments')) || [];
+        medicines.forEach((medicine, index) => {
+            medicineIndex++;
+            addRowToTable(medicineIndex, medicine.name, medicine.type, medicine.quantity, medicine.maxQuantity);
+            addedMedicines.add(medicine.id);
+            addHiddenInputs(medicine.id, medicine.name, medicineIndex - 1, medicine.quantity);
+        });
+    }
+
+    function addHiddenInputs(medicineId, medicineName, index, quantity) {
+        var hiddenDiv = document.querySelector(".test");
+        var medicineDiv = document.createElement("div");
+        var safeMedicineName = medicineName.replace(/\s+/g, "_");
+        medicineDiv.classList.add(safeMedicineName);
+
+        var medicineInput = document.createElement("input");
+        medicineInput.type = "hidden";
+        medicineInput.name = `Details[${index}].EquipmentId`;
+        medicineInput.value = medicineId;
+
+        var quantityInput = document.createElement("input");
+        quantityInput.type = "hidden";
+        quantityInput.name = `Details[${index}].Quantity`;
+        quantityInput.classList.add("quantity-input");
+        quantityInput.value = quantity; // Giá trị mặc định
+
+        medicineDiv.appendChild(medicineInput);
+        medicineDiv.appendChild(quantityInput);
+
+        hiddenDiv.appendChild(medicineDiv);
+    }
+
+    // Hàm chạy khi tải trang để thêm thuốc vào bảng và các input ẩn
+    function loadMedicinesForEdit() {
+    @for (int j = 0; j < Model.Details.Count; j++)
+    {
+        var detail = Model.Details[j];
+        var medicine = medicines?.FirstOrDefault(m => m.Id == detail.EquipmentId);
+        var type = types?.FirstOrDefault(t => t.Id == medicine.Equipmenttypeid); // Loại bỏ '?'
+        var detailQuantity = short.Parse(detail.Quantity);
+        var quantity = (medicine?.Quantity ?? 0) + detailQuantity;
+
+        <text>
+                        addRowToTable(@(j + 1), "@medicine.Name", "@type.Name", @detail.Quantity, @quantity); // Loại bỏ '?'
+                        addHiddenInputs("@medicine.Id", "@medicine.Name", @j, @detail.Quantity); // Loại bỏ '?'
+                        medicineIndex++;
+        </text>
+    }
+    }
+
+    function checkMaxQuantity(input, max) {
+        if (input.value > max) {
+            input.value = max;
+            alert(`The quantity cannot exceed ${max}.`);
+        }
+    }
+
+    function clearLocalStorage() {
+        localStorage.clear();
+    }
+</script>
+
+@* Load thuoc theo loai*@
+<script>
+    function GetMedicinesByType() {
+        var typeId = document.getElementById("type").value;
+
+        fetch(`/EquipmentSheet/GetEquipmentByType?id=` + typeId)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                var medicineSelect = document.getElementById("medicine");
+                for (let i = medicineSelect.options.length - 1; i > 0; i--) {
+                    medicineSelect.remove(i);
+                }
+
+                data.forEach(function (medicine) {
+                    var option = document.createElement("option");
+                    option.value = medicine.id;
+                    option.text = medicine.name;
+                    medicineSelect.appendChild(option);
+                });
+
+                $('.select-picker').selectpicker('refresh');
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function getQuantityForMedicine(medicineId) {
+        return fetch(`/Equipment/GetQuantityForEquipment?medicineId=${medicineId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Chuyển đổi response thành JSON
+            })
+            .then(data => {
+                return data.quantity; // Trả về số lượng
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                return 0; // Trả về 0 hoặc xử lý lỗi theo cách khác
+            });
+    }
+</script>

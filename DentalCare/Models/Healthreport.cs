@@ -13,9 +13,7 @@ public partial class Healthreport
 
     public int Frequency { get; set; }
 
-    public string Doctorid { get; set; } = null!;
+    public string MedicalexaminationId { get; set; } = null!;
 
-    public virtual Doctor Doctor { get; set; } = null!;
-
-    public virtual ICollection<Healthreportdetail> Healthreportdetails { get; set; } = new List<Healthreportdetail>();
+    public virtual Medicalexamination Medicalexamination { get; set; } = null!;
 }

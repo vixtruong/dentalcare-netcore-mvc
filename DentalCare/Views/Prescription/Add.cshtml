@@ -1,6 +1,5 @@
 ﻿@model DentalCare.Models.PrescriptionViewModel
 
-
 @{
     Layout = "_DashboardLayout";
 }
@@ -13,10 +12,10 @@
         margin-left: 0 !important;
     }
 
-        .add-invoice .content label {
-            padding: 8px;
-            padding-left: 2px !important;
-        }
+    .add-invoice .content label {
+        padding: 8px;
+        padding-left: 2px !important;
+    }
 
     .form-group button {
         background: #fff !important;
@@ -36,7 +35,23 @@
         vertical-align: middle; /* Căn giữa theo chiều dọc */
         font-weight: 400;
     }
+
+    .message {
+        position: absolute;
+        right: 10px;
+        top: 75px;
+        z-index: 1051;
+        max-width: 500px;
+        transition: opacity 1s ease-out;
+    }
 </style>
+
+@if (TempData["ErrorDetailNullMessage"] != null)
+{
+    <div class="message alert alert-danger" id="errorMessage">
+        <strong>Error:</strong> @TempData["ErrorDetailNullMessage"]
+    </div>
+}
 
 <div class="container-fluid mt-4 add-invoice">
     <!-- Use container-fluid or container for better alignment -->
@@ -86,9 +101,9 @@
                                     @{
                                         if (ViewBag.Types != null)
                                         {
-                                                @foreach (var t in ViewBag.Types)
+                                            @foreach (var t in ViewBag.Types)
                                             {
-                                                    <option value="@t.Id">@t.Name</option>
+                                                <option value="@t.Id">@t.Name</option>
                                             }
                                         }
                                     }
@@ -113,19 +128,19 @@
                         </div>
                         <table class="table table-bordered mt-2 mb-4 m-auto text-center">
                             <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Medicine</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Action</th>
-                                </tr>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Medicine</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Action</th>
+                            </tr>
                             </thead>
                             <tbody class="bg-white">
                             </tbody>
                         </table>
 
-                        <div class="col-lg-12 text-end">
+                        <div class="col-lg-12 text-end mt-0">
                             <button type="submit" class="btn btn-primary me-2" onclick="clearLocalStorage()">Save</button>
                             <a href="@Url.Action("Index", "Dashboard")" type="reset" class="btn btn-secondary">Cancel</a>
                         </div>
@@ -163,6 +178,19 @@
         loadMedicinesFromLocalStorage();
     }
 
+    function CheckNullToAdd() {
+        var medicineTypeSelect = document.querySelector('#type');
+        var medicineSelect = document.querySelector('#medicine');
+
+        var medicineTypeId = medicineTypeSelect.value;
+        var medicineId = medicineSelect.value;
+
+        if (!medicineId || !medicineTypeId || medicineTypeName == "Select Type" || medicineName == "Select Medicine") {
+            alert("Please choose a medicine and its type.");
+            return;
+        }
+    }
+
     async function addMedicineToTable() {
         // Lấy giá trị và tên của loại thuốc và thuốc đã chọn
         var medicineTypeSelect = document.querySelector('#type');
@@ -172,10 +200,7 @@
         var medicineId = medicineSelect.value;
 
         var medicineTypeName = medicineTypeSelect.options[medicineTypeSelect.selectedIndex].text;
-        var medicineName = medicineSelect.options[medicineSelect.selectedIndex].text;
-
-        var maxQuantity = await getQuantityForMedicine(medicineId);
-        console.log(maxQuantity);        
+        var medicineName = medicineSelect.options[medicineSelect.selectedIndex].text;      
 
         // Kiểm tra nếu chưa chọn loại thuốc hoặc thuốc
         if (!medicineId || !medicineTypeId || medicineTypeName == "Select Type" || medicineName == "Select Medicine") {
@@ -188,6 +213,9 @@
             alert("This medicine is already added.");
             return;
         }
+
+        var maxQuantity = await getQuantityForMedicine(medicineId);
+        console.log(maxQuantity);  
 
         medicineIndex++;
 
@@ -223,7 +251,6 @@
         cellIndex.innerHTML = index;
         cellMedicine.innerHTML = medicineName;
         cellType.innerHTML = medicineTypeName;
-
         cellQuantity.innerHTML = `<input type="number" class="w-25 form-control m-auto quantity" placeholder="Quantity" required min="1" max="${maxQuantity}" oninput="checkMaxQuantity(this, ${maxQuantity})">`;
         cellAction.innerHTML = '<button class="btn btn-danger" onclick="deleteRow(this, \'' + medicineName + '\')">Delete</button>';
 
@@ -298,12 +325,12 @@
         medicineDiv.classList.add(safeMedicineName);
 
         var medicineInput = document.createElement("input");
-        medicineInput.type = "text";
+        medicineInput.type = "hidden";
         medicineInput.name = `Details[${index}].MedicineId`;
         medicineInput.value = medicineId;
 
         var quantityInput = document.createElement("input");
-        quantityInput.type = "text";
+        quantityInput.type = "hidden";
         quantityInput.name = `Details[${index}].Quantity`;
         quantityInput.classList.add("quantity-input");
         quantityInput.value = quantity; // Giá trị mặc định
@@ -369,4 +396,19 @@
             });
     }
 
+</script>
+
+<script>
+    window.onload = function () {
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
+    };
 </script>

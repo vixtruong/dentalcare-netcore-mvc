@@ -21,9 +21,11 @@ public partial class Medicalexamination
 
     public virtual Doctor Doctor { get; set; } = null!;
 
-    public virtual ICollection<Equipmentdetail> Equipmentdetails { get; set; } = new List<Equipmentdetail>();
+    public virtual IEnumerable<EquipmentSheet>? Equipmentsheets { get; set; } = new List<EquipmentSheet>();
+
+    public virtual IEnumerable<Healthreport>? Healthreports { get; set; } = new List<Healthreport>();
 
     public virtual ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
 
-    public virtual ICollection<Techdetail> Techdetails { get; set; } = new List<Techdetail>();
+    public virtual ICollection<Techsheet> Techsheets { get; set; } = new List<Techsheet>();
 }

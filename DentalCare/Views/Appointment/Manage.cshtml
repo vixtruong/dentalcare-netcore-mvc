@@ -25,10 +25,10 @@
         padding-left: 34px;
     }
 
-        .container-invoice .form-control:focus {
-            border: none;
-            box-shadow: none;
-        }
+    .container-invoice .form-control:focus {
+        border: none;
+        box-shadow: none;
+    }
 
     .container-invoice .green {
         color: green;
@@ -136,7 +136,7 @@
                                     <a href="@Url.Action("Edit", "Appointment", new { id = s.Id })" class="me-2">
                                         <i class="fa fa-edit text-primary"></i>
                                     </a>
-                                    <a href="@Url.Action("Delete", "Appointment", new { id = s.Id })" onclick="return confirm('Are you sure you want to delete this shift?');">
+                                    <a href="@Url.Action("Delete", "Appointment", new { id = s.Id })" onclick="return confirm('Are you sure you want to delete this appointment?');">
                                         <i class="fa fa-trash text-primary"></i>
                                     </a>
                                 </div>
@@ -179,7 +179,6 @@
     </div>
     <a href="@Url.Action("Add", "Appointment")" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-plus"></i></a>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {

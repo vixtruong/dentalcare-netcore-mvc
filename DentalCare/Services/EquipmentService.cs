@@ -16,9 +16,20 @@ namespace DentalCare.Services
             return _context.Equipments.ToList();
         }
 
+        public List<Equipment> GetByType(string id)
+        {
+            return _context.Equipments.Where(x => x.Equipmenttypeid == id).ToList();
+        }
+
         public Equipment? Get(string id)
         {
             return _context.Equipments.FirstOrDefault(x => x.Id == id);
+        }
+
+        public int GetQuantityForEquipment(string medicineId)
+        {
+            var m = Get(medicineId);
+            return m.Quantity;
         }
 
         public void Add(Equipment equipment)
@@ -37,6 +48,12 @@ namespace DentalCare.Services
         public void Update(Equipment equipment)
         {
             _context.Equipments.Update(equipment);
+            _context.SaveChanges();
+        }
+
+        public void UpdateRange(List<Equipment> list)
+        {
+            _context.Equipments.UpdateRange(list);
             _context.SaveChanges();
         }
 
