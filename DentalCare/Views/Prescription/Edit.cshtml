@@ -131,7 +131,7 @@
                         <div class="test">
                         </div>
 
-                        <div class="col-lg-12 text-end">
+                        <div class="col-lg-12 text-end mt-0">
                             <button type="submit" class="btn btn-primary me-2" onclick="clearLocalStorage()">Save</button>
                             <a href="@Url.Action("Index", "Dashboard")" type="reset" class="btn btn-secondary">Cancel</a>
                         </div>
@@ -177,8 +177,6 @@
         var medicineTypeName = medicineTypeSelect.options[medicineTypeSelect.selectedIndex].text;
         var medicineName = medicineSelect.options[medicineSelect.selectedIndex].text;
 
-        var maxQuantity = await getQuantityForMedicine(medicineId);
-        console.log(maxQuantity);
         // Kiểm tra nếu chưa chọn loại thuốc hoặc thuốc
         if (!medicineId || !medicineTypeId || medicineTypeName == "Select Type" || medicineName == "Select Medicine") {
             alert("Please choose a medicine and its type.");
@@ -191,6 +189,8 @@
             return;
         }
 
+        var maxQuantity = await getQuantityForMedicine(medicineId);
+            console.log(maxQuantity);
 
         // Kiểm tra nếu thuốc đã có trong bảng
         if (isMedicineInTable(medicineName)) {
@@ -321,12 +321,12 @@
         medicineDiv.classList.add(safeMedicineName);
 
         var medicineInput = document.createElement("input");
-        medicineInput.type = "text";
+        medicineInput.type = "hidden";
         medicineInput.name = `Details[${index}].MedicineId`;
         medicineInput.value = medicineId;
 
         var quantityInput = document.createElement("input");
-        quantityInput.type = "text";
+        quantityInput.type = "hidden";
         quantityInput.name = `Details[${index}].Quantity`;
         quantityInput.classList.add("quantity-input");
         quantityInput.value = quantity; // Giá trị mặc định

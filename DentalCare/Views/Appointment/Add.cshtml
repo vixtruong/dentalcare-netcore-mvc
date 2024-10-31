@@ -22,15 +22,23 @@
     }
 
     .text-success {
-        color: #28a745 !important; /* Màu xanh lá cây */
+        color: #28a745 !important;
+        /* Màu xanh lá cây */
     }
 
     .text-danger {
-        color: #dc3545 !important; /* Màu đỏ */
+        color: #dc3545 !important;
+        /* Màu đỏ */
     }
 
     h6 {
         margin-bottom: 0px !important;
+    }
+
+    .form-group button {
+        background: #fff !important;
+        border: #cccccc solid 1px;
+        border-radius: 4px;
     }
 </style>
 
@@ -49,31 +57,36 @@
                 <form asp-action="Add" asp-controller="Appointment" method="post">
                     <div class="row g-3 p-1">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <h5 class="text-primary">Customer Detail</h5>
+                            <h6 class="text-primary">Customer Detail</h6>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Phone" for="phone">Phone</label>
-                                <input asp-for="Phone" type="text" id="phone" class="form-control" placeholder="Phone Number" onblur="checkCustomerPhone()" required>
+                                <input asp-for="Phone" type="text" id="phone" class="form-control"
+                                    placeholder="Phone Number" onblur="checkCustomerPhone()"
+                                    required>
                                 <small id="phoneMessage" class="form-text text-muted"></small>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="CustomerName">Name</label>
-                                <input asp-for="CustomerName" type="text" id="customerName" class="form-control" placeholder="Full Name" required>
+                                <input asp-for="CustomerName" type="text" id="customerName"
+                                    class="form-control" placeholder="Full Name" required>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Email" for="email">Email</label>
-                                <input asp-for="Email" type="email" id="email" class="form-control" placeholder="Email" required>
+                                <input asp-for="Email" type="email" id="email" class="form-control"
+                                    placeholder="Email" required>
                             </div>
                         </div>
                         <div class="col-lg-3 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Birthday" for="email">Birthday</label>
-                                <input asp-for="Birthday" type="date" id="birthday" class="form-control" placeholder="Customer birthday" required>
+                                <input asp-for="Birthday" type="date" id="birthday"
+                                    class="form-control" placeholder="Customer birthday" required>
                             </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-4">
@@ -82,7 +95,9 @@
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label for="faculty">Faculty</label>
-                                <select id="faculty" class="form-select" onchange="loadDoctorsByFaculty()" required required>
+                                <select id="faculty" class="form-control select-picker"
+                                    onchange="loadDoctorsByFaculty()" data-live-search="true"
+                                    required>
                                     <option selected disabled="">Select faculty</option>
                                     @if (ViewBag.Faculties != null)
                                     {
@@ -102,32 +117,38 @@
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="DoctorId">Doctor</label>
-                                <select asp-for="DoctorId" id="doctor" class="form-select" required>
+                                <select asp-for="DoctorId" id="doctor"
+                                    class="form-control select-picker" data-live-search="true"
+                                    title="Select Doctor" required>
 
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12  mt-4">
                             <h6 class="text-primary">Appointment Detail</h6>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Date">Date</label>
-                                <input asp-for="Date" type="date" id="phone" class="form-control" placeholder="Date" required>
+                                <input asp-for="Date" type="date" id="phone" class="form-control"
+                                    placeholder="Date" required>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Time">Time</label>
-                                <select asp-for="Time" id="timeSelect" class="form-control bg-white" required></select>
+                                <select asp-for="Time" id="timeSelect"
+                                    class="form-control select-picker" data-live-search="true"
+                                    data-dropup-auto="false" required></select>
                             </div>
                         </div>
 
                         <div class="col-lg-12">
                             <div class="form-group">
                                 <label asp-for="Demand" for="description">Demand Description</label>
-                                <textarea asp-for="Demand" id="description" class="form-control" rows="3" placeholder="Customer demand" required></textarea>
+                                <textarea asp-for="Demand" id="description" class="form-control"
+                                    rows="3" placeholder="Customer demand" required></textarea>
                             </div>
                         </div>
                         <div class="col-lg-12 text-end">
@@ -140,6 +161,21 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <script>
+        $('.select-picker').selectpicker();
+    </script>
+}
 
 <script>
     function loadDoctorsByFaculty() {
@@ -164,6 +200,7 @@
                     option.text = doctor.name;
                     doctorSelect.appendChild(option);
                 });
+                $('.select-picker').selectpicker('refresh');
             })
             .catch(error => console.error('Error:', error));
     }
@@ -209,6 +246,7 @@
                         document.getElementById("email").value = "";
                         document.getElementById("birthday").value = "";
                     }
+                    $('.select-picker').selectpicker('refresh');
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -218,4 +256,3 @@
         }
     }
 </script>
-

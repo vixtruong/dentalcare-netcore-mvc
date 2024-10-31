@@ -62,7 +62,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Role">Role</label>
-                                <select asp-for="Role" class="form-control bg-light" id="Role" name="Role" onchange="toggleFacultyField()" required>
+                                <select asp-for="Role" class="form-control bg-white" id="Role" name="Role" onchange="toggleFacultyField()" required>
                                     <option value="" disabled selected>Select your role</option>
                                     <option value="doctor">Doctor</option>
                                     <option value="receptionist">Receptionist</option>
@@ -74,7 +74,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Faculty" for="faculty">Faculty</label>
-                                <select asp-for="Faculty" class="form-control bg-light" id="faculty" name="Faculty" disabled>
+                                <select asp-for="Faculty" class="form-control bg-white" id="faculty" name="Faculty" disabled>
                                     <option value="" disabled selected>Select your faculty</option>
                                     @if (ViewBag.Faculties != null)
                                     {
@@ -120,7 +120,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Gender">Gender</label>
-                                <select asp-for="Gender" class="form-control bg-light" id="gender" required>
+                                <select asp-for="Gender" class="form-control bg-white" id="gender" required>
                                     <option value="" disabled selected>Select your gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>

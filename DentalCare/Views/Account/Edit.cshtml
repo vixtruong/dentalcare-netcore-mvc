@@ -41,11 +41,12 @@
             padding-right: 30px !important;
         }
 
-            .row.custom-gutters > [class*="col-"] {
-                padding-left: 0px !important; /* or adjust this value */
-                padding-right: 0px !important;
-                padding-bottom: 0px !important;
-            }
+        .row.custom-gutters>[class*="col-"] {
+            padding-left: 0px !important;
+            /* or adjust this value */
+            padding-right: 0px !important;
+            padding-bottom: 0px !important;
+        }
 
         .container-profile * {
             padding-bottom: 8px;
@@ -62,31 +63,31 @@
             padding: 10px !important;
         }
 
-            .account-settings .user-profile .user-avatar {
-                padding: 10px !important;
-            }
+        .account-settings .user-profile .user-avatar {
+            padding: 10px !important;
+        }
 
-                .account-settings .user-profile .user-avatar img {
-                    width: 90px;
-                    height: 90px;
-                    -webkit-border-radius: 100px;
-                    -moz-border-radius: 100px;
-                    border-radius: 100px;
-                    padding: 10px !important;
-                }
+        .account-settings .user-profile .user-avatar img {
+            width: 90px;
+            height: 90px;
+            -webkit-border-radius: 100px;
+            -moz-border-radius: 100px;
+            border-radius: 100px;
+            padding: 10px !important;
+        }
 
-            .account-settings .user-profile h5.user-name {
-                margin: 0 0 0.5rem 0;
-                padding: 10px !important;
-            }
+        .account-settings .user-profile h5.user-name {
+            margin: 0 0 0.5rem 0;
+            padding: 10px !important;
+        }
 
-            .account-settings .user-profile h6.user-email {
-                margin: 0;
-                font-size: 0.8rem;
-                font-weight: 400;
-                color: #9fa8b9;
-                padding: 10px !important;
-            }
+        .account-settings .user-profile h6.user-email {
+            margin: 0;
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #9fa8b9;
+            padding: 10px !important;
+        }
 
         .account-settings .about {
             margin: 2rem 0 0 0;
@@ -94,16 +95,16 @@
             padding: 10px !important;
         }
 
-            .account-settings .about h5 {
-                margin: 0 0 15px 0;
-                color: #007ae1;
-                padding: 10px !important;
-            }
+        .account-settings .about h5 {
+            margin: 0 0 15px 0;
+            color: #007ae1;
+            padding: 10px !important;
+        }
 
-            .account-settings .about p {
-                font-size: 0.825rem;
-                padding: 10px !important;
-            }
+        .account-settings .about p {
+            font-size: 0.825rem;
+            padding: 10px !important;
+        }
 
         .form-control {
             border: 1px solid #cfd1d8;
@@ -153,7 +154,8 @@
                             </div>
                             <h5 class="user-name">@user.Name</h5>
                             <div class="input-group mb-3">
-                                <input asp-for="Avatar" type="file" class="form-control" id="avatar" accept="image/*" disabled>
+                                <input asp-for="Avatar" type="file" class="form-control" id="avatar"
+                                    accept="image/*" disabled>
                             </div>
                         </div>
                     </div>
@@ -172,7 +174,8 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Role">Role</label>
-                                <select asp-for="Role" class="form-control bg-light role" id="Role" name="Role" onchange="toggleFacultyField()" required disabled>
+                                <select asp-for="Role" class="form-control bg-light role" id="Role"
+                                    name="Role" onchange="toggleFacultyField()" required disabled>
                                     @if (userRole == "Doctor")
                                     {
                                         <option value="doctor" selected>Doctor</option>
@@ -199,7 +202,8 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Faculty" for="faculty">Faculty</label>
-                                <select asp-for="Faculty" class="form-control bg-light" id="faculty" name="Faculty" disabled>
+                                <select asp-for="Faculty" class="form-control bg-light" id="faculty"
+                                    name="Faculty" disabled>
                                     @if (ViewBag.Faculties != null)
                                     {
                                         @foreach (var faculty in ViewBag.Faculties)
@@ -225,7 +229,8 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="FullName">Full Name</label>
-                                <input asp-for="FullName" type="text" class="form-control" id="fullName" value="@user.Name" required disabled>
+                                <input asp-for="FullName" type="text" class="form-control"
+                                    id="fullName" value="@user.Name" required disabled>
                             </div>
                         </div>
 
@@ -233,7 +238,8 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Email">Email</label>
-                                <input asp-for="Email" type="email" class="form-control" id="eMail" value="@user.Email" required disabled>
+                                <input asp-for="Email" type="email" class="form-control" id="eMail"
+                                    value="@user.Email" required disabled>
                             </div>
                         </div>
 
@@ -241,7 +247,8 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Phone">Phone</label>
-                                <input asp-for="Phone" type="text" class="form-control phone" id="phone" value="@user.Phone" required disabled>
+                                <input asp-for="Phone" type="text" class="form-control phone"
+                                    id="phone" value="@user.Phone" required disabled>
                             </div>
                         </div>
 
@@ -249,7 +256,9 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Birthday">Birthday</label>
-                                <input asp-for="Birthday" type="date" class="form-control" id="birthday" value="@user.Birthday?.ToString("yyyy-MM-dd")" required disabled>
+                                <input asp-for="Birthday" type="date" class="form-control"
+                                    id="birthday" value="@user.Birthday?.ToString("yyyy-MM-dd")"
+                                    required disabled>
                             </div>
                         </div>
 
@@ -257,7 +266,8 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Gender">Gender</label>
-                                <select asp-for="Gender" class="form-control bg-light" id="gender" disabled required>
+                                <select asp-for="Gender" class="form-control bg-light" id="gender"
+                                    disabled required>
                                     <option value="" disabled>Select your gender</option>
                                     @if (user.Gender == true)
                                     {
@@ -277,7 +287,10 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="JoinTime">Join Time</label>
-                                <input asp-for="JoinTime" type="date" class="form-control" id="joinTime" value="@user.Firstdayofwork?.ToString("yyyy-MM-dd")" required disabled>
+                                <input asp-for="JoinTime" type="date" class="form-control"
+                                    id="joinTime"
+                                    value="@user.Firstdayofwork?.ToString("yyyy-MM-dd")" required
+                                    disabled>
                             </div>
                         </div>
                     </div>
@@ -285,13 +298,17 @@
                     <!-- Update Buttons -->
                     <div class="row gutters">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <button type="button" id="editButton" name="editButton" class="btn btn-primary" onclick="enableEditMode()">
+                            <button type="button" id="editButton" name="editButton"
+                                class="btn btn-primary" onclick="enableEditMode()">
                                 Edit
                             </button>
-                            <a asp-action="Edit" asp-controller="Account" class="btn btn-secondary d-none" id="cancelButton">
+                            <a asp-action="Edit" asp-controller="Account"
+                                class="btn btn-secondary d-none" id="cancelButton">
                                 Cancel
                             </a>
-                            <button type="submit" id="submitButton" name="submitButton" class="btn btn-primary d-none" onclick="return confirm('Are you sure you want to update profile?');">
+                            <button type="submit" id="submitButton" name="submitButton"
+                                class="btn btn-primary d-none"
+                                onclick="return confirm('Are you sure you want to update profile?');">
                                 Update
                             </button>
                         </div>
@@ -347,6 +364,5 @@
         document.getElementById('editButton').classList.add('d-none');
         document.getElementById('cancelButton').classList.remove('d-none');
         document.getElementById('submitButton').classList.remove('d-none');
-        }
+    }
 </script>
-

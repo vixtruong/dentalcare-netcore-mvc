@@ -38,6 +38,12 @@
     h6 {
         margin-bottom: 0px !important;
     }
+
+    .form-group button {
+        background: #fff !important;
+        border: #cccccc solid 1px;
+        border-radius: 4px;
+    }
 </style>
 
 
@@ -58,15 +64,9 @@
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12 ">
                             <div class="form-group">
-                                <label asp-for="Name">Name</label>
-                                <input asp-for="Name" type="text" id="name" class="form-control" placeholder="Name" required>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-sm-6 col-12 ">
-                            <div class="form-group">
                                 <label asp-for="Medicinetypeid">Type</label>
-                                <select asp-for="Medicinetypeid" id="type" class="form-select" required>
-                                    <option value="" selected disabled>Select type</option>
+                                <select asp-for="Medicinetypeid" id="type" class="form-control select-picker" data-live-search="true" required>
+                                    <option value="Select Type" selected disabled>Select Type</option>
                                     @{
                                         if (ViewBag.Types != null)
                                         {
@@ -79,6 +79,13 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-lg-6 col-sm-6 col-12 ">
+                            <div class="form-group">
+                                <label asp-for="Name">Name</label>
+                                <input asp-for="Name" type="text" id="name" class="form-control" placeholder="Name" required>
+                            </div>
+                        </div>
+                        
                         <div class="col-lg-4 col-sm-6 col-12 ">
                             <div class="form-group">
                                 <label asp-for="Unit" for="unit">Unit</label>
@@ -108,10 +115,23 @@
     </div>
 </div>
 
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+    <script>
+        $('.select-picker').selectpicker();
+    </script>
+}
+
 <script>
     document.querySelector('form').addEventListener('submit', function (e) {
         var selectType = document.getElementById('type');
-        if (selectType.value === "" || selectType.value === "Select type") {
+        if (selectType.value === "" || selectType.value === "Select Type") {
             e.preventDefault(); // Ngăn chặn gửi form
             alert('Please select a valid tech type.'); // Hiển thị cảnh báo cho người dùng
             selectType.focus(); // Đưa con trỏ đến dropdown

@@ -62,7 +62,18 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Add(PrescriptionViewModel model)
         {
+            if (model.Details.Count == 0)
+            {
+                TempData["ErrorDetailNullMessage"] = "List medicines is empty. Please choose medicines to add!";
+                return RedirectToAction("Add");
+            }
+
             var mes = _medicalExamService.Get(model.MedicalExamId);
+            if (_prescriptionService.IsExistMes(mes.Id))
+            {
+                TempData["ErrorMessage"] = "A prescription has already been created for this mes. Please edit if you want to change the prescription information.";
+                return RedirectToAction("Index");
+            }
 
             var prescription = new Prescription
             {
@@ -122,46 +133,6 @@ namespace DentalCare.Controllers
 
             return View(prescriptionViewModel);
         }
-
-        //public IActionResult Edit(PrescriptionViewModel model)
-        //{
-        //    var prescription = _prescriptionService.Get(model.Id);
-        //    prescription.Date = model.Date;
-        //    prescription.Medicalexaminationid = model.MedicalExamId;
-        //    _prescriptionService.Update(prescription);
-
-        //    var detailList = new List<Prescriptiondetail>();
-
-        //    foreach (var detail in model.Details)
-        //    {
-        //        var medicine = _medicineService.Get(detail.MedicineId);
-
-        //        foreach (var presDetail in _prescriptionDetailService.GetAll())
-        //        {
-        //            if (presDetail.Prescriptionid == prescription.Id && presDetail.Medicineid == medicine.Id)
-        //            {
-        //                medicine.Quantity += short.Parse(detail.Quantity);
-        //            }
-        //        }
-
-        //        var newDetail = new Prescriptiondetail
-        //        {
-        //            Medicineid = detail.MedicineId,
-        //            Quantity = short.Parse(detail.Quantity),
-        //            Prescriptionid = prescription.Id,
-        //        };
-
-        //        medicine.Quantity -= newDetail.Quantity;
-
-        //        _medicineService.Update(medicine);
-        //        detailList.Add(newDetail);
-        //    }
-
-        //    _prescriptionDetailService.DeleteByPrescriptionId(prescription.Id);
-        //    _prescriptionDetailService.AddRage(detailList);
-
-        //    return RedirectToAction("Index");
-        //}
 
         [HttpPost]
         public IActionResult Edit(PrescriptionViewModel model)
@@ -224,7 +195,7 @@ namespace DentalCare.Controllers
             {
                 if (id == detail.Prescriptionid)
                 {
-                    TempData["ErrorMessage"] = "This prescription relate to your business database! Can not delete";
+                    TempData["ErrorMessage"] = "This prescription relate to your business database! Can not delete!";
                     return RedirectToAction("Index");
                 }
             }

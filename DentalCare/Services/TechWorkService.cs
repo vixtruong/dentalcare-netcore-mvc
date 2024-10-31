@@ -21,6 +21,11 @@ namespace DentalCare.Services
             return _context.Techpositions.FirstOrDefault(x => x.Id == id);
         }
 
+        public List<Techposition> GetByType(string typeId)
+        {
+            return _context.Techpositions.Where(x => x.Techniqueid == typeId).ToList();
+        }
+
         public void Add(Techposition tech)
         {
             _context.Techpositions.Add(tech);

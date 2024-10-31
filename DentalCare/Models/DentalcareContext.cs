@@ -28,6 +28,8 @@ public partial class DentalcareContext : DbContext
 
     public virtual DbSet<Equipment> Equipments { get; set; }
 
+    public virtual DbSet<EquipmentSheet> EquipmentSheets { get; set; }
+
     public virtual DbSet<Equipmentdetail> Equipmentdetails { get; set; }
 
     public virtual DbSet<Equipmenttype> Equipmenttypes { get; set; }
@@ -35,8 +37,6 @@ public partial class DentalcareContext : DbContext
     public virtual DbSet<Faculty> Faculties { get; set; }
 
     public virtual DbSet<Healthreport> Healthreports { get; set; }
-
-    public virtual DbSet<Healthreportdetail> Healthreportdetails { get; set; }
 
     public virtual DbSet<Medicalexamination> Medicalexaminations { get; set; }
 
@@ -61,6 +61,8 @@ public partial class DentalcareContext : DbContext
     public virtual DbSet<Technique> Techniques { get; set; }
 
     public virtual DbSet<Techposition> Techpositions { get; set; }
+
+    public virtual DbSet<Techsheet> Techsheets { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //    => optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DBDefault"));
@@ -255,6 +257,29 @@ public partial class DentalcareContext : DbContext
                 .HasConstraintName("FK_DOCTOR_FALCUTY");
         });
 
+        modelBuilder.Entity<EquipmentSheet>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__EQUIPMEN__3214EC27A366AF97");
+
+            entity.ToTable("EQUIPMENTSHEET");
+
+            entity.Property(e => e.Id)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("ID");
+            entity.Property(e => e.Date)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("DATE");
+            entity.Property(e => e.MedicalexaminationId)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("MEDICALEXAMINATIONID");
+            entity.HasOne(d => d.Medicalexamination).WithMany(p => p.Equipmentsheets)
+                .HasForeignKey(d => d.MedicalexaminationId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_EQUIPMENTSHEET_MEDICALEXAMINATION");
+        });
+
         modelBuilder.Entity<Equipment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__EQUIPMEN__3214EC2792C5AEC7");
@@ -291,28 +316,24 @@ public partial class DentalcareContext : DbContext
             entity.ToTable("EQUIPMENTDETAIL");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Date)
-                .HasColumnType("smalldatetime")
-                .HasColumnName("DATE");
             entity.Property(e => e.Equipmentid)
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("EQUIPMENTID");
-            entity.Property(e => e.Medicalexaminationid)
+            entity.Property(e => e.EquipmentsheetId)
                 .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasColumnName("MEDICALEXAMINATIONID");
+                .HasColumnName("EQUIPMENTSHEETID");
             entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
 
             entity.HasOne(d => d.Equipment).WithMany(p => p.Equipmentdetails)
                 .HasForeignKey(d => d.Equipmentid)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_EQUIPMENTDETAIL_EQUIPMENT");
-
-            entity.HasOne(d => d.Medicalexamination).WithMany(p => p.Equipmentdetails)
-                .HasForeignKey(d => d.Medicalexaminationid)
+            entity.HasOne(d => d.EquipmentSheet).WithMany(p => p.Equipmentdetails)
+                .HasForeignKey(d => d.EquipmentsheetId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_EQUIPMENTDETAIL_MEDICALEXAMINATION");
+                .HasConstraintName("FK_EQUIPMENTDETAIL_EQUIPMENTSHEET");
         });
 
         modelBuilder.Entity<Equipmenttype>(entity =>
@@ -358,10 +379,10 @@ public partial class DentalcareContext : DbContext
             entity.Property(e => e.Date)
                 .HasColumnType("smalldatetime")
                 .HasColumnName("DATE");
-            entity.Property(e => e.Doctorid)
+            entity.Property(e => e.MedicalexaminationId)
                 .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasColumnName("DOCTORID");
+                .HasColumnName("MEDICALEXAMINATIONID");
             entity.Property(e => e.Frequency)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("FREQUENCY");
@@ -369,37 +390,10 @@ public partial class DentalcareContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("STATUS");
 
-            entity.HasOne(d => d.Doctor).WithMany(p => p.Healthreports)
-                .HasForeignKey(d => d.Doctorid)
+            entity.HasOne(d => d.Medicalexamination).WithMany(p => p.Healthreports)
+                .HasForeignKey(d => d.MedicalexaminationId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HEALTHREPORT_DOCTOR");
-        });
-
-        modelBuilder.Entity<Healthreportdetail>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__HEALTHRE__3214EC278E2845CF");
-
-            entity.ToTable("HEALTHREPORTDETAIL");
-
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Customerid)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("CUSTOMERID");
-            entity.Property(e => e.Healthreportid)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .HasColumnName("HEALTHREPORTID");
-
-            entity.HasOne(d => d.Customer).WithMany(p => p.Healthreportdetails)
-                .HasForeignKey(d => d.Customerid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HEALTHREPORTDETAIL_CUSTOMER");
-
-            entity.HasOne(d => d.Healthreport).WithMany(p => p.Healthreportdetails)
-                .HasForeignKey(d => d.Healthreportid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HEALTHREPORTDETAIL_HEALTHREPORT");
+                .HasConstraintName("FK_HEALTHREPORT_MEDICALEXAMINATION");
         });
 
         modelBuilder.Entity<Medicalexamination>(entity =>
@@ -669,6 +663,30 @@ public partial class DentalcareContext : DbContext
                 .HasConstraintName("FK_SHIFT_NURSE");
         });
 
+        modelBuilder.Entity<Techsheet>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__TECHSHEE__3214EC27D355B504");
+
+            entity.ToTable("TECHSHEET");
+
+            entity.Property(e => e.Id)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("ID");
+            entity.Property(e => e.Date)
+                .HasColumnType("smalldatetime")
+                .HasColumnName("DATE");
+            entity.Property(e => e.MedicalexaminationId)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("MEDICALEXAMINATIONID");
+            entity.HasOne(d => d.Medicalexamination).WithMany(p => p.Techsheets)
+                .HasForeignKey(d => d.MedicalexaminationId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TECHSHEET_MEDICALEXAMINATION");
+
+        });
+
         modelBuilder.Entity<Techdetail>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__TECHDETA__3214EC27AF387AEA");
@@ -676,20 +694,20 @@ public partial class DentalcareContext : DbContext
             entity.ToTable("TECHDETAIL");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Medicalexaminationid)
+            entity.Property(e => e.TechsheetId)
                 .HasMaxLength(10)
                 .IsUnicode(false)
-                .HasColumnName("MEDICALEXAMINATIONID");
+                .HasColumnName("TECHSHEETID");
             entity.Property(e => e.Quantity).HasColumnName("QUANTITY");
             entity.Property(e => e.Techpositionid)
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("TECHPOSITIONID");
 
-            entity.HasOne(d => d.Medicalexamination).WithMany(p => p.Techdetails)
-                .HasForeignKey(d => d.Medicalexaminationid)
+            entity.HasOne(d => d.Techsheet).WithMany(p => p.Techdetails)
+                .HasForeignKey(d => d.TechsheetId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TECHDETAIL_MEDICALEXAMINATION");
+                .HasConstraintName("FK_TECHDETAIL_TECHSHEET");
 
             entity.HasOne(d => d.Techposition).WithMany(p => p.Techdetails)
                 .HasForeignKey(d => d.Techpositionid)

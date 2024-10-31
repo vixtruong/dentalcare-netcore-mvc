@@ -9,11 +9,11 @@ public partial class Techdetail
 
     public string Techpositionid { get; set; } = null!;
 
-    public string Medicalexaminationid { get; set; } = null!;
+    public string TechsheetId { get; set; } = null!;
 
     public short Quantity { get; set; }
 
-    public virtual Medicalexamination Medicalexamination { get; set; } = null!;
+    public virtual Techsheet Techsheet { get; set; } = null!;
 
     public virtual Techposition Techposition { get; set; } = null!;
 }

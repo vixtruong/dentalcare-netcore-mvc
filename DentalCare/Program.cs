@@ -46,11 +46,15 @@ namespace DentalCare
                 builder.Services.AddScoped<MedicineTypeService>();
                 builder.Services.AddScoped<TechWorkService>();
                 builder.Services.AddScoped<TechniqueService>();
+                builder.Services.AddScoped<TechDetailService>();
                 builder.Services.AddScoped<EquipmentService>();
                 builder.Services.AddScoped<EquipmentTypeService>();
+                builder.Services.AddScoped<EquipmentSheetService>();
+                builder.Services.AddScoped<EquipmentDetailService>();
                 builder.Services.AddScoped<BillService>();
                 builder.Services.AddScoped<PrescriptionDetailService>();
                 builder.Services.AddScoped<PrescriptionService>();
+                builder.Services.AddScoped<TechSheetService>();
             }
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
