@@ -15,5 +15,7 @@ public partial class Healthreport
 
     public string MedicalexaminationId { get; set; } = null!;
 
+    public string CustomerId { get; set; }
+
     public virtual Medicalexamination Medicalexamination { get; set; } = null!;
 }
