@@ -389,6 +389,10 @@ public partial class DentalcareContext : DbContext
             entity.Property(e => e.Status)
                 .HasMaxLength(500)
                 .HasColumnName("STATUS");
+            entity.Property(e => e.CustomerId)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMERID");
 
             entity.HasOne(d => d.Medicalexamination).WithMany(p => p.Healthreports)
                 .HasForeignKey(d => d.MedicalexaminationId)

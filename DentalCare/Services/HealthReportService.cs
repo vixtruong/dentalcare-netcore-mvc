@@ -16,6 +16,12 @@ namespace DentalCare.Services
             return _context.Healthreports.ToList();
         }
 
+        public int GetFrequencyByCustomerId(string customerId)
+        {
+            var count = _context.Healthreports.Where(x => x.CustomerId == customerId).ToList().Count;
+            return count;
+        }
+
         public Healthreport? Get(string id)
         {
             return _context.Healthreports.FirstOrDefault(x => x.Id == id);

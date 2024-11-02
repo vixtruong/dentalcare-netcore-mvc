@@ -55,6 +55,7 @@ namespace DentalCare
                 builder.Services.AddScoped<PrescriptionDetailService>();
                 builder.Services.AddScoped<PrescriptionService>();
                 builder.Services.AddScoped<TechSheetService>();
+                builder.Services.AddScoped<HealthReportService>();
             }
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
