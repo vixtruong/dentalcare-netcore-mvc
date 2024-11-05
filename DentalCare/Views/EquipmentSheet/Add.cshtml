@@ -175,6 +175,17 @@
 
     window.onload = function () {
         loadMedicinesFromLocalStorage();
+
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
     }
 
     function CheckNullToAdd() {
@@ -309,7 +320,9 @@
     // Load dữ liệu thuốc từ Local Storage và hiển thị trong bảng
     function loadMedicinesFromLocalStorage() {
         var medicines = JSON.parse(localStorage.getItem('equipments')) || [];
+        console.log(medicines);
         medicines.forEach((medicine, index) => {
+            console.log(medicine.name);
             medicineIndex++;
             addRowToTable(medicineIndex, medicine.name, medicine.type, medicine.maxQuantity);
             addedMedicines.add(medicine.id);
@@ -332,7 +345,7 @@
         quantityInput.type = "hidden";
         quantityInput.name = `Details[${index}].Quantity`;
         quantityInput.classList.add("quantity-input");
-        quantityInput.value = quantity; // Giá trị mặc định
+        quantityInput.value = quantity;
 
         medicineDiv.appendChild(medicineInput);
         medicineDiv.appendChild(quantityInput);
@@ -366,7 +379,7 @@
                     medicineSelect.remove(i);
                 }
 
-                data.forEach(function (medicine) {
+                data.$values.forEach(function (medicine) {
                     var option = document.createElement("option");
                     option.value = medicine.id;
                     option.text = medicine.name;
@@ -395,19 +408,4 @@
             });
     }
 
-</script>
-
-<script>
-    window.onload = function () {
-        var errorMessage = document.getElementById("errorMessage");
-        if (errorMessage) {
-            setTimeout(function () {
-                errorMessage.style.opacity = '0';
-            }, 3000);
-
-            setTimeout(function () {
-                errorMessage.style.display = 'none';
-            }, 6000);
-        }
-    };
 </script>

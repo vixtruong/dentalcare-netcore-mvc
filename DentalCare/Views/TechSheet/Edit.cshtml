@@ -319,12 +319,12 @@
         medicineDiv.classList.add(safeMedicineName);
 
         var medicineInput = document.createElement("input");
-        // medicineInput.type = "hidden";
+        medicineInput.type = "hidden";
         medicineInput.name = `Details[${index}].TechworkId`;
         medicineInput.value = medicineId;
 
         var quantityInput = document.createElement("input");
-        // quantityInput.type = "hidden";
+        quantityInput.type = "hidden";
         quantityInput.name = `Details[${index}].Quantity`;
         quantityInput.classList.add("quantity-input");
         quantityInput.value = quantity; // Giá trị mặc định
@@ -379,7 +379,7 @@
                     medicineSelect.remove(i);
                 }
 
-                data.forEach(function (medicine) {
+                data.$values.forEach(function (medicine) {
                     var option = document.createElement("option");
                     option.value = medicine.id;
                     option.text = medicine.name;

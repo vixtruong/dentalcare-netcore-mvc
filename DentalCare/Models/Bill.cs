@@ -9,7 +9,7 @@ public partial class Bill
 
     public DateTime Date { get; set; }
 
-    public bool Payment { get; set; }
+    public string Payment { get; set; }
 
     public int Total { get; set; }
 
@@ -20,8 +20,6 @@ public partial class Bill
     public string Receptionistid { get; set; } = null!;
 
     public string Medicalexaminationid { get; set; } = null!;
-
-    public bool Status { get; set; }
 
     public virtual Medicalexamination Medicalexamination { get; set; } = null!;
 

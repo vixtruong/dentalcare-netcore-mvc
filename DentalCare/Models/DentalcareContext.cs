@@ -168,8 +168,10 @@ public partial class DentalcareContext : DbContext
                 .HasMaxLength(10)
                 .IsUnicode(false)
                 .HasColumnName("MEDICALEXAMINATIONID");
-            entity.Property(e => e.Payment).HasColumnName("PAYMENT");
-            entity.Property(e => e.Status).HasColumnName("STATUS");
+            entity.Property(e => e.Payment)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("PAYMENT");
             entity.Property(e => e.Receptionistid)
                 .HasMaxLength(10)
                 .IsUnicode(false)
@@ -755,6 +757,9 @@ public partial class DentalcareContext : DbContext
             entity.Property(e => e.Unit)
                 .HasMaxLength(10)
                 .HasColumnName("UNIT");
+            entity.Property(e => e.Techniquename)
+                .HasMaxLength(50)
+                .HasColumnName("TECHNIQUENAME");
 
             entity.HasOne(d => d.Technique).WithMany(p => p.Techpositions)
                 .HasForeignKey(d => d.Techniqueid)

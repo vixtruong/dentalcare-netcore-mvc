@@ -53,7 +53,9 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Add(Techposition tech)
         {
+            var techniqueName = _techniqueService.Get(tech.Techniqueid).Name;
             tech.Id = _techWorkService.GenerateID();
+            tech.Techniquename = techniqueName;
             _techWorkService.Add(tech);
             return RedirectToAction("Index");
         }
