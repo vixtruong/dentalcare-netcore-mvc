@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Bill
+
+@{
     Layout = "_DashboardLayout";
 }
 
@@ -17,10 +19,10 @@
         padding-top: 0px;
     }
 
-        .add-invoice .content label {
-            padding: 8px;
-            padding-left: 2px !important;
-        }
+    .add-invoice .content label {
+        padding: 8px;
+        padding-left: 2px !important;
+    }
 
     .card-info {
         background-color: #f8f9fa;
@@ -38,8 +40,23 @@
         border: #cccccc solid 1px;
         border-radius: 4px;
     }
+
+    .message {
+        position: absolute;
+        right: 10px;
+        top: 75px;
+        z-index: 1051;
+        max-width: 500px;
+        transition: opacity 1s ease-out;
+    }
 </style>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="message alert alert-danger" id="errorMessage">
+        <strong>Error:</strong> @TempData["ErrorMessage"]
+    </div>
+}
 
 <div class="container-fluid mt-4 add-invoice">
     <!-- Use container-fluid or container for better alignment -->
@@ -53,7 +70,7 @@
 
         <div class="card card-info">
             <div class="card-body">
-                <form>
+                <form asp-action="Add" asp-controller="Invoice">
                     <div class="row g-3 p-1 pt-0">
                         <div class="col-12 mb-0">
                             <h5 class="text-primary">Invoice Detail</h5>
@@ -61,23 +78,28 @@
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label for="">MES</label>
-                                <select id="medicalExam" class="form-control" data-live-search="true">
-                                    <option value="1">Medical Slip 1</option>
-                                    <option value="2">Medical Slip 2</option>
+                                <select asp-for="Medicalexaminationid" id="medicalExam" class="form-control" onchange="GetInformationById()" data-live-search="true">
+                                    <option selected disabled>Select MES</option>
+                                    @{
+                                        foreach (var m in ViewBag.MedicalExams)
+                                        {
+                                            <option value="@m.Id">@m.Id</option>
+                                        }
+                                    }
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label>Date</label>
-                                <input type="date" id="dateInput" class="form-control bg-white"
+                                <input asp-for="Date" type="date" id="dateInput" class="form-control bg-white"
                                        disabled>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label for="">Customer ID</label>
-                                <input type="text" id="address" class="form-control bg-white"
+                                <input type="text" id="customerId" class="form-control bg-white"
                                        disabled>
                             </div>
                         </div>
@@ -90,14 +112,14 @@
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label for="">Doctor ID</label>
-                                <input type="text" id="" class="form-control bg-white"
+                                <input type="text" id="doctorId" class="form-control bg-white"
                                        disabled>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label for="">Doctor Name</label>
-                                <input type="text" id="" class="form-control bg-white"
+                                <input type="text" id="doctorName" class="form-control bg-white"
                                        disabled>
                             </div>
                         </div>
@@ -111,81 +133,15 @@
                                             <thead class="bg-active">
                                                 <tr class="tr">
                                                     <th>No.</th>
-                                                    <th class="pl0 text-start">Item Description</th>
-                                                    <th class="text-center">Price</th>
+                                                    <th class="pl0 text-start">Medicines</th>
                                                     <th class="text-center">Unit</th>
+                                                    <th class="text-center">Price</th>
                                                     <th class="text-center">Quantity</th>
                                                     <th class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr class="tr">
-                                                    <td>
-                                                        <div class="item-desc-1">
-                                                            <span>01</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="pl0">Businesscard Design</td>
-                                                    <td class="text-center">$300</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">2</td>
-                                                    <td class="text-end">$600.00</td>
-                                                </tr>
-                                                <tr class="bg-grea">
-                                                    <td>
-                                                        <div class="item-desc-1">
-                                                            <span>02</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="pl0">Fruit Flayer Design</td>
-                                                    <td class="text-center">$400</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">1</td>
-                                                    <td class="text-end">$60.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="item-desc-1">
-                                                            <span>03</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="pl0">
-                                                        Application Interface Design
-                                                    </td>
-                                                    <td class="text-center">$240</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">3</td>
-                                                    <td class="text-end">$640.00</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>
-                                                        <div class="item-desc-1">
-                                                            <span>04</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="pl0">Theme Development</td>
-                                                    <td class="text-center">$720</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">4</td>
-                                                    <td class="text-end">$640.00</td>
-                                                </tr>
-                                                <tr class="tr2">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="text-center">SubTotal</td>
-                                                    <td class="text-end">$710.99</td>
-                                                </tr>
-                                                <tr class="tr2">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="text-center">Tax</td>
-                                                    <td class="text-end">$85.99</td>
-                                                </tr>
+                                            <tbody id="prescriptionTableBody">
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -200,89 +156,16 @@
                                             <thead class="bg-active">
                                                 <tr class="tr">
                                                     <th>No.</th>
-                                                    <th class="pl0 text-start">Item Description</th>
+                                                    <th class="pl0 text-start">Techniques</th>
                                                     <th class="text-center">Position</th>
-                                                    <th class="text-center">Price</th>
                                                     <th class="text-center">Unit</th>
+                                                    <th class="text-center">Price</th>
                                                     <th class="text-center">Quantity</th>
                                                     <th class="text-end">Amount</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr class="tr">
-                                                    <td>
-                                                        <div class="item-desc-1">
-                                                            <span>01</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="pl0">Businesscard Design</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">$300</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">2</td>
-                                                    <td class="text-end">$600.00</td>
-                                                </tr>
-                                                <tr class="bg-grea">
-                                                    <td>
-                                                        <div class="item-desc-1">
-                                                            <span>02</span>
-
-                                                        </div>
-                                                    </td>
-                                                    <td class="pl0">Fruit Flayer Design</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">$400</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">1</td>
-                                                    <td class="text-end">$60.00</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="item-desc-1">
-                                                            <span>03</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="pl0">
-                                                        Application Interface Design
-                                                    </td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">$240</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">3</td>
-                                                    <td class="text-end">$640.00</td>
-                                                </tr>
-
-                                                <tr>
-                                                    <td>
-                                                        <div class="item-desc-1">
-                                                            <span>04</span>
-                                                        </div>
-                                                    </td>
-                                                    <td class="pl0">Theme Development</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">$720</td>
-                                                    <td class="text-center"></td>
-                                                    <td class="text-center">4</td>
-                                                    <td class="text-end">$640.00</td>
-                                                </tr>
-                                                <tr class="tr2">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="text-center">SubTotal</td>
-                                                    <td class="text-end">$710.99</td>
-                                                </tr>
-                                                <tr class="tr2">
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td class="text-center">Tax</td>
-                                                    <td class="text-end">$85.99</td>
-                                                </tr>
+                                            <tbody id="techSheetTableBody">
+                                                
                                             </tbody>
                                         </table>
                                     </div>
@@ -297,15 +180,24 @@
                                 <div class="form-group row g-3 align-items-center mb-3 text-end">
                                     <label for="grandTotal" class="col-6 col-form-label text-end">Grand Total:</label>
                                     <div class="col">
-                                        <input type="text" id="grandTotal" class="form-control text-end" value="0.00" readonly>
+                                        <input asp-for="Total" id="grandTotal" class="form-control text-end" readonly>
                                     </div>
                                 </div>
 
                                 <!-- Discount -->
                                 <div class="form-group row g-3 align-items-center mb-3 text-end">
-                                    <label for="discount" class="col-6 col-form-label text-end">Discount:</label>
+                                    <label class="col-6 col-form-label text-end">Discount:</label>
                                     <div class="col">
-                                        <input type="number" id="discount" class="form-control text-end" value="0" min="0" max="100">
+                                        <select asp-for="Discount" id="discount" class="form-control" data-live-search="true" onchange="calculateTotalDue()" title="Select discount" data-dropup-auto="false">
+                                            <option value="0" selected>0</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                            <option value="30">30</option>
+                                            <option value="50">50</option>
+                                            <option value="60">60</option>
+                                        </select>
                                     </div>
                                     <div class="col-auto">
                                         <span>%</span>
@@ -316,17 +208,29 @@
                                 <div class="form-group row g-3 align-items-center text-end">
                                     <label for="totalPayable" class="col-6 col-form-label text-end">Total Due:</label>
                                     <div class="col">
-                                        <input type="text" id="totalPayable" class="form-control text-end" value="0.00" readonly>
+                                        <input asp-for="Finaltotal" id="totalPayable" class="form-control text-end" readonly>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row g-3 align-items-center text-end">
+                                    <label class="col-6 col-form-label text-end">Payment Method:</label>
+                                    <div class="col text-start d-flex justify-content-around">
+                                        <div class="form-check form-check-inline d-flex align-items-center">
+                                            <input asp-for="Payment" type="radio" class="form-check-input me-2" id="paymentCash" value="Cash">
+                                            <label class="form-check-label" for="paymentCash">Cash</label>
+                                        </div>
+                                        <div class="form-check form-check-inline d-flex align-items-center">
+                                            <input asp-for="Payment" type="radio" class="form-check-input me-2" id="paymentTransfer" value="Transfer">
+                                            <label class="form-check-label" for="paymentTransfer">Transfer</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-
+                        
                         <div class="col-lg-12 text-end">
-                            <button type="submit" class="btn btn-primary me-2">Add</button>
-                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                            <button type="submit" class="btn btn-primary me-2" onclick="return checkPayment()">Add</button>
+                            <a href="@Url.Action("Index")" type="reset" class="btn btn-secondary">Cancel</a>
                         </div>
                     </div>
                 </form>
@@ -345,6 +249,7 @@
 
     <script>
         $('#medicalExam').selectpicker();
+        $('#discount').selectpicker();
     </script>
 
     <script>
@@ -355,3 +260,314 @@
         document.getElementById('dateInput').value = today;
     </script>
 }
+
+<script>
+    function checkCashPaymentMethod() {
+        const cashChecked = document.getElementById('paymentCash');
+        const transferChecked = document.getElementById('paymentTransfer');
+
+        if (cashChecked.checked) {
+            transferChecked.checked = false;
+        }
+    }
+
+    function checkTransferPaymentMethod() {
+        const cashChecked = document.getElementById('paymentCash');
+        const transferChecked = document.getElementById('paymentTransfer');
+
+        if (transferChecked.checked) {
+            cashChecked.checked = false;
+        }
+    }
+
+    function checkPayment() {
+        const cashChecked = document.getElementById('paymentCash');
+        const transferChecked = document.getElementById('paymentTransfer');
+
+        if (!cashChecked.checked && !transferChecked.checked) {
+            alert("Please select payment method!");
+            return false;
+        }
+
+        const confirmation = confirm("Are you sure you want to make this invoice? Once created, it cannot be removed, and you will have responsibility for it.");
+        return confirmation;
+    }
+</script>
+
+<script>
+    window.onload = function () {
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
+    };
+</script>
+
+@* <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+ *@
+<script>
+    function GetInformationById() {
+        var mesId = document.querySelector('#medicalExam').value;
+
+        if (!mesId) {
+            alert("Vui lòng chọn MES.");
+            return;
+        }
+
+        fetch(`/HealthReport/GetInformationById?id=${mesId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('dateInput').value = today;
+                    document.getElementById('customerName').value = data.data.CustomerName;
+                    document.getElementById('customerId').value = data.data.CustomerId;
+                    document.getElementById('doctorId').value = data.data.DoctorId;
+                    document.getElementById('doctorName').value = data.data.DoctorName;
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
+        AddMedicinesToTable(mesId);
+        AddTechsToTable(mesId);
+
+        setTimeout(calculateGrandTotal, 100);
+    }
+
+    function AddMedicinesToTable(mesId) {
+        fetch(`@Url.Action("GetPrescriptionInformationByMesId", "Invoice")?mesId=${mesId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tableBody = document.getElementById("prescriptionTableBody");
+                tableBody.innerHTML = "";
+                if (!data.success) {
+                    const zero = 0;
+
+                    const subtotalRow = `
+                        <tr>
+                            <td colspan="5" class="text-end"><strong>Subtotal:</strong></td>
+                                <td class="text-end"><strong>${zero}</strong></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += subtotalRow;
+
+                    const taxRow = `
+                        <tr>
+                            <td colspan="5" class="text-end"><strong>Tax (10%):</strong></td>
+                                <td class="text-end"><strong>${zero}</strong></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += taxRow;
+
+                    const totalRow = `
+                        <tr>
+                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                                <td class="text-end"><strong id='pres-total'>${zero}</strong></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += totalRow;
+                    return;
+                }
+
+                if (Array.isArray(data.prescriptionDetails.$values)) {
+                    let subtotal = 0;
+
+                    data.prescriptionDetails.$values.forEach((detail, index) => {
+                        console.log(data.medicines.$values);
+                        const medicine = data.medicines.$values.find(m => m.Id === detail.Medicineid);
+                        const quantity = parseInt(detail.Quantity, 10);
+                        const amount = medicine.Price * quantity;
+
+                        subtotal += amount;
+
+                        const row = `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td class="pl0 text-start">${medicine.Name}</td>
+                                <td class="text-center">${medicine.Unit}</td>
+                                <td class="text-center">${medicine.Price}</td>
+                                <td class="text-center">${detail.Quantity}</td>
+                                <td class="text-end">${amount}</td>
+                            </tr>
+                        `;
+
+                        tableBody.innerHTML += row;
+                    });
+                    const taxRate = 0.10;
+                    const tax = subtotal * taxRate;
+                    const total = subtotal + tax;
+
+                    const subtotalRow = `
+                        <tr>
+                            <td colspan="5" class="text-end"><strong>Subtotal:</strong></td>
+                            <td class="text-end"><strong>${subtotal}</strong></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += subtotalRow;
+
+                    const taxRow = `
+                        <tr>
+                            <td colspan="5" class="text-end"><strong>Tax (10%):</strong></td>
+                            <td class="text-end"><strong>${tax}</strong></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += taxRow;
+
+                    const totalRow = `
+                        <tr>
+                            <td colspan="5" class="text-end"><strong>Total:</strong></td>
+                            <td class="text-end"><strong id='pres-total'>${total}</strong></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += totalRow;
+                } else {
+                    console.error("prescriptionDetails không phải là một mảng:", data.prescriptionDetails);
+                    alert("Không tìm thấy thông tin đơn thuốc.");
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi khi gọi API:", error);
+                alert("Không tìm thấy đơn thuốc với ID này: " + mesId);
+            });
+    }
+
+    function AddTechsToTable(mesId) {
+        fetch(`@Url.Action("GetTechSheetInformationByMesId", "Invoice")?mesId=${mesId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                const tableBody = document.getElementById("techSheetTableBody");
+                tableBody.innerHTML = "";
+                if (!data.success) {
+                    const zero = 0;
+
+                    const subtotalRow = `
+                            <tr>
+                                <td colspan="6" class="text-end"><strong>Subtotal:</strong></td>
+                                    <td class="text-end"><strong>${zero}</strong></td>
+                            </tr>
+                        `;
+                    tableBody.innerHTML += subtotalRow;
+
+                    const taxRow = `
+                            <tr>
+                                <td colspan="6" class="text-end"><strong>Tax (10%):</strong></td>
+                                    <td class="text-end"><strong>${zero}</strong></td>
+                            </tr>
+                        `;
+                    tableBody.innerHTML += taxRow;
+
+                    const totalRow = `
+                            <tr>
+                                <td colspan="6" class="text-end"><strong>Total:</strong></td>
+                                <td class="text-end"><strong id='tech-total'>${zero}</strong></td>
+                            </tr>
+                        `;
+                    tableBody.innerHTML += totalRow;
+                    return;
+                }
+
+                if (Array.isArray(data.techDetails.$values)) {
+                    let subtotal = 0;
+
+                    data.techDetails.$values.forEach((detail, index) => {
+                        console.log(data.techWorks.$values);
+                        const medicine = data.techWorks.$values.find(m => m.Id === detail.Techpositionid);
+                        const quantity = parseInt(detail.Quantity, 10);
+                        const amount = medicine.Price * quantity;
+
+                        subtotal += amount;
+
+                        const row = `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td class="pl0 text-start">${medicine.Techniquename}</td>
+                                    <td class="text-center">${medicine.Name}</td>
+                                    <td class="text-center">${medicine.Unit}</td>
+                                    <td class="text-center">${medicine.Price}</td>
+                                    <td class="text-center">${detail.Quantity}</td>
+                                    <td class="text-end">${amount}</td>
+                                </tr>
+                            `;
+
+                        tableBody.innerHTML += row;
+                    });
+                    const taxRate = 0.10;
+                    const tax = subtotal * taxRate;
+                    const total = subtotal + tax;
+
+                    const subtotalRow = `
+                            <tr>
+                                <td colspan="6" class="text-end"><strong>Subtotal:</strong></td>
+                                <td class="text-end"><strong>${subtotal}</strong></td>
+                            </tr>
+                        `;
+                    tableBody.innerHTML += subtotalRow;
+
+                    const taxRow = `
+                            <tr>
+                                <td colspan="6" class="text-end"><strong>Tax (10%):</strong></td>
+                                <td class="text-end"><strong>${tax}</strong></td>
+                            </tr>
+                        `;
+                    tableBody.innerHTML += taxRow;
+
+                    const totalRow = `
+                            <tr>
+                                <td colspan="6" class="text-end"><strong>Total:</strong></td>
+                                <td class="text-end"><strong id='tech-total'>${total}</strong></td>
+                            </tr>
+                        `;
+                    tableBody.innerHTML += totalRow;
+                } else {
+                    console.error("prescriptionDetails không phải là một mảng:", data.prescriptionDetails);
+                    alert("Không tìm thấy thông tin đơn thuốc.");
+                }
+            })
+            .catch(error => {
+                console.error("Lỗi khi gọi API:", error);
+                alert("Không tìm thấy phiếu kỹ thuật với ID này: " + mesId);
+            });
+    }
+
+    function calculateGrandTotal() {
+        const presTotalElement = document.getElementById('pres-total');
+        const techTotalElement = document.getElementById('tech-total');
+
+        const presTotal = presTotalElement ? parseFloat(presTotalElement.textContent) : 0;
+        const techTotal = techTotalElement ? parseFloat(techTotalElement.textContent) : 0;
+
+        const grandTotal = presTotal + techTotal;
+        
+        document.getElementById('grandTotal').value = grandTotal;
+        console.log(grandTotal.type);
+        const discountElement = document.getElementById('discount');
+        discountElement.selectedIndex = 1;
+        $('#discount').selectpicker('refresh');
+        document.getElementById('totalPayable').value = grandTotal;
+    }
+
+    function calculateTotalDue() {
+        var discount = parseFloat(document.getElementById('discount').value);
+        var total = parseFloat(document.getElementById('grandTotal').value);
+        console.log(total);
+
+        document.getElementById('totalPayable').value = (total * (100 - discount)) / 100;
+    }
+</script>

@@ -21,6 +21,11 @@ namespace DentalCare.Services
             return _context.Techsheets.FirstOrDefault(x => x.Id == id);
         }
 
+        public Techsheet? GetByMesId(string mesId)
+        {
+            return _context.Techsheets.FirstOrDefault(x => x.MedicalexaminationId == mesId);
+        }
+
         public bool IsExistMes(string mesId)
         {
             return _context.Techsheets.Any(x => x.MedicalexaminationId == mesId);

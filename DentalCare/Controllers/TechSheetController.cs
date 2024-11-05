@@ -63,7 +63,7 @@ namespace DentalCare.Controllers
             if (model.Details.Count == 0)
             {
                 TempData["ErrorDetailNullMessage"] = "List techworks is empty. Please choose techworks to add!";
-                return View();
+                return RedirectToAction("Add");
             }
 
             if (_techSheetService.IsExistMes(model.MedicalExamId))

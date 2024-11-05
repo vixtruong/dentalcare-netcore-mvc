@@ -25,6 +25,7 @@ namespace DentalCare
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNamingPolicy = null; // Để giữ nguyên tên thuộc tính
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<DentalcareContext>(options =>
@@ -56,6 +57,7 @@ namespace DentalCare
                 builder.Services.AddScoped<PrescriptionService>();
                 builder.Services.AddScoped<TechSheetService>();
                 builder.Services.AddScoped<HealthReportService>();
+                builder.Services.AddScoped<InvoiceService>();
             }
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

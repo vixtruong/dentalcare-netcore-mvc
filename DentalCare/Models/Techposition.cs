@@ -15,6 +15,8 @@ public partial class Techposition
 
     public string Techniqueid { get; set; } = null!;
 
+    public string Techniquename { get; set; }
+
     public virtual ICollection<Techdetail> Techdetails { get; set; } = new List<Techdetail>();
 
     public virtual Technique Technique { get; set; } = null!;

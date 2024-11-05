@@ -175,6 +175,16 @@
 
     window.onload = function () {
         loadMedicinesFromLocalStorage();
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
     }
 
     function addMedicineToTable() {
@@ -350,7 +360,7 @@
                     medicineSelect.remove(i);
                 }
 
-                data.forEach(function (medicine) {
+                data.$values.forEach(function (medicine) {
                     var option = document.createElement("option");
                     option.value = medicine.id;
                     option.text = medicine.name;
@@ -379,19 +389,4 @@
             });
     }
 
-</script>
-
-<script>
-    window.onload = function () {
-        var errorMessage = document.getElementById("errorMessage");
-        if (errorMessage) {
-            setTimeout(function () {
-                errorMessage.style.opacity = '0';
-            }, 3000);
-
-            setTimeout(function () {
-                errorMessage.style.display = 'none';
-            }, 6000);
-        }
-    };
 </script>

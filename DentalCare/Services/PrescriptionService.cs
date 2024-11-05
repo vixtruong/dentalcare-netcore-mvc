@@ -27,6 +27,11 @@ namespace DentalCare.Services
             return _context.Prescriptions.FirstOrDefault(p => p.Id == id);
         }
 
+        public Prescription? GetByMesId(string mesId)
+        {
+            return _context.Prescriptions.FirstOrDefault(p => p.Medicalexaminationid.Equals(mesId));
+        }
+
         public void Add(Prescription prescription)
         {
             _context.Prescriptions.Add(prescription);
