@@ -50,7 +50,7 @@
                             <h3>Sign In</h3>
                         </div>
                         <div class="form-floating mb-3">
-                            <input asp-for="Phone" type="number" class="form-control" id="floatingInput" placeholder="Your phone number" required>
+                            <input asp-for="Phone" type="number" class="form-control" id="floatingInput" placeholder="Your phone number" min="0" required>
                             <label asp-for="Phone" for="floatingInput">Phone Number</label>
                         </div>
                         <div class="form-floating mb-4 position-relative">

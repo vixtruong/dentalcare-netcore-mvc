@@ -68,8 +68,11 @@ namespace DentalCare.Controllers
             return View(tech);
         }
 
+        [HttpPost]
         public IActionResult Edit(Techposition tech)
         {
+            var techniqueName = _techniqueService.Get(tech.Techniqueid).Name;
+            tech.Techniquename = techniqueName;
             _techWorkService.Update(tech);
             return RedirectToAction("Index");
         }

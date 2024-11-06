@@ -36,7 +36,7 @@ namespace DentalCare.Services
 
         public void Update(Bill bill)
         {
-            _context.Bills.Add(bill);
+            _context.Bills.Update(bill);
             _context.SaveChanges();
         }
 

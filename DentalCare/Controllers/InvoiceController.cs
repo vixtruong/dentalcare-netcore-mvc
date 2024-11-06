@@ -1,4 +1,6 @@
 ﻿using DentalCare.Models;
+using DentalCare.Payments.Momo.Config;
+using DentalCare.Payments.Momo.Request;
 using DentalCare.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +11,8 @@ namespace DentalCare.Controllers
     [Authorize]
     public class InvoiceController : Controller
     {
+        private readonly MomoConfig _momoConfig;
+
         private readonly ReceptionistService _receptionistService;
         private readonly InvoiceService _invoiceService;
         private readonly CustomerService _customerService;
@@ -22,7 +26,7 @@ namespace DentalCare.Controllers
 
         public InvoiceController(ReceptionistService receptionistService, InvoiceService invoiceService, CustomerService customerService, 
             MedicalExamService medicalExamService, PrescriptionService prescriptionService, PrescriptionDetailService prescriptionDetailService, 
-            TechWorkService techWorkService, TechDetailService techDetailService, MedicineService medicineService, TechSheetService techSheetService)
+            TechWorkService techWorkService, TechDetailService techDetailService, MedicineService medicineService, TechSheetService techSheetService, MomoConfig momoConfig)
         {
             _receptionistService = receptionistService;
             _invoiceService = invoiceService;
@@ -34,6 +38,7 @@ namespace DentalCare.Controllers
             _prescriptionDetailService = prescriptionDetailService;
             _medicineService = medicineService;
             _techSheetService = techSheetService;
+            _momoConfig = momoConfig;
         }
 
         [Route("invoice")]
@@ -138,9 +143,16 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Add(Bill model)
         {
+            if (model.Total == 0)
+            {
+                TempData["ErrorMessage"] = "List medicines and technique are both empty. Can not create invoice!";
+                return RedirectToAction("Add");
+            }
+
+            // Kiểm tra nếu phiếu khám đã có hóa đơn
             if (_invoiceService.GetAll().Any(x => x.Medicalexaminationid == model.Medicalexaminationid))
             {
-                TempData["ErrorMessage"] = "Medical Examination Slip has already been created with a invoice!";
+                TempData["ErrorMessage"] = "Medical Examination Slip has already been created with an invoice!";
                 return RedirectToAction("Add");
             }
 
@@ -154,17 +166,57 @@ namespace DentalCare.Controllers
                 _invoiceService.Add(model);
                 return RedirectToAction("Index");
             }
+            else if (model.Payment.Equals("Transfer"))
+            {
+                var mes = _medicalExamService.Get(model.Medicalexaminationid);
 
-            var mes = _medicalExamService.Get(model.Medicalexaminationid);
-            var customer = _customerService.Get(mes.Customerid);
+                var paymentRequest = new MomoOneTimePaymentRequest(
+                    _momoConfig.PartnerCode,
+                    Guid.NewGuid().ToString(),
+                    (long)model.Finaltotal, 
+                    model.Id + DateTime.Now.Ticks,
+                 model.Medicalexaminationid,
+                    _momoConfig.ReturnUrl,
+                    _momoConfig.IpnUrl,
+                    "captureWallet",
+                model.Discount.ToString());
 
-            return RedirectToAction();
+                paymentRequest.MakeSignature(_momoConfig.AccessKey, _momoConfig.SecretKey);
+
+                var (isSuccess, paymentUrl) = paymentRequest.GetLink(_momoConfig.PaymentUrl);
+
+                if (isSuccess)
+                {
+                    return Redirect(paymentUrl);
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Không thể tạo liên kết thanh toán. Vui lòng thử lại.";
+                    return RedirectToAction("Add");
+                }
+            }
+
+            return RedirectToAction("Index");
         }
+
 
         [HttpGet]
         public IActionResult Edit(string id)
         {
-            return View();
+            var invoice = _invoiceService.Get(id);
+            return View(invoice);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Bill model)
+        {
+            var invoice = _invoiceService.Get(model.Id);
+
+            invoice.Discount = model.Discount;
+            invoice.Finaltotal = invoice.Total * (100 - model.Discount) / 100;
+
+            _invoiceService.Update(invoice);
+            return RedirectToAction("Index");
         }
 
         public IActionResult Delete(string id)
