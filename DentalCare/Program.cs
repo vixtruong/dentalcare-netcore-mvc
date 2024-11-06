@@ -1,8 +1,10 @@
 ﻿using DentalCare.Middlewares;
 using DentalCare.Models;
+using DentalCare.Payments.Momo.Config;
 using DentalCare.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace DentalCare
 {
@@ -27,9 +29,15 @@ namespace DentalCare
                     options.JsonSerializerOptions.PropertyNamingPolicy = null; // Để giữ nguyên tên thuộc tính
                     options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
                 });
+
+            builder.Services.AddHttpClient();
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<DentalcareContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DBDefault")));
+
+            builder.Services.Configure<MomoConfig>(
+                builder.Configuration.GetSection(MomoConfig.ConfigName));
+            builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<MomoConfig>>().Value);
 
             // Đăng ký services
             if (true)
@@ -90,7 +98,7 @@ namespace DentalCare
             app.UseAuthorization();
 
             app.UseMiddleware<SessionCheckMiddleware>();
-
+            
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Account}/{action=Index}/{id?}");

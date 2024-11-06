@@ -67,6 +67,13 @@
     </div>
 </div>
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="message alert alert-success" id="errorMessage">
+        <strong>Success:</strong> @TempData["SuccessMessage"]
+    </div>
+}
+
 @if (TempData["ErrorMessage"] != null)
 {
     <div class="message alert alert-danger" id="errorMessage">
