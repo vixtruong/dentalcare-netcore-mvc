@@ -38,4 +38,4 @@ The **DentalCare Website** is an application designed to provide users with an e
 ### Steps to Set Up:
 1. Clone this repository to your local machine:
    ```bash
-   git clone https://github.com/vixtruong/DentalCare-Website.git
+   git clone https://github.com/vixtruong/dentalcare-netcore-mvc.git
