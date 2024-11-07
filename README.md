@@ -9,15 +9,15 @@ The **DentalCare Website** is an application designed to provide users with an e
 ## Technologies Used
 
 ### Frontend:
-- **HTML**: Structuring the layout and content of the web pages.
-- **CSS**: Styling the website and making it visually appealing.
-- **JavaScript**: Enhancing the interactivity of the website.
-- **AJAX**: Enables asynchronous communication between the client and the server, allowing dynamic content updates without full page reloads.
-- **Bootstrap**: A responsive front-end framework that enables the creation of mobile-first, responsive websites with predefined grid systems, components, and utilities.
+- **HTML**
+- **CSS**
+- **JavaScript**
+- **AJAX**
+- **Bootstrap**
 
 ### Backend:
-- **ASP.NET Core MVC**: A powerful web framework used for handling HTTP requests, defining routes, and organizing application logic.
-- **Entity Framework Core**: A powerful Object-Relational Mapping (ORM) tool used for data access, enabling seamless interaction with the database.
+- **ASP.NET Core MVC**
+- **Entity Framework Core**
 - **Cookie Authentication**
 - **Middleware**
 - **Dependency Injection**
