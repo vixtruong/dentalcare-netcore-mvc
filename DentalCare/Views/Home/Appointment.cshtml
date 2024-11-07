@@ -211,7 +211,7 @@
                 selectOption.selected = true;
                 selectOption.disabled = true;
                 doctorSelect.appendChild(selectOption);
-                data.forEach(function (doctor) {
+                data.$values.forEach(function (doctor) {
                     var option = document.createElement("option");
                     option.value = doctor.id;
                     option.text = doctor.name;

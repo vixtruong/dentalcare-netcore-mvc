@@ -82,7 +82,6 @@ namespace DentalCare.Payments.Momo.Request
                 {
                     return (false, responseData.message);
                 }
-
             }
             else
             {

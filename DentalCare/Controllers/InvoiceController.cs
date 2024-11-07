@@ -149,7 +149,6 @@ namespace DentalCare.Controllers
                 return RedirectToAction("Add");
             }
 
-            // Kiểm tra nếu phiếu khám đã có hóa đơn
             if (_invoiceService.GetAll().Any(x => x.Medicalexaminationid == model.Medicalexaminationid))
             {
                 TempData["ErrorMessage"] = "Medical Examination Slip has already been created with an invoice!";
@@ -191,7 +190,7 @@ namespace DentalCare.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Không thể tạo liên kết thanh toán. Vui lòng thử lại.";
+                    TempData["ErrorMessage"] = "Can not create payment link. Please try again.";
                     return RedirectToAction("Add");
                 }
             }
