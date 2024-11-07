@@ -18,6 +18,12 @@ The **DentalCare Website** is an application designed to provide users with an e
 ### Backend:
 - **ASP.NET Core MVC**: A powerful web framework used for handling HTTP requests, defining routes, and organizing application logic.
 - **Entity Framework Core**: A powerful Object-Relational Mapping (ORM) tool used for data access, enabling seamless interaction with the database.
+- **Cookie Authentication**
+- **Middleware**
+- **Dependency Injection**
+- **HttpClient**
+- **Session Management**
+- **Momo Payment Integration**
 
 ## Features
 - User authentication (login/logout).
