@@ -10,7 +10,6 @@
         font-family: Arial, sans-serif;
         background-color: #f8f9fa !important;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        /* padding: 10px; */
         color: #333;
     }
 
@@ -41,10 +40,12 @@
     }
 
     .datepicker-day {
+        background-color: white; 
         padding: 8px;
         border-radius: 4px;
         text-align: center;
         cursor: pointer;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.02);
         transition: background-color 0.2s;
     }
 
@@ -62,6 +63,8 @@
         }
 
         .datepicker-day.header {
+            background-color: #f8f9fa !important;
+            box-shadow: none !important;
             font-weight: bold;
             color: #333;
         }
@@ -72,7 +75,7 @@
 <div class="container-fluid pt-4 px-4">
     <div class="row g-4">
         <div class="col-sm-6 col-xl-3">
-            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow-sm border border-1">
                 <i class="fa fa-user fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Customer Quantity</p>
@@ -81,7 +84,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-xl-3">
-            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow-sm border border-1">
                 <i class="fas fa-file-invoice fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Invoice Quantity</p>
@@ -90,7 +93,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-xl-3">
-            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow-sm border border-1">
                 <i class="fa fa-chart-line fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Today Sale</p>
@@ -99,7 +102,7 @@
             </div>
         </div>
         <div class="col-sm-6 col-xl-3">
-            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow-sm border border-1">
                 <i class="fa fa-chart-bar fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Total Month Sale</p>
@@ -114,25 +117,25 @@
 <div class="container-fluid pt-4 px-4 mb-4">
     <div class="row g-4">
         <div class="col-sm-12 col-xl-6">
-            <div class="bg-light text-center rounded p-4">
+            <div class="bg-light text-center rounded p-4 shadow-sm border border-1">
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h6 class="mb-0">Previous Month Revenue</h6>
                 </div>
-                <canvas id="myChart-bar"></canvas>
+                <canvas id="preMonthChart"></canvas>
             </div>
         </div>
 
         <div class="col-sm-12 col-xl-6">
-            <div class="bg-light text-center rounded p-4">
+            <div class="bg-light text-center rounded p-4 shadow-sm border border-1">
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <h6 class="mb-0">Current Month Revenue</h6>
                 </div>
-                <canvas id="myChart-line"></canvas>
+                <canvas id="curMonthChart"></canvas>
             </div>
         </div>
 
         <div class="col-sm-12 col-xl-4">
-            <div class="datepicker-container bg-light rounded text-center h-100 p-4">
+            <div class="datepicker-container rounded text-center h-100 shadow-sm border border-1">
                 <div class="datepicker-header">
                     <button onclick="changeMonth(-1)">‹</button>
                     <span id="datepicker-title"></span>
@@ -143,8 +146,8 @@
                 </div>
             </div>
         </div><div class="col-sm-12 col-xl-8">
-            <div class="card w-100">
-                <iframe class="card w-100"
+            <div class="card w-100 shadow-sm border border-1">
+                <iframe class="card w-100 shadow-sm border border-1"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4650609362097!2d106.6967669!3d10.7319367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317528b2747a81a3%3A0x33c1813055acb613!2zxJDGsOG7nWkgSG_DoGNoIFTDom4gxJDhu5tjIFRo4bq_bmc!5e0!3m2!1svi!2s!4v1672239918130!5m2!1svi!2s"
                         width="600" height="450"
                         style="border:0;"
@@ -260,7 +263,7 @@
                 console.log(labels);
                 console.log(revenueData);
 
-                const ctx1 = document.getElementById('myChart-bar').getContext('2d');
+                const ctx1 = document.getElementById('preMonthChart').getContext('2d');
                 new Chart(ctx1, {
                     type: 'bar',
                     data: {
@@ -269,8 +272,8 @@
                             label: 'Previous Month Revenue (VND)',
                             data: revenueData,
                             borderWidth: 1,
-                            backgroundColor: 'rgba(54, 162, 235, 0.4)',
-                            borderColor: 'rgba(54, 162, 235, 0.7)',
+                            backgroundColor: 'rgba(0, 156, 255, .7)',
+                            borderColor: 'rgba(0, 156, 255, .7)',
                         }]
                     },
                     options: {
@@ -299,7 +302,7 @@
                 console.log(labels);
                 console.log(revenueData);
 
-                const ctx2 = document.getElementById('myChart-line');
+                const ctx2 = document.getElementById('curMonthChart').getContext('2d');
 
                 new Chart(ctx2, {
                     type: 'bar',
@@ -309,8 +312,8 @@
                             label: 'Current Month Revenue (VND)',
                             data: revenueData,
                             borderWidth: 1,
-                            backgroundColor: 'rgba(54, 162, 235, 0.4)',
-                            borderColor: 'rgba(54, 162, 235, 0.7)',
+                            backgroundColor: 'rgba(0, 156, 255, .7)',
+                            borderColor: 'rgba(0, 156, 255, .7)',
                         }]
                     },
                     options: {

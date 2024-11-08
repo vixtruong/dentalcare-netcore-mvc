@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "_DashboardLayout";
+}
+
+<style>
+    .message {
+        position: absolute;
+        right: 10px;
+        top: 75px;
+        z-index: 1051;
+        max-width: 500px;
+        transition: opacity 1s ease-out;
+    }
+</style>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="message alert alert-success" id="errorMessage">
+        <strong>Success:</strong> @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="container-fluid pt-4 px-4 mb-4">
+    <div class="page-header mb-4 text-primary">
+        <div class="page-title">
+            <h4>Statistic / Export Data</h4>
+        </div>
+    </div>
+    <div class="card shadow-sm bg-light p-1">
+        <div class="card-body">
+            <form method="get">
+                <div class="row g-4">
+                    <div class="col-lg-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="fromDate">From</label>
+                            <input id="fromDate" name="from" class="form-control" type="date" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-sm-6 col-12">
+                        <div class="form-group">
+                            <label for="toDate">To</label>
+                            <input id="toDate" name="to" class="form-control" type="date" />
+                        </div>
+                    </div>
+                    <div class="col-lg-12 text-end">
+                        <button formaction="@Url.Action("ExportInvoices", "Statistic")" class="btn btn-primary me-2">Invoices Revenue</button>
+                        <button formaction="@Url.Action("ExportDoctors", "Statistic")" class="btn btn-secondary">Doctors Revenue</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('fromDate').addEventListener('change', function () {
+        const fromDate = new Date(this.value);
+        const toDateInput = document.getElementById('toDate');
+
+        toDateInput.min = this.value;
+
+        if (new Date(toDateInput.value) < fromDate) {
+            toDateInput.value = this.value;
+        }
+    });
+
+    window.onload = function () {
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
+    };
+</script>

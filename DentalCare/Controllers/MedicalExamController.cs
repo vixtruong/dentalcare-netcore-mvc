@@ -96,7 +96,7 @@ namespace DentalCare.Controllers
 
             PdfDocument document = converter.ConvertHtmlString(htmlContent);
 
-            string filePath = Path.Combine("D:", "User", "Desktop", "MedicalExaminationSlip", $"{medicalExam.Id}.pdf");
+            string filePath = Path.Combine("D:", "User", "Desktop", "DentalCareResources", "MES", $"{medicalExam.Id}_{DateTime.Today:ddMMyyyy}.pdf");
 
             document.Save(filePath);
             document.Close();

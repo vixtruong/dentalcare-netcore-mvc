@@ -192,18 +192,18 @@
                 success: function (response) {
                     if (response.success) {
                         // Hiển thị thông báo thành công
-                        $('.message').removeClass('alert-danger').addClass('alert-success').text(response.message).show();
+                        $('.message').removeClass('alert-danger').addClass('alert-success').html('<strong>Success: </strong>' + response.message).show();
 
                         // Sau 5 giây, ẩn dần thông báo
                         setTimeout(function () {
                             $('.message').fadeOut(1500);
                         }, 3000); // Sau 5 giây
                     } else {
-                        $('.message').removeClass('alert-success').addClass('alert-danger').text("An error occurred.").show();
+                        $('.message').removeClass('alert-success').addClass('alert-danger').html('<strong>Error: </strong>' + response.message).show();
                     }
                 },
                 error: function (xhr, status, error) {
-                    $('.message').removeClass('alert-success').addClass('alert-danger').text("An error occurred: " + error).show();
+                    $('.message').removeClass('alert-success').addClass('alert-danger').html('<strong>Error: </strong>' + error).show();
                 }
             });
         });
