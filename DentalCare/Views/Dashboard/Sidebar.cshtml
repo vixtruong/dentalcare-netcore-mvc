@@ -183,7 +183,7 @@
                                                                                                                                   ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")">Manage</a>
                 </div>
             </div>
-            <a href="#" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Statistic</a>
+            <a href="@Url.Action("Index", "Statistic")" class="nav-item nav-link @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Statistic" && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")"><i class="fa fa-chart-bar me-2"></i>Statistic</a>
         </div>
     </nav>
 </div>
