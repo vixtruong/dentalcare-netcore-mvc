@@ -14,29 +14,31 @@
         padding-bottom: 6px !important;
     }
 
-        .container-invoice .search {
-            top: 6px;
-            left: 10px;
-        }
+    .container-invoice .search {
+        padding-top: 6px;
+        padding-left: 10px;
+        border: none;
+        background-color: white;
+    }
 
-        .container-invoice .form-control {
-            border: none;
-            padding-left: 34px;
-        }
+    .container-invoice .form-control {
+        border: none;
+        padding-left: 34px;
+    }
 
-            .container-invoice .form-control:focus {
-                border: none;
-                box-shadow: none;
-            }
+    .container-invoice .form-control:focus {
+        border: none;
+        box-shadow: none;
+    }
 
-        .container-invoice .green {
-            color: green;
-        }
+    .container-invoice .green {
+        color: green;
+    }
 
-        .container-invoice .bill-id {
-            text-decoration: none;
-            color: #000;
-        }
+    .container-invoice .bill-id {
+        text-decoration: none;
+        color: #000;
+    }
 
     .page-header {
         padding-top: 24px;
@@ -50,6 +52,7 @@
     .table-action i:hover {
         opacity: 0.5;
     }
+     
 </style>
 
 <div class="page-header text-primary">
@@ -59,12 +62,22 @@
 </div>
 
 <div class="container container-lg mt-4 px-2 mb-4 container-invoice shadow-sm card">
-    <div class="p-4  container-employee">
+    <div class="p-4 container-employee">
         <div class="mb-2 d-flex justify-content-between align-items-center">
-            <div class="position-relative">
-                <span class="position-absolute search text-primary"><i class="fa fa-search"></i></span>
-                <input class="form-control w-100 fst-italic" placeholder="Search by id, name...">
-            </div>
+            <form method="get" action="@Url.Action("Manage", "Employee")">
+                <div class="position-relative">
+                    <button class="position-absolute search text-primary" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <input class="form-control w-100"
+                           name="searchQuery" 
+                           placeholder="Search by id, name..." 
+                           value="@ViewBag.SearchQuery"/>
+                    <input type="hidden" name="role" value="@ViewBag.Role" />
+                    <input type="hidden" name="sortColumn" value="@ViewBag.SortColumn" />
+                    <input type="hidden" name="sortDirection" value="@ViewBag.SortDirection" />
+                </div>
+            </form>
 
             <div class="px-2 d-flex">
                 <a asp-action="Add" asp-controller="Faculty" class="btn btn-light fw-bold @(Model is X.PagedList.IPagedList<Doctor> ? "" : "d-none")">Add Faculty</a>

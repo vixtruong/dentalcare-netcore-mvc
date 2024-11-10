@@ -15,9 +15,10 @@
     }
 
     .container-invoice .search {
-        width: 95% !important;
-        top: 6px;
-        left: 10px;
+        padding-top: 6px;
+        padding-left: 10px;
+        border: none;
+        background-color: white;
     }
 
     .container-invoice .form-control {
@@ -51,6 +52,11 @@
     .table-action i:hover {
         opacity: 0.5;
     }
+
+    thead th a {
+        text-decoration: none;
+        color: #000000;
+    }
 </style>
 
 <div class="page-header text-primary">
@@ -63,8 +69,20 @@
     <div class="p-4 container-employee">
         <div class="mb-2 d-flex justify-content-between align-items-center">
             <div class="position-relative">
-                <span class="position-absolute search text-primary"><i class="fa fa-search"></i></span>
-                <input class="form-control w-100 fst-italic" placeholder="Search by id, name...">
+                <form method="get" action="@Url.Action("Index", "Technique")">
+                    <div class="position-relative">
+                        <button class="position-absolute search text-primary" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        <input class="form-control w-100"
+                               name="searchQuery"
+                               placeholder="Search by id, name..."
+                               value="@ViewBag.SearchQuery" />
+                        <input type="hidden" name="role" value="@ViewBag.Role" />
+                        <input type="hidden" name="sortColumn" value="@ViewBag.SortColumn" />
+                        <input type="hidden" name="sortDirection" value="@ViewBag.SortDirection" />
+                    </div>
+                </form>
             </div>
 
             <a asp-action="AddTech" asp-controller="Technique" class="btn btn-light fw-bold">Add Technique</a>
@@ -74,11 +92,51 @@
             <table class="table table-responsive table-borderless table-action">
                 <thead>
                 <tr class="bg-light">
-                    <th scope="col" width="20%">ID</th>
-                    <th scope="col" width="20%">Technique</th>
-                    <th scope="col" width="20%">TechWork</th>
-                    <th scope="col" width="20%">Unit</th>
-                    <th scope="col" width="20%">Price</th>
+                        <th scope="col" width="20%">
+                            <a asp-action="Index" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Technique" asp-route-sortColumn="ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                ID
+                                @if (ViewBag.SortColumn == "ID")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="20%">
+                            <a asp-action="Index" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Technique" asp-route-sortColumn="Type" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                Type
+                                @if (ViewBag.SortColumn == "Type")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="20%">
+                            <a asp-action="Index" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Technique" asp-route-sortColumn="Name" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                Name
+                                @if (ViewBag.SortColumn == "Name")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="20%">
+                            <a asp-action="Index" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Technique" asp-route-sortColumn="Unit" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                Unit
+                                @if (ViewBag.SortColumn == "Unit")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="20%">
+                            <a asp-action="Index" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Technique" asp-route-sortColumn="Price" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                Price
+                                @if (ViewBag.SortColumn == "Price")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
                     <th scope="col" class="text-end" width="7%">Action</th>
                 </tr>
                 </thead>
@@ -120,7 +178,7 @@
                 @if (Model.HasPreviousPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1 })" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -129,14 +187,14 @@
                 @for (int i = 1; i <= Model.PageCount; i++)
                 {
                     <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                        <a class="page-link" href="@Url.Action("Index", new { page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })">@i</a>
                     </li>
                 }
 
                 @if (Model.HasNextPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1 })" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

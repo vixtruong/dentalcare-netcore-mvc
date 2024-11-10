@@ -26,13 +26,38 @@ namespace DentalCare.Controllers
         }
 
         [Route("medicine")]
-        public IActionResult Index(int? page)
+        public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            ViewBag.MedicineTypes = _medicineTypeService.GetAll();
             var pageNumber = (page ?? 1);
             var pageSize = 10;
             var medicines = _medicineService.GetAll();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                medicines = medicines.Where(a => a.Id.Contains(searchQuery) ||
+                                                 a.Name.ToString().Contains(searchQuery) ||
+                                                 a.Medicinetype.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
+
+            medicines = (sortColumn switch
+            {
+                "ID" => sortDirection == "desc" ? medicines.OrderByDescending(a => a.Id) : medicines.OrderBy(a => a.Id),
+                "Type" => sortDirection == "desc" ? medicines.OrderByDescending(a => a.Medicinetype?.Name ?? "") : medicines.OrderBy(a => a.Medicinetype?.Name ?? ""),
+                "Name" => sortDirection == "desc" ? medicines.OrderByDescending(a => a.Name) : medicines.OrderBy(a => a.Name),
+                "Unit" => sortDirection == "desc" ? medicines.OrderByDescending(a => a.Unit) : medicines.OrderBy(a => a.Unit),
+                "Quantity" => sortDirection == "desc" ? medicines.OrderByDescending(a => a.Quantity) : medicines.OrderBy(a => a.Quantity),
+                "Price" => sortDirection == "desc" ? medicines.OrderByDescending(a => a.Price) : medicines.OrderBy(a => a.Price),
+                _ => medicines.OrderBy(a => a.Id)
+            }).ToList();
+
+            ViewBag.SortColumn = sortColumn;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
             var pagedList = medicines.ToPagedList(pageNumber, pageSize);
-            ViewBag.MedicineTypes = _medicineTypeService.GetAll();
             return View(pagedList);
         }
 

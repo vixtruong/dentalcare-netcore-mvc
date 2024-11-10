@@ -97,15 +97,39 @@ namespace DentalCare.Controllers
         }
 
         [Route("shift")]
-        public IActionResult Manage(int? page)
+        public IActionResult Manage(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            ViewBag.Doctors = _doctorService.GetAll();
+            ViewBag.Nurses = _nurseService.GetAll();
             var shiftList = _shiftService.GetAll();
             int pageSize = 10;
             int pageNumber = (page ?? 1);
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                shiftList = shiftList.Where(a => a.Id.Contains(searchQuery) ||
+                                                 a.Date.ToString("dd-MM-yyyy").Contains(searchQuery) ||
+                                                 a.Doctorid.Contains(searchQuery) ||
+                                                 a.Nurseid.Contains(searchQuery)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
+
+            shiftList = (sortColumn switch
+            {
+                "Date" => sortDirection == "desc" ? shiftList.OrderByDescending(a => a.Date) : shiftList.OrderBy(a => a.Date),
+                "Doctor" => sortDirection == "desc" ? shiftList.OrderByDescending(a => a.Doctor?.Name ?? "") : shiftList.OrderBy(a => a.Doctor?.Name ?? ""),
+                "Doctor ID" => sortDirection == "desc" ? shiftList.OrderByDescending(a => a.Doctor?.Id ?? "") : shiftList.OrderBy(a => a.Doctor?.Id ?? ""),
+                "ID" => sortDirection == "desc" ? shiftList.OrderByDescending(a => a.Id) : shiftList.OrderBy(a => a.Id),
+                _ => shiftList.OrderBy(a => a.Id)
+            }).ToList();
+
+            ViewBag.SortColumn = sortColumn;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
             var pagedList = shiftList.ToPagedList(pageNumber, pageSize);
 
-            ViewBag.Doctors = _doctorService.GetAll();
-            ViewBag.Nurses = _nurseService.GetAll();
             return View(pagedList);
         }
     }

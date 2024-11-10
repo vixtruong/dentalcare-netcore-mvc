@@ -1,90 +1,143 @@
-﻿    @model X.PagedList.IPagedList<Doctor>
+﻿@model X.PagedList.IPagedList<Doctor>
 
-    @{
-        Layout = null;
+@{
+    Layout = null;
+}
+
+<style>
+    .fired {
+        opacity: 0.5;
     }
 
-    <style>
-        .fired {
-            opacity: 0.5;
-        }
+    .table-action tr:hover {
+        background-color: #eee;
+    }
 
-        .table-action tr:hover {
-            background-color: #eee;
-        }
-    </style>
+    thead th a {
+        text-decoration: none;
+        color: #000000;
+    }
+</style>
 
-    <div class="table-responsive">
-        <table class="table table-responsive table-action table-borderless">
-            <thead>
-                <tr class="bg-light">
-                    <th scope="col" width="5%">ID</th>
-                    <th scope="col" width="20%">Name</th>
-                    <th scope="col" width="15%">Faculty</th>
-                    <th scope="col" width="5%">Gender</th>
-                    <th scope="col" width="12.5%">Birthday</th>
-                    <th scope="col" width="15%">Phone</th>
-                    <th scope="col" width="15%">Email</th>
-                    <th scope="col" width="12.5%">Join Time</th>
-                    <th scope="col" class="text-end" width="5%">Action</th>
+<div class="table-responsive">
+    <table class="table table-responsive table-action table-borderless">
+        <thead>
+            <tr class="bg-light">
+                <th scope="col" width="5%">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Doctor" asp-route-sortColumn="ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                        ID
+                        @if (ViewBag.SortColumn == "ID")
+                        {
+                            <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                        }
+                    </a>
+                </th>
+                <th scope="col" width="20%">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Doctor" asp-route-sortColumn="Name" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                        Name
+                        @if (ViewBag.SortColumn == "Name")
+                        {
+                            <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                        }
+                    </a>
+                </th>
+                <th scope="col" width="15%">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Doctor" asp-route-sortColumn="Faculty" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                        Faculty
+                        @if (ViewBag.SortColumn == "Faculty")
+                        {
+                            <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                        }
+                    </a>
+                </th>
+                <th scope="col" width="9%">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Doctor" asp-route-sortColumn="Gender" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                        Gender
+                        @if (ViewBag.SortColumn == "Gender")
+                        {
+                            <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                        }
+                    </a>
+                </th>
+                <th scope="col" width="12.5%">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Doctor" asp-route-sortColumn="Birthday" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                        Birthday
+                        @if (ViewBag.SortColumn == "Birthday")
+                        {
+                            <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                        }
+                    </a>
+                </th>
+                <th scope="col" width="15%">Phone</th>
+                <th scope="col" width="15%">Email</th>
+                <th scope="col" width="12.5%">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Doctor" asp-route-sortColumn="Join Time" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                        Join Time
+                        @if (ViewBag.SortColumn == "Join Time")
+                        {
+                            <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                        }
+                    </a>
+                </th>
+                <th scope="col" class="text-end" width="5%">Action</th>
+            </tr>
+        </thead>
+        <tbody style="font-size: 0.9rem !important;">
+            @foreach (var i in Model)
+            {
+                <tr class="@(i.Fired == true ? "fired" : "")">
+                    <td>@i.Id</td>
+                    <td><img src="@i.Avatar" width="16">    @i.Name</td>
+                    <td>@i.FacultyName</td>
+                    <td>@(i.Gender ? "Male" : "Female")</td>
+                    <td>@i.Birthday.ToString("dd/MM/yyyy")</td>
+                    <td>@i.Phone</td>
+                    <td>@i.Email</td>
+                    <td>@i.Firstdayofwork.ToString("dd/MM/yyyy")</td>
+                    <td class="text-end table-action" style="cursor: pointer;">
+                        <a href="@Url.Action("Edit", "Employee", new { id = @i.Id})"><i class="fa fa-edit ms-2 text-primary"></i></a>
+                        <a href="@Url.Action("Fire", "Employee", new { id = i.Id })"
+                           onclick="return confirm('@(i.Fired == false ? "Are you sure you want to fire this employee? If you fire, this employee account will be disabled." : "This employee is already fired. Do you want to unfired him/her?")');">
+                            @if (i.Fired == false)
+                            {
+                                <i class="fa fa-toggle-on text-primary"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-toggle-off text-primary"></i>
+                            }
+                        </a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody style="font-size: 0.9rem !important;">
-                @foreach (var i in Model)
-                {
-                    <tr class="@(i.Fired == true ? "fired" : "")">
-                        <td>@i.Id</td>
-                        <td><img src="@i.Avatar" width="16">    @i.Name</td>
-                        <td>@i.FacultyName</td>
-                        <td>@(i.Gender ? "Male" : "Female")</td>
-                        <td>@i.Birthday.ToString("dd/MM/yyyy")</td>
-                        <td>@i.Phone</td>
-                        <td>@i.Email</td>
-                        <td>@i.Firstdayofwork.ToString("dd/MM/yyyy")</td>
-                        <td class="text-end table-action" style="cursor: pointer;">
-                            <a href="@Url.Action("Edit", "Employee", new { id = @i.Id})"><i class="fa fa-edit ms-2 text-primary"></i></a>
-                            <a href="@Url.Action("Fire", "Employee", new { id = i.Id })"
-                               onclick="return confirm('@(i.Fired == false ? "Are you sure you want to fire this employee? If you fire, this employee account will be disabled." : "This employee is already fired. Do you want to unfired him/her?")');">
-                                @if (i.Fired == false)
-                                {
-                                    <i class="fa fa-toggle-on text-primary"></i>
-                                }
-                                else
-                                {
-                                    <i class="fa fa-toggle-off text-primary"></i>
-                                }
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <nav aria-label="Page navigation">
-            <ul class="pagination pagination-md justify-content-center">
-                @if (Model.HasPreviousPage)
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Manage", "Employee", new {role = "Doctor", page = Model.PageNumber - 1 })" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                }
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination pagination-md justify-content-center">
+            @if (Model.HasPreviousPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Manage", "Employee", new {role = "Doctor", page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
 
-                @for (int i = 1; i <= Model.PageCount; i++)
-                {
-                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Manage", "Employee", new {role = "Doctor", page = i })">@i</a>
-                    </li>
-                }
+            @for (int i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Manage", "Employee", new {role = "Doctor", page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })">@i</a>
+                </li>
+            }
 
-                @if (Model.HasNextPage)
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Manage","Employee", new { role = "Doctor", page = Model.PageNumber + 1 })" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                }
-            </ul>
-        </nav>
-    </div>
+            @if (Model.HasNextPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Manage","Employee", new { role = "Doctor", page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

@@ -112,14 +112,43 @@ namespace DentalCare.Controllers
 
         [HttpGet]
         [Route("appointment")]
-        public IActionResult Manage(int? page)
+        public IActionResult Manage(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             ViewBag.Customers = _customerService.GetAll();
             ViewBag.Doctors = _doctorService.GetAll();
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
+
             var appointments = _appointmentService.GetAll();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                appointments = appointments.Where(a => a.Id.Contains(searchQuery) ||
+                                                       a.Time.ToString().Contains(searchQuery) ||
+                                                       a.Date.ToString("dd-MM-yyyy").Contains(searchQuery) ||
+                                                       a.Doctorid.Contains(searchQuery) ||
+                                                       a.Customerid.Contains(searchQuery)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
+
+            appointments = (sortColumn switch
+            {
+                "Date" => sortDirection == "desc" ? appointments.OrderByDescending(a => a.Date) : appointments.OrderBy(a => a.Date),
+                "Doctor" => sortDirection == "desc" ? appointments.OrderByDescending(a => a.Doctor.Name) : appointments.OrderBy(a => a.Doctor.Name),
+                "Doctor ID" => sortDirection == "desc" ? appointments.OrderByDescending(a => a.Doctor.Id) : appointments.OrderBy(a => a.Doctor.Id),
+                "Customer" => sortDirection == "desc" ? appointments.OrderByDescending(a => a.Customer.Name) : appointments.OrderBy(a => a.Customer.Name),
+                "Customer ID" => sortDirection == "desc" ? appointments.OrderByDescending(a => a.Customer.Id) : appointments.OrderBy(a => a.Customer.Id),
+                "Time" => sortDirection == "desc" ? appointments.OrderByDescending(a => a.Time) : appointments.OrderBy(a => a.Time),
+                "Id" => sortDirection == "desc" ? appointments.OrderByDescending(a => a.Id) : appointments.OrderBy(a => a.Id),
+                _ => appointments.OrderBy(a => a.Id)
+            }).ToList();
+
+            ViewBag.SortColumn = sortColumn;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
             var pagedList = appointments.ToPagedList(pageNumber, pageSize);
             return View(pagedList);
         }
