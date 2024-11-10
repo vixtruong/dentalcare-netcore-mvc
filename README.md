@@ -18,6 +18,7 @@ The **DentalCare Website** is an application designed to provide users with an e
 ### Backend:
 - **ASP.NET Core MVC**
 - **Entity Framework Core**
+- **SQL Server**
 - **Cookie Authentication**
 - **Middleware**
 - **Dependency Injection**
