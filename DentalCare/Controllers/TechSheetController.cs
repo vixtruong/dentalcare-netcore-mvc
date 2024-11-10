@@ -26,7 +26,7 @@ namespace DentalCare.Controllers
             _techSheetService = techSheetService;
         }
 
-        public IActionResult Index(int? page)
+        public IActionResult Index(int? page, string sortColumn, string sortDirection)
         {
             var pageNumber = (page ?? 1);
             var pageSize = 10;
@@ -36,6 +36,23 @@ namespace DentalCare.Controllers
             ViewBag.MedicalExams = _medicalExamService.GetAll();
 
             var techSheets = _techSheetService.GetAll();
+
+            techSheets = (sortColumn switch
+            {
+                "Date" => sortDirection == "desc" ? techSheets.OrderByDescending(a => a.Date) : techSheets.OrderBy(a => a.Date),
+                "MES" => sortDirection == "desc" ? techSheets.OrderByDescending(a => a.Medicalexamination?.Id ?? "") : techSheets.OrderBy(a => a.Medicalexamination?.Id ?? ""),
+                "Customer ID" => sortDirection == "desc" ? techSheets.OrderByDescending(a => a.Medicalexamination.Customer?.Id ?? "") : techSheets.OrderBy(a => a.Medicalexamination.Customer?.Id ?? ""),
+                "Customer" => sortDirection == "desc" ? techSheets.OrderByDescending(a => a.Medicalexamination.Customer?.Name ?? "") : techSheets.OrderBy(a => a.Medicalexamination.Customer?.Name ?? ""),
+                "Doctor" => sortDirection == "desc" ? techSheets.OrderByDescending(a => a.Medicalexamination.Doctor?.Name ?? "") : techSheets.OrderBy(a => a.Medicalexamination.Doctor?.Name ?? ""),
+                "Doctor ID" => sortDirection == "desc" ? techSheets.OrderByDescending(a => a.Medicalexamination.Doctor?.Id ?? "") : techSheets.OrderBy(a => a.Medicalexamination.Doctor?.Id ?? ""),
+                "ID" => sortDirection == "desc" ? techSheets.OrderByDescending(a => a.Id) : techSheets.OrderBy(a => a.Id),
+                _ => techSheets.OrderBy(a => a.Id)
+            }).ToList();
+
+            ViewBag.SortColumn = sortColumn;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
             var pagedList = techSheets.ToPagedList(pageNumber, pageSize);
             return View(pagedList);
         }

@@ -1,4 +1,6 @@
-﻿@model X.PagedList.IPagedList<DentalCare.Models.Appointment>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<DentalCare.Models.Appointment>
 
 @{
     Layout = "_DashboardLayout";
@@ -52,6 +54,11 @@
         opacity: 0.5;
     }
 
+    thead th a {
+        text-decoration: none;
+        color: #000000;
+    }
+
     .message {
         position: absolute;
         top: 70px;
@@ -88,21 +95,74 @@
         <div class="table-responsive">
             <table class="table table-responsive table-borderless table-action">
                 <thead>
-                <tr class="bg-light">
-                    <th scope="col" width="10%">ID</th>
-                    <th scope="col" width="10%">Date</th>
-                    <th scope="col" width="5%">Time</th>
-                    <th scope="col" width="20%">Doctor</th>
-                    <th scope="col" width="10%">Doctor ID</th>
-                    <th scope="col" width="13%">Faculty</th>
-                    <th scope="col" width="20%">Customer</th>
-                    <th scope="col" width="10%">Customer ID</th>
-                    <th scope="col" class="text-end" width="10%">Action</th>
-                </tr>
+                    <tr class="bg-light">
+                        <th scope="col" width="10%">
+                            <a asp-action="Manage" asp-route-sortColumn="Id" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                ID
+                                @if (ViewBag.SortColumn == "Id")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="10%">
+                            <a asp-action="Manage" asp-route-sortColumn="Date" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                Date
+                                @if (ViewBag.SortColumn == "Date")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="7%">
+                            <a asp-action="Manage" asp-route-sortColumn="Time" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            Time
+                                @if (ViewBag.SortColumn == "Time")
+                            {
+                                <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                            }
+                        </a></th>
+                        <th scope="col" width="20%">
+                            <a asp-action="Manage" asp-route-sortColumn="Doctor" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                Doctor
+                                @if (ViewBag.SortColumn == "Doctor")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="13%">
+                            <a asp-action="Manage" asp-route-sortColumn="Doctor ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                Doctor ID
+                                @if (ViewBag.SortColumn == "Doctor ID")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="10%">Faculty</th>
+                        <th scope="col" width="17%">
+                            <a asp-action="Manage" asp-route-sortColumn="Customer" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                                Customer
+                                @if (ViewBag.SortColumn == "Customer")
+                                {
+                                    <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                                }
+                            </a>
+                        </th>
+                        <th scope="col" width="13%">
+                            <a asp-action="Manage" asp-route-sortColumn="Customer ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            Customer ID
+                            @if (ViewBag.SortColumn == "Customer ID")
+                            {
+                                <i class="fa ms-2 m-auto @(ViewBag.SortDirection == "asc" ? "fa-sort-up" : "fa-sort-down")"></i>
+                            }
+                        </a></th>
+                        <th scope="col" class="text-end" width="10%">Action</th>
+                    </tr>
                 </thead>
                 <tbody style="font-size: 0.9rem !important;">
-                @{
-                    foreach (var s in Model)
+                    @foreach (var s in Model)
                     {
                         <tr>
                             <td>@s.Id</td>
@@ -143,7 +203,6 @@
                             </td>
                         </tr>
                     }
-                }
                 </tbody>
             </table>
         </div>
@@ -153,7 +212,7 @@
                 @if (Model.HasPreviousPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Manage", new { page = Model.PageNumber - 1 })" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("Manage", new { page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -162,14 +221,14 @@
                 @for (int i = 1; i <= Model.PageCount; i++)
                 {
                     <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Manage", new { page = i })">@i</a>
+                        <a class="page-link" href="@Url.Action("Manage", new { page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })">@i</a>
                     </li>
                 }
 
                 @if (Model.HasNextPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Manage", new { page = Model.PageNumber + 1 })" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("Manage", new { page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

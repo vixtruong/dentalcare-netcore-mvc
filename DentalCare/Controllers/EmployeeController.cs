@@ -413,32 +413,105 @@ namespace DentalCare.Controllers
 
         [HttpGet]
         [Route("employee")]
-        public IActionResult Manage(string role, int? page)
+        public IActionResult Manage(string role, int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             int pagenumber = (page ?? 1);
             int pageSize = 10;
+
             if (string.IsNullOrEmpty(role))
             {
-                var receptionistList = _receptionistService.GetAll();
-                var pagedList = receptionistList.ToPagedList(pagenumber, pageSize);
-                return View(pagedList);
+                role = "receptionist";
             }
 
             if (role.ToLower().Equals("doctor"))
             {
                 var doctorList = _doctorService.GetAll();
+
+                if (!string.IsNullOrEmpty(searchQuery))
+                {
+                    doctorList = doctorList
+                        .Where(n => n.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                                    n.Id.ToString().Contains(searchQuery))
+                        .ToList();
+                }
+
+
+                doctorList = (sortColumn switch
+                {
+                    "Name" => sortDirection == "desc" ? doctorList.OrderByDescending(a => a.Name) : doctorList.OrderBy(a => a.Name),
+                    "Faculty" => sortDirection == "desc" ? doctorList.OrderByDescending(a => a.FacultyName) : doctorList.OrderBy(a => a.FacultyName),
+                    "Gender" => sortDirection == "desc" ? doctorList.OrderByDescending(a => a.Gender) : doctorList.OrderBy(a => a.Gender),
+                    "Birthday" => sortDirection == "desc" ? doctorList.OrderByDescending(a => a.Birthday) : doctorList.OrderBy(a => a.Birthday),
+                    "Join Time" => sortDirection == "desc" ? doctorList.OrderByDescending(a => a.Firstdayofwork) : doctorList.OrderBy(a => a.Firstdayofwork),
+                    "ID" => sortDirection == "desc" ? doctorList.OrderByDescending(a => a.Id) : doctorList.OrderBy(a => a.Id),
+                    _ => doctorList.OrderBy(a => a.Id)
+                }).ToList();
+
+                ViewBag.Role = role;
+                ViewBag.SortColumn = sortColumn;
+                ViewBag.SortDirection = sortDirection;
+                ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
                 var pagedList = doctorList.ToPagedList(pagenumber, pageSize);
                 return View(pagedList);
             }
             else if (role.ToLower().Equals("nurse"))
             {
                 var nurseList = _nurseService.GetAll();
+
+                if (!string.IsNullOrEmpty(searchQuery))
+                {
+                    nurseList = nurseList
+                        .Where(n => n.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                                    n.Id.ToString().Contains(searchQuery))
+                        .ToList();
+                }
+
+                nurseList = (sortColumn switch
+                {
+                    "Name" => sortDirection == "desc" ? nurseList.OrderByDescending(a => a.Name) : nurseList.OrderBy(a => a.Name),
+                    "Gender" => sortDirection == "desc" ? nurseList.OrderByDescending(a => a.Gender) : nurseList.OrderBy(a => a.Gender),
+                    "Birthday" => sortDirection == "desc" ? nurseList.OrderByDescending(a => a.Birthday) : nurseList.OrderBy(a => a.Birthday),
+                    "Join Time" => sortDirection == "desc" ? nurseList.OrderByDescending(a => a.Firstdayofwork) : nurseList.OrderBy(a => a.Firstdayofwork),
+                    "ID" => sortDirection == "desc" ? nurseList.OrderByDescending(a => a.Id) : nurseList.OrderBy(a => a.Id),
+                    _ => nurseList.OrderBy(a => a.Id)
+                }).ToList();
+
+                ViewBag.Role = role;
+                ViewBag.SortColumn = sortColumn;
+                ViewBag.SortDirection = sortDirection;
+                ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
                 var pagedList = nurseList.ToPagedList(pagenumber, pageSize);
                 return View(pagedList);
             }
             else
             {
                 var receptionistList = _receptionistService.GetAll();
+
+                if (!string.IsNullOrEmpty(searchQuery))
+                {
+                    receptionistList = receptionistList
+                        .Where(n => n.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
+                                    n.Id.ToString().Contains(searchQuery))
+                        .ToList();
+                }
+
+                receptionistList = (sortColumn switch
+                {
+                    "Name" => sortDirection == "desc" ? receptionistList.OrderByDescending(a => a.Name) : receptionistList.OrderBy(a => a.Name),
+                    "Gender" => sortDirection == "desc" ? receptionistList.OrderByDescending(a => a.Gender) : receptionistList.OrderBy(a => a.Gender),
+                    "Birthday" => sortDirection == "desc" ? receptionistList.OrderByDescending(a => a.Birthday) : receptionistList.OrderBy(a => a.Birthday),
+                    "Join Time" => sortDirection == "desc" ? receptionistList.OrderByDescending(a => a.Firstdayofwork) : receptionistList.OrderBy(a => a.Firstdayofwork),
+                    "ID" => sortDirection == "desc" ? receptionistList.OrderByDescending(a => a.Id) : receptionistList.OrderBy(a => a.Id),
+                    _ => receptionistList.OrderBy(a => a.Id)
+                }).ToList();
+
+                ViewBag.Role = role;
+                ViewBag.SortColumn = sortColumn;
+                ViewBag.SortDirection = sortDirection;
+                ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
                 var pagedList = receptionistList.ToPagedList(pagenumber, pageSize);
                 return View(pagedList);
             }

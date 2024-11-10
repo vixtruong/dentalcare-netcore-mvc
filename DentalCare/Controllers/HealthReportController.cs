@@ -48,17 +48,34 @@ namespace DentalCare.Controllers
             return Json(new { success = true, data });
         }
 
-        public IActionResult Index(int? page)
+        public IActionResult Index(int? page, string sortColumn, string sortDirection)
         {
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             ViewBag.Doctors = _doctorService.GetAll();
             ViewBag.Customers = _customerService.GetAll();
-
+            var prescriptions = _healthReportService.GetAll();
             int pageNumber = (page ?? 1);
             int pageSize = 10;
 
-            var hrList = _healthReportService.GetAll();
-            var pagedList = hrList.ToPagedList(pageNumber, pageSize);
+            prescriptions = (sortColumn switch
+            {
+                "Date" => sortDirection == "desc" ? prescriptions.OrderByDescending(a => a.Date) : prescriptions.OrderBy(a => a.Date),
+                "MES" => sortDirection == "desc" ? prescriptions.OrderByDescending(a => a.Medicalexamination?.Id ?? "") : prescriptions.OrderBy(a => a.Medicalexamination?.Id ?? ""),
+                "Customer ID" => sortDirection == "desc" ? prescriptions.OrderByDescending(a => a.Medicalexamination.Customer?.Id ?? "") : prescriptions.OrderBy(a => a.Medicalexamination.Customer?.Id ?? ""),
+                "Customer" => sortDirection == "desc" ? prescriptions.OrderByDescending(a => a.Medicalexamination.Customer?.Name ?? "") : prescriptions.OrderBy(a => a.Medicalexamination.Customer?.Name ?? ""),
+                "Doctor" => sortDirection == "desc" ? prescriptions.OrderByDescending(a => a.Medicalexamination.Doctor?.Name ?? "") : prescriptions.OrderBy(a => a.Medicalexamination.Doctor?.Name ?? ""),
+                "Doctor ID" => sortDirection == "desc" ? prescriptions.OrderByDescending(a => a.Medicalexamination.Doctor?.Id ?? "") : prescriptions.OrderBy(a => a.Medicalexamination.Doctor?.Id ?? ""),
+                "ID" => sortDirection == "desc" ? prescriptions.OrderByDescending(a => a.Id) : prescriptions.OrderBy(a => a.Id),
+                "Fre" => sortDirection == "desc" ? prescriptions.OrderByDescending(a => a.Frequency) : prescriptions.OrderBy(a => a.Frequency),
+                _ => prescriptions.OrderBy(a => a.Id)
+            }).ToList();
+
+            ViewBag.SortColumn = sortColumn;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
+
+            var pagedList = prescriptions.ToPagedList(pageNumber, pageSize);
             return View(pagedList);
         }
 
