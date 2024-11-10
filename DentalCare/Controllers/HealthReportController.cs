@@ -48,7 +48,7 @@ namespace DentalCare.Controllers
             return Json(new { success = true, data });
         }
 
-        public IActionResult Index(int? page, string sortColumn, string sortDirection)
+        public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             ViewBag.Doctors = _doctorService.GetAll();
@@ -56,6 +56,17 @@ namespace DentalCare.Controllers
             var prescriptions = _healthReportService.GetAll();
             int pageNumber = (page ?? 1);
             int pageSize = 10;
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                prescriptions = prescriptions.Where(a => a.Id.Contains(searchQuery) ||
+                                                         a.MedicalexaminationId.ToString().Contains(searchQuery) ||
+                                                         a.Date.ToString("dd-MM-yyyy").Contains(searchQuery) ||
+                                                         a.Medicalexamination.Doctorid.Contains(searchQuery) ||
+                                                         a.Medicalexamination.Customerid.Contains(searchQuery)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
 
             prescriptions = (sortColumn switch
             {

@@ -112,7 +112,7 @@ namespace DentalCare.Controllers
 
         [HttpGet]
         [Route("appointment")]
-        public IActionResult Manage(int? page, string sortColumn, string sortDirection)
+        public IActionResult Manage(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             ViewBag.Customers = _customerService.GetAll();
             ViewBag.Doctors = _doctorService.GetAll();
@@ -121,6 +121,17 @@ namespace DentalCare.Controllers
             int pageNumber = (page ?? 1);
 
             var appointments = _appointmentService.GetAll();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                appointments = appointments.Where(a => a.Id.Contains(searchQuery) ||
+                                                       a.Time.ToString().Contains(searchQuery) ||
+                                                       a.Date.ToString("dd-MM-yyyy").Contains(searchQuery) ||
+                                                       a.Doctorid.Contains(searchQuery) ||
+                                                       a.Customerid.Contains(searchQuery)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
 
             appointments = (sortColumn switch
             {

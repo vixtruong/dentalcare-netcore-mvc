@@ -18,8 +18,10 @@
     }
 
     .container-invoice .search {
-        top: 6px;
-        left: 10px;
+        padding-top: 6px;
+        padding-left: 10px;
+        border: none;
+        background-color: white;
     }
 
     .container-invoice .form-control {
@@ -85,11 +87,20 @@
 <div class="container container-lg mt-4 px-2 mb-4 container-invoice shadow-sm card">
     <div class="p-4 container-employee">
         <div class="mb-2 d-flex justify-content-between align-items-center">
-
-            <div class="position-relative">
-                <span class="position-absolute search text-primary"><i class="fa fa-search"></i></span>
-                <input class="form-control w-100 fst-italic" placeholder="Search by id, name...">
-            </div>
+            <form method="get" action="@Url.Action("Manage", "Appointment")">
+                <div class="position-relative">
+                    <button class="position-absolute search text-primary" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <input class="form-control w-100"
+                           name="searchQuery"
+                           placeholder="Search by id, name..."
+                           value="@ViewBag.SearchQuery" />
+                    <input type="hidden" name="role" value="@ViewBag.Role" />
+                    <input type="hidden" name="sortColumn" value="@ViewBag.SortColumn" />
+                    <input type="hidden" name="sortDirection" value="@ViewBag.SortDirection" />
+                </div>
+            </form>
         </div>
 
         <div class="table-responsive">
@@ -97,7 +108,7 @@
                 <thead>
                     <tr class="bg-light">
                         <th scope="col" width="10%">
-                            <a asp-action="Manage" asp-route-sortColumn="Id" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-route-sortColumn="Id" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                                 ID
                                 @if (ViewBag.SortColumn == "Id")
                                 {
@@ -106,7 +117,7 @@
                             </a>
                         </th>
                         <th scope="col" width="10%">
-                            <a asp-action="Manage" asp-route-sortColumn="Date" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-route-sortColumn="Date" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                                 Date
                                 @if (ViewBag.SortColumn == "Date")
                                 {
@@ -115,7 +126,7 @@
                             </a>
                         </th>
                         <th scope="col" width="7%">
-                            <a asp-action="Manage" asp-route-sortColumn="Time" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-route-sortColumn="Time" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                             Time
                                 @if (ViewBag.SortColumn == "Time")
                             {
@@ -123,7 +134,7 @@
                             }
                         </a></th>
                         <th scope="col" width="20%">
-                            <a asp-action="Manage" asp-route-sortColumn="Doctor" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-route-sortColumn="Doctor" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                                 Doctor
                                 @if (ViewBag.SortColumn == "Doctor")
                                 {
@@ -132,7 +143,7 @@
                             </a>
                         </th>
                         <th scope="col" width="13%">
-                            <a asp-action="Manage" asp-route-sortColumn="Doctor ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-route-sortColumn="Doctor ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                                 Doctor ID
                                 @if (ViewBag.SortColumn == "Doctor ID")
                                 {
@@ -142,7 +153,7 @@
                         </th>
                         <th scope="col" width="10%">Faculty</th>
                         <th scope="col" width="17%">
-                            <a asp-action="Manage" asp-route-sortColumn="Customer" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-route-sortColumn="Customer" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                                 Customer
                                 @if (ViewBag.SortColumn == "Customer")
                                 {
@@ -151,7 +162,7 @@
                             </a>
                         </th>
                         <th scope="col" width="13%">
-                            <a asp-action="Manage" asp-route-sortColumn="Customer ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                            <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-route-sortColumn="Customer ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                             Customer ID
                             @if (ViewBag.SortColumn == "Customer ID")
                             {
@@ -212,7 +223,7 @@
                 @if (Model.HasPreviousPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Manage", new { page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })" aria-label="Previous">
+                        <a class="page-link" href="@Url.Action("Manage", new { page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -221,14 +232,14 @@
                 @for (int i = 1; i <= Model.PageCount; i++)
                 {
                     <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Manage", new { page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })">@i</a>
+                        <a class="page-link" href="@Url.Action("Manage", new { page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })">@i</a>
                     </li>
                 }
 
                 @if (Model.HasNextPage)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Manage", new { page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })" aria-label="Next">
+                        <a class="page-link" href="@Url.Action("Manage", new { page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

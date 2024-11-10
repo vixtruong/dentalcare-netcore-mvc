@@ -19,13 +19,37 @@ namespace DentalCare.Controllers
         }
 
         [Route("technique")]
-        public IActionResult Index(int? page)
+        public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            ViewBag.Techs = _techniqueService.GetAll();
             var pageNumber = (page ?? 1);
             var pageSize = 10;
             var techWorks = _techWorkService.GetAll();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                techWorks = techWorks.Where(a => a.Id.Contains(searchQuery) ||
+                                                 a.Name.ToString().Contains(searchQuery) ||
+                                                 a.Technique.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
+
+            techWorks = (sortColumn switch
+            {
+                "ID" => sortDirection == "desc" ? techWorks.OrderByDescending(a => a.Id) : techWorks.OrderBy(a => a.Id),
+                "Type" => sortDirection == "desc" ? techWorks.OrderByDescending(a => a.Technique?.Name ?? "") : techWorks.OrderBy(a => a.Technique?.Name ?? ""),
+                "Name" => sortDirection == "desc" ? techWorks.OrderByDescending(a => a.Name) : techWorks.OrderBy(a => a.Name),
+                "Unit" => sortDirection == "desc" ? techWorks.OrderByDescending(a => a.Unit) : techWorks.OrderBy(a => a.Unit),
+                "Price" => sortDirection == "desc" ? techWorks.OrderByDescending(a => a.Price) : techWorks.OrderBy(a => a.Price),
+                _ => techWorks.OrderBy(a => a.Id)
+            }).ToList();
+
+            ViewBag.SortColumn = sortColumn;
+            ViewBag.SortDirection = sortDirection;
+            ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
             var pagedList = techWorks.ToPagedList(pageNumber, pageSize);
-            ViewBag.Techs = _techniqueService.GetAll();
             return View(pagedList);
         }
 

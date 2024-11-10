@@ -433,6 +433,7 @@ namespace DentalCare.Controllers
                         .Where(n => n.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
                                     n.Id.ToString().Contains(searchQuery))
                         .ToList();
+                    ViewBag.SearchQuery = searchQuery;
                 }
 
 
@@ -465,6 +466,7 @@ namespace DentalCare.Controllers
                         .Where(n => n.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
                                     n.Id.ToString().Contains(searchQuery))
                         .ToList();
+                    ViewBag.SearchQuery = searchQuery;
                 }
 
                 nurseList = (sortColumn switch
@@ -495,6 +497,7 @@ namespace DentalCare.Controllers
                         .Where(n => n.Name.Contains(searchQuery, StringComparison.OrdinalIgnoreCase) ||
                                     n.Id.ToString().Contains(searchQuery))
                         .ToList();
+                    ViewBag.SearchQuery = searchQuery;
                 }
 
                 receptionistList = (sortColumn switch

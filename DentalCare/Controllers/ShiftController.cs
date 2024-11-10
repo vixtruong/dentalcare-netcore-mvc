@@ -97,13 +97,23 @@ namespace DentalCare.Controllers
         }
 
         [Route("shift")]
-        public IActionResult Manage(int? page, string sortColumn, string sortDirection)
+        public IActionResult Manage(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             ViewBag.Doctors = _doctorService.GetAll();
             ViewBag.Nurses = _nurseService.GetAll();
             var shiftList = _shiftService.GetAll();
             int pageSize = 10;
             int pageNumber = (page ?? 1);
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                shiftList = shiftList.Where(a => a.Id.Contains(searchQuery) ||
+                                                 a.Date.ToString("dd-MM-yyyy").Contains(searchQuery) ||
+                                                 a.Doctorid.Contains(searchQuery) ||
+                                                 a.Nurseid.Contains(searchQuery)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
 
             shiftList = (sortColumn switch
             {

@@ -42,12 +42,25 @@ namespace DentalCare.Controllers
         }
 
         [Route("invoice")]
-        public IActionResult Index(int? page, string sortColumn, string sortDirection)
+        public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             var invoices = _invoiceService.GetAll();
             ViewBag.Receptionists = _receptionistService.GetAll();
             ViewBag.Customers = _customerService.GetAll();
             ViewBag.MedicalExams = _medicalExamService.GetAll();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                invoices = invoices.Where(a => a.Id.Contains(searchQuery) ||
+                                               a.Medicalexaminationid.ToString().Contains(searchQuery) ||
+                                               a.Date.ToString("dd-MM-yyyy").Contains(searchQuery) ||
+                                               a.Medicalexamination.Doctorid.Contains(searchQuery) ||
+                                               a.Medicalexamination.Customerid.Contains(searchQuery) ||
+                                               a.Receptionistid.Contains(searchQuery) ||
+                                               a.Payment.Contains(searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
 
             invoices = (sortColumn switch
             {
@@ -57,6 +70,7 @@ namespace DentalCare.Controllers
                 "Customer" => sortDirection == "desc" ? invoices.OrderByDescending(a => a.Medicalexamination.Customer?.Name ?? "") : invoices.OrderBy(a => a.Medicalexamination.Customer?.Name ?? ""),
                 "ID" => sortDirection == "desc" ? invoices.OrderByDescending(a => a.Id) : invoices.OrderBy(a => a.Id),
                 "Total Due" => sortDirection == "desc" ? invoices.OrderByDescending(a => a.Finaltotal) : invoices.OrderBy(a => a.Finaltotal),
+                "Payment" => sortDirection == "desc" ? invoices.OrderByDescending(a => a.Payment) : invoices.OrderBy(a => a.Payment),
                 _ => invoices.OrderBy(a => a.Id)
             }).ToList();
 

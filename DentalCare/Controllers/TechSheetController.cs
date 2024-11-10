@@ -26,7 +26,7 @@ namespace DentalCare.Controllers
             _techSheetService = techSheetService;
         }
 
-        public IActionResult Index(int? page, string sortColumn, string sortDirection)
+        public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             var pageNumber = (page ?? 1);
             var pageSize = 10;
@@ -36,6 +36,17 @@ namespace DentalCare.Controllers
             ViewBag.MedicalExams = _medicalExamService.GetAll();
 
             var techSheets = _techSheetService.GetAll();
+
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                techSheets = techSheets.Where(a => a.Id.Contains(searchQuery) ||
+                                                   a.MedicalexaminationId.ToString().Contains(searchQuery) ||
+                                                   a.Date.ToString("dd-MM-yyyy").Contains(searchQuery) ||
+                                                   a.Medicalexamination.Doctorid.Contains(searchQuery) ||
+                                                   a.Medicalexamination.Customerid.Contains(searchQuery)).ToList();
+
+                ViewBag.SearchQuery = searchQuery;
+            }
 
             techSheets = (sortColumn switch
             {

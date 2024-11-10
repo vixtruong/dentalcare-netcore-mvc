@@ -25,7 +25,7 @@
         <thead>
             <tr class="bg-light">
                 <th scope="col" width="5%">
-                    <a asp-action="Manage" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="ID" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                         ID
                         @if (ViewBag.SortColumn == "ID")
                         {
@@ -34,7 +34,7 @@
                     </a>
                 </th>
                 <th scope="col" width="20%">
-                    <a asp-action="Manage" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="Name" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="Name" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                         Name
                         @if (ViewBag.SortColumn == "Name")
                         {
@@ -43,7 +43,7 @@
                     </a>
                 </th>
                 <th scope="col" width="9%">
-                    <a asp-action="Manage" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="Gender" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="Gender" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                         Gender
                         @if (ViewBag.SortColumn == "Gender")
                         {
@@ -52,7 +52,7 @@
                     </a>
                 </th>
                 <th scope="col" width="12.5%">
-                    <a asp-action="Manage" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="Birthday" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="Birthday" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                         Birthday
                         @if (ViewBag.SortColumn == "Birthday")
                         {
@@ -63,7 +63,7 @@
                 <th scope="col" width="15%">Phone</th>
                 <th scope="col" width="15%">Email</th>
                 <th scope="col" width="12.5%">
-                    <a asp-action="Manage" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="Join Time" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
+                    <a asp-action="Manage" asp-route-searchQuery="@ViewBag.SearchQuery" asp-controller="Employee" asp-route-role="Receptionist" asp-route-sortColumn="Join Time" asp-route-sortDirection="@ViewBag.NextSortDirection" asp-route-page="@ViewBag.PageNumber">
                         Join Time
                         @if (ViewBag.SortColumn == "Join Time")
                         {
@@ -110,7 +110,7 @@
             @if (Model.HasPreviousPage)
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Manage", "Employee", new {role = "Receptionist", page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })" aria-label="Previous">
+                    <a class="page-link" href="@Url.Action("Manage", "Employee", new {role = "Receptionist", page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -119,14 +119,14 @@
             @for (int i = 1; i <= Model.PageCount; i++)
             {
                 <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Manage", "Employee", new {role = "Receptionist", page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })">@i</a>
+                    <a class="page-link" href="@Url.Action("Manage", "Employee", new {role = "Receptionist", page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })">@i</a>
                 </li>
             }
 
             @if (Model.HasNextPage)
             {
                 <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Manage","Employee", new { role = "Receptionist", page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection })" aria-label="Next">
+                    <a class="page-link" href="@Url.Action("Manage","Employee", new { role = "Receptionist", page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>

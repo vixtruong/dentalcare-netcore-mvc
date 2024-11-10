@@ -14,31 +14,31 @@
         padding-bottom: 6px !important;
     }
 
-        .container-invoice .search {
-            padding-top: 6px;
-            padding-left: 10px;
-            border: none;
-            background-color: white;
-        }
+    .container-invoice .search {
+        padding-top: 6px;
+        padding-left: 10px;
+        border: none;
+        background-color: white;
+    }
 
-        .container-invoice .form-control {
-            border: none;
-            padding-left: 34px;
-        }
+    .container-invoice .form-control {
+        border: none;
+        padding-left: 34px;
+    }
 
-            .container-invoice .form-control:focus {
-                border: none;
-                box-shadow: none;
-            }
+    .container-invoice .form-control:focus {
+        border: none;
+        box-shadow: none;
+    }
 
-        .container-invoice .green {
-            color: green;
-        }
+    .container-invoice .green {
+        color: green;
+    }
 
-        .container-invoice .bill-id {
-            text-decoration: none;
-            color: #000;
-        }
+    .container-invoice .bill-id {
+        text-decoration: none;
+        color: #000;
+    }
 
     .page-header {
         padding-top: 24px;
@@ -52,6 +52,7 @@
     .table-action i:hover {
         opacity: 0.5;
     }
+     
 </style>
 
 <div class="page-header text-primary">
@@ -71,13 +72,12 @@
                     <input class="form-control w-100"
                            name="searchQuery" 
                            placeholder="Search by id, name..." 
-                           required/>
+                           value="@ViewBag.SearchQuery"/>
                     <input type="hidden" name="role" value="@ViewBag.Role" />
                     <input type="hidden" name="sortColumn" value="@ViewBag.SortColumn" />
                     <input type="hidden" name="sortDirection" value="@ViewBag.SortDirection" />
                 </div>
             </form>
-
 
             <div class="px-2 d-flex">
                 <a asp-action="Add" asp-controller="Faculty" class="btn btn-light fw-bold @(Model is X.PagedList.IPagedList<Doctor> ? "" : "d-none")">Add Faculty</a>
