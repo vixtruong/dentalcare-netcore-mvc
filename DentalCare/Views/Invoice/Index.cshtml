@@ -66,6 +66,12 @@
         max-width: 500px;
         transition: opacity 1s ease-out;
     }
+
+    .invoice-detail {
+        color: #000000;
+        text-decoration: none;
+
+    }
 </style>
 
 <div class="page-header text-primary">
@@ -185,7 +191,7 @@
                             foreach (var s in Model)
                             {
                                 <tr>
-                                    <td>@s.Id</td>
+                                    <td><a href="@Url.Action("Detail", "Invoice", new { invoiceId = s.Id})" class="invoice-detail" target="_blank">@s.Id</a></td>
                                     <td>@s.Medicalexaminationid</td>
                                     <td>@s.Date.ToString("dd/MM/yyyy")</td>
                                     @{

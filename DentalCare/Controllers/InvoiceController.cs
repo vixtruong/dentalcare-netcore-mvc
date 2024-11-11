@@ -24,8 +24,8 @@ namespace DentalCare.Controllers
         private readonly TechWorkService _techWorkService;
         private readonly TechDetailService _techDetailService;
 
-        public InvoiceController(ReceptionistService receptionistService, InvoiceService invoiceService, CustomerService customerService, 
-            MedicalExamService medicalExamService, PrescriptionService prescriptionService, PrescriptionDetailService prescriptionDetailService, 
+        public InvoiceController(ReceptionistService receptionistService, InvoiceService invoiceService, CustomerService customerService,
+            MedicalExamService medicalExamService, PrescriptionService prescriptionService, PrescriptionDetailService prescriptionDetailService,
             TechWorkService techWorkService, TechDetailService techDetailService, MedicineService medicineService, TechSheetService techSheetService, MomoConfig momoConfig)
         {
             _receptionistService = receptionistService;
@@ -117,7 +117,7 @@ namespace DentalCare.Controllers
                     x.Unit
                 }).ToList();
 
-            return Json(new { success = true, prescriptionDetails, medicines});
+            return Json(new { success = true, prescriptionDetails, medicines });
         }
 
         [HttpGet]
@@ -201,7 +201,7 @@ namespace DentalCare.Controllers
                 var paymentRequest = new MomoOneTimePaymentRequest(
                     _momoConfig.PartnerCode,
                     Guid.NewGuid().ToString(),
-                    (long)model.Finaltotal, 
+                    (long)model.Finaltotal,
                     model.Id + DateTime.Now.Ticks,
                  model.Medicalexaminationid,
                     _momoConfig.ReturnUrl,
@@ -252,9 +252,50 @@ namespace DentalCare.Controllers
             return View("Index");
         }
 
-        public IActionResult Detail()
+        [HttpGet]
+        public IActionResult Detail(string invoiceId)
         {
-            return View();
+            var invoice = _invoiceService.Get(invoiceId);
+            if (invoice == null) return NotFound();
+
+            var mes = _medicalExamService.Get(invoice.Medicalexaminationid);
+            if (mes == null) return NotFound();
+
+            // Prescription and medicine details
+            var prescription = _prescriptionService.GetByMesId(mes.Id);
+            var prescriptionDetail = _prescriptionDetailService.GetAll()
+                .Where(x => x.Prescriptionid == prescription?.Id)
+                .ToList();
+            var medicines = _medicineService.GetAll()
+                .Where(m => prescriptionDetail.Any(p => p.Medicineid == m.Id))
+                .ToList();
+
+            // Technique details
+            var techSheet = _techSheetService.GetByMesId(mes.Id);
+            var techDetails = _techDetailService.GetAll()
+                .Where(x => x.TechsheetId == techSheet?.Id)
+                .ToList();
+            var techWorks = _techWorkService.GetAll()
+                .Where(t => techDetails.Any(td => td.Techpositionid == t.Id))
+                .ToList();
+
+            // Customer and receptionist
+            var customer = _customerService.Get(mes.Customerid);
+            var receptionist = _receptionistService.Get(invoice?.Receptionistid);
+
+            // Create ViewModel
+            var model = new InvoiceDetailViewModel
+            {
+                Invoice = invoice,
+                MedicalExam = mes,
+                Customer = customer,
+                Receptionist = receptionist,
+                TechDetails = techDetails,
+                TechWorks = techWorks,
+                PrescriptionDetails = prescriptionDetail,
+                Medicines = medicines
+            };
+            return View(model);
         }
     }
 }

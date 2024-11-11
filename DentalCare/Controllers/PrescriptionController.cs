@@ -1,10 +1,12 @@
 ﻿using DentalCare.Models;
 using DentalCare.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList.Extensions;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class PrescriptionController : Controller
     {
         private readonly DoctorService _doctorService;
@@ -14,10 +16,11 @@ namespace DentalCare.Controllers
         private readonly MedicalExamService _medicalExamService;
         private readonly MedicineTypeService _medicineTypeService;
         private readonly MedicineService _medicineService;
+        private readonly InvoiceService _invoiceService;
 
         public PrescriptionController(DoctorService doctorService, PrescriptionService prescriptionService,
             PrescriptionDetailService prescriptionDetailService, CustomerService customerService,
-            MedicalExamService medicalExamService, MedicineTypeService medicineTypeService, MedicineService medicineService)
+            MedicalExamService medicalExamService, MedicineTypeService medicineTypeService, MedicineService medicineService, InvoiceService invoiceService)
         {
             _doctorService = doctorService;
             _prescriptionService = prescriptionService;
@@ -26,6 +29,7 @@ namespace DentalCare.Controllers
             _medicalExamService = medicalExamService;
             _medicineTypeService = medicineTypeService;
             _medicineService = medicineService;
+            _invoiceService = invoiceService;
         }
 
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
@@ -89,6 +93,12 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Add(PrescriptionViewModel model)
         {
+            if (_invoiceService.GetAll().Any(x => x.Medicalexaminationid == model.MedicalExamId))
+            {
+                TempData["ErrorDetailNullMessage"] = "MES has been created invoice before.";
+                return RedirectToAction("Add");
+            }
+
             if (model.Details.Count == 0)
             {
                 TempData["ErrorDetailNullMessage"] = "List medicines is empty. Please choose medicines to add!";

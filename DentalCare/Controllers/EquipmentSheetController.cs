@@ -1,10 +1,12 @@
 ﻿using DentalCare.Models;
 using DentalCare.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList.Extensions;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class EquipmentSheetController : Controller
     {
         private readonly DoctorService _doctorService;
