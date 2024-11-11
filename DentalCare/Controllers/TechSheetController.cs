@@ -1,10 +1,12 @@
 ﻿using DentalCare.Models;
 using DentalCare.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList.Extensions;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class TechSheetController : Controller
     {
         private readonly DoctorService _doctorService;
@@ -14,8 +16,9 @@ namespace DentalCare.Controllers
         private readonly MedicalExamService _medicalExamService;
         private readonly TechDetailService _techDetailService;
         private readonly TechSheetService _techSheetService;
+        private readonly InvoiceService _invoiceService;
 
-        public TechSheetController(DoctorService doctorService, CustomerService customerService, TechniqueService techniqueService, TechWorkService techWorkService, MedicalExamService medicalExamService, TechDetailService techDetailService, TechSheetService techSheetService)
+        public TechSheetController(DoctorService doctorService, CustomerService customerService, TechniqueService techniqueService, TechWorkService techWorkService, MedicalExamService medicalExamService, TechDetailService techDetailService, TechSheetService techSheetService, InvoiceService invoiceService)
         {
             _doctorService = doctorService;
             _customerService = customerService;
@@ -24,6 +27,7 @@ namespace DentalCare.Controllers
             _medicalExamService = medicalExamService;
             _techDetailService = techDetailService;
             _techSheetService = techSheetService;
+            _invoiceService = invoiceService;
         }
 
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
@@ -88,6 +92,13 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Add(TechSheetViewModel model)
         {
+
+            if (_invoiceService.GetAll().Any(x => x.Medicalexaminationid == model.MedicalExamId))
+            {
+                TempData["ErrorDetailNullMessage"] = "MES has been created invoice before.";
+                return RedirectToAction("Add");
+            }
+
             if (model.Details.Count == 0)
             {
                 TempData["ErrorDetailNullMessage"] = "List techworks is empty. Please choose techworks to add!";

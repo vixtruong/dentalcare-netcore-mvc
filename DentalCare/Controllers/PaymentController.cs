@@ -2,11 +2,13 @@
 using DentalCare.Payments.Momo.Config;
 using DentalCare.Payments.Momo.Request;
 using DentalCare.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class PaymentController : Controller
     {
         private readonly MomoConfig _momoConfig;

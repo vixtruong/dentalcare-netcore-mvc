@@ -11,7 +11,7 @@ namespace DentalCare.Services
             _context = context;
         }
 
-        public Receptionist? Get(String id)
+        public Receptionist? Get(string id)
         {
             
             return _context.Receptionists.FirstOrDefault(x => x.Id.Equals(id));

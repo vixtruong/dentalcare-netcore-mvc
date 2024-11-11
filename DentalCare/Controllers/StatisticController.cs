@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks.Sources;
 using DentalCare.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing.Chart;
@@ -9,6 +10,7 @@ using OfficeOpenXml.Style;
 
 namespace DentalCare.Controllers
 {
+    [Authorize]
     public class StatisticController : Controller
     {
         private readonly InvoiceService _invoiceService;

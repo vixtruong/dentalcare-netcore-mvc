@@ -1,4 +1,6 @@
-﻿@{
+﻿@model InvoiceDetailViewModel
+
+@{
     Layout = null;
 }
 
@@ -6,7 +8,7 @@
 <link type="text/css" href="~/css/bootstrap.min.css" rel="stylesheet">
 <link type="text/css" rel="stylesheet" href="~/fonts/font-awesome/css/font-awesome.min.css">
 
-<link rel="shortcut icon" href="~/img/dashboard/favicon.ico" type="image/x-icon">
+<link href="~/img/logo.svg" rel="icon">
 
 <!-- Google fonts -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,8 +17,6 @@
 
 <!-- Custom Stylesheet -->
 <link type="text/css" rel="stylesheet" href="~/css/dashboard/Invoice/style.css">
-
-<script src="~/js/dashboard/invoice/jquery.min.js"></script>
 
 <div class="invoice-2 invoice-content">
     <div class="container">
@@ -39,8 +39,8 @@
                                     <div class="invoice-id">
                                         <div class="info">
                                             <h1 class="inv-header-1">Invoice</h1>
-                                            <p class="mb-1">Invoice Number: <span>#45613</span></p>
-                                            <p class="mb-0">Invoice Date: <span>24 Jan 2022</span></p>
+                                            <p class="mb-1">Invoice ID: <span>@Model.Invoice.Id</span></p>
+                                            <p class="mb-0">Invoice Date: <span>@Model.Invoice.Date.ToString("dd-MM-yyyy")</span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -51,11 +51,10 @@
                                 <div class="col-sm-6">
                                     <div class="invoice-number mb-30">
                                         <h4 class="inv-title-1">Invoice To</h4>
-                                        <h2 class="name">Jhon Smith</h2>
+                                        <h2 class="name">@Model.Customer.Name-@Model.Customer.Id</h2>
                                         <p class="invo-addr-1">
-                                            Theme Vessel <br />
-                                            info@themevessel.com <br />
-                                            21-12 Green Street, Meherpur, Bangladesh <br />
+                                            @Model.Customer.Phone <br />
+                                            @Model.Customer.Email <br />
                                         </p>
                                     </div>
                                 </div>
@@ -63,11 +62,11 @@
                                     <div class="invoice-number mb-30">
                                         <div class="invoice-number-inner">
                                             <h4 class="inv-title-1">Invoice From</h4>
-                                            <h2 class="name">Animas Roky</h2>
+                                            <h2 class="name">@Model.Receptionist.Name-@Model.Receptionist.Id</h2>
                                             <p class="invo-addr-1">
-                                                Apexo Inc  <br />
-                                                billing@apexo.com <br />
-                                                169 Teroghoria, Bangladesh <br />
+                                                Dental Care  <br />
+                                                dentalcare@gmail.com <br />
+                                                123, ABC, TP HCM <br />
                                             </p>
                                         </div>
                                     </div>
@@ -92,87 +91,59 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="tr">
-                                            <td>
-                                                <div class="item-desc-1">
-                                                    <span>01</span>
-                                                </div>
-                                            </td>
-                                            <td class="pl0">Businesscard Design</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">$300</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">2</td>
-                                            <td class="text-end">$600.00</td>
-                                        </tr>
-                                        <tr class="bg-grea">
-                                            <td>
-                                                <div class="item-desc-1">
-                                                    <span>02</span>
+                                        @if (Model.TechDetails != null)
+                                        {
+                                            int count = 1;
+                                            int totalAmount = 0;
 
-                                                </div>
-                                            </td>
-                                            <td class="pl0">Fruit Flayer Design</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">$400</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">1</td>
-                                            <td class="text-end">$60.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="item-desc-1">
-                                                    <span>03</span>
-                                                </div>
-                                            </td>
-                                            <td class="pl0">Application Interface Design</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">$240</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">3</td>
-                                            <td class="text-end">$640.00</td>
-                                        </tr>
+                                            foreach (var detail in Model.TechDetails)
+                                            {
+                                                var techWork = Model.TechWorks.FirstOrDefault(x => x.Id == detail.Techpositionid);
+                                                int itemTotal = (techWork?.Price ?? 0) * detail.Quantity;
+                                                totalAmount += itemTotal;
 
-                                        <tr>
-                                            <td>
-                                                <div class="item-desc-1">
-                                                    <span>04</span>
-                                                </div>
-                                            </td>
-                                            <td class="pl0">Theme Development</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">$720</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-end">$640.00</td>
-                                        </tr>
-                                        <tr class="tr2">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-center">SubTotal</td>
-                                            <td class="text-end">$710.99</td>
-                                        </tr>
-                                        <tr class="tr2">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-center">Tax</td>
-                                            <td class="text-end">$85.99</td>
-                                        </tr>
-                                        <tr class="tr2">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-center f-w-600 active-color">Grand Total</td>
-                                            <td class="f-w-600 text-end active-color">$795.99</td>
-                                        </tr>
+                                                <tr class="tr">
+                                                    <td>@(count++)</td>
+                                                    <td class="pl0 text-start">@techWork?.Techniquename</td>
+                                                    <td class="text-center">@techWork?.Name</td>
+                                                    <td class="text-center">@techWork?.Price.ToString("N0")</td>
+                                                    <td class="text-center">@techWork?.Unit</td>
+                                                    <td class="text-center">@detail.Quantity</td>
+                                                    <td class="text-center">@itemTotal.ToString("N0")</td>
+                                                </tr>
+                                            }
+
+                                            int tax = totalAmount * 10 / 100;
+                                            int grandTotal = totalAmount + tax;
+
+                                            <tr class="tr">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center">Total</td>
+                                                <td class="text-center">@(totalAmount.ToString("N0"))</td>
+                                            </tr>
+                                            <tr class="tr">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center">Tax (10%)</td>
+                                                <td class="text-center">@(tax.ToString("N0"))</td>
+                                            </tr>
+                                            <tr class="tr">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center text-primary">Grand Total</td>
+                                                <td class="text-center" style="font-weight: 600;">@(grandTotal.ToString("N0") + " VND")</td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
@@ -190,107 +161,83 @@
                                             <th class="text-center">Price</th>
                                             <th class="text-center">Unit</th>
                                             <th class="text-center">Quantity</th>
-                                            <th class="text-end">Amount</th>
+                                            <th class="text-center">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class="tr">
-                                            <td>
-                                                <div class="item-desc-1">
-                                                    <span>01</span>
-                                                </div>
-                                            </td>
-                                            <td class="pl0">Businesscard Design</td>
-                                            <td class="text-center">$300</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">2</td>
-                                            <td class="text-end">$600.00</td>
-                                        </tr>
-                                        <tr class="bg-grea">
-                                            <td>
-                                                <div class="item-desc-1">
-                                                    <span>02</span>
+                                        @if (Model.PrescriptionDetails != null)
+                                        {
+                                            int count = 1;
+                                            int totalAmount = 0;
 
-                                                </div>
-                                            </td>
-                                            <td class="pl0">Fruit Flayer Design</td>
-                                            <td class="text-center">$400</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">1</td>
-                                            <td class="text-end">$60.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="item-desc-1">
-                                                    <span>03</span>
-                                                </div>
-                                            </td>
-                                            <td class="pl0">Application Interface Design</td>
-                                            <td class="text-center">$240</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">3</td>
-                                            <td class="text-end">$640.00</td>
-                                        </tr>
+                                            foreach (var detail in Model.PrescriptionDetails)
+                                            {
+                                                var medicine = Model.Medicines.FirstOrDefault(x => x.Id == detail.Medicineid);
+                                                int itemTotal = (medicine?.Price ?? 0) * detail.Quantity;
+                                                totalAmount += itemTotal;
 
-                                        <tr>
-                                            <td>
-                                                <div class="item-desc-1">
-                                                    <span>04</span>
-                                                </div>
-                                            </td>
-                                            <td class="pl0">Theme Development</td>
-                                            <td class="text-center">$720</td>
-                                            <td class="text-center"></td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-end">$640.00</td>
-                                        </tr>
-                                        <tr class="tr2">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-center">SubTotal</td>
-                                            <td class="text-end">$710.99</td>
-                                        </tr>
-                                        <tr class="tr2">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-center">Tax</td>
-                                            <td class="text-end">$85.99</td>
-                                        </tr>
-                                        <tr class="tr2">
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td class="text-center f-w-600 active-color">Grand Total</td>
-                                            <td class="f-w-600 text-end active-color">$795.99</td>
-                                        </tr>
+
+                                                <tr class="tr">
+                                                    <td>@(count++)</td>
+                                                    <td class="pl0 text-start">@medicine?.Name</td>
+                                                    <td class="text-center">@(medicine?.Price.ToString("N0"))</td>
+                                                    <td class="text-center">@medicine?.Unit</td>
+                                                    <td class="text-center">@detail.Quantity</td>
+                                                    <td class="text-center">@(((medicine?.Price ?? 0) * detail.Quantity).ToString("N0"))</td>
+                                                </tr>
+                                            }
+
+                                            int tax = totalAmount * 10 / 100;
+                                            int grandTotal = totalAmount + tax;
+
+                                            <tr class="tr">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center">Total</td>
+                                                <td class="text-center">@(totalAmount.ToString("N0"))</td>
+                                            </tr>
+                                            <tr class="tr">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center">Tax (10%)</td>
+                                                <td class="text-center">@(tax.ToString("N0"))</td>
+                                            </tr>
+                                            <tr class="tr">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center text-primary">Grand Total</td>
+                                                <td class="text-center" style="font-weight: 600;">@(grandTotal.ToString("N0") + " VND")</td>
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                         <!-- Medicine detail end -->
 
                         <div class="invoice-bottom">
                             <div class="row">
                                 <div class="col-lg-6 col-md-5 col-sm-5">
                                     <div class="payment-method mb-30">
-                                        <h3 class="inv-title-1">Payment Method</h3>
-                                        <ul class="payment-method-list-1 text-14">
-                                            <li><strong>Account No:</strong> 00 123 647 840</li>
-                                            <li><strong>Account Name:</strong> Jhon Doe</li>
-                                            <li><strong>Branch Name:</strong> xyz</li>
+                                        <h3 class="inv-title-1" style="font-size: 18px;">Payment Detail</h3>
+                                        <ul class="payment-method-list-1" style="font-size: 16px;">
+                                            <li><strong>Invoice Total:</strong> @(Model.Invoice.Total.ToString("N0") + " VND")</li>
+                                            <li><strong>Discount:</strong> @Model.Invoice.Discount %</li>
+                                            <li><strong>Total Due:</strong> @(Model.Invoice.Finaltotal.ToString("N0") + " VND")</li>
+                                            <li><strong>Method:</strong> @Model.Invoice.Payment</li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-7 col-sm-7">
                                     <div class="terms-conditions mb-30">
-                                        <h3 class="inv-title-1">Terms & Conditions</h3>
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy has</p>
+                                        <h3 class="inv-title-1" style="font-size: 18px;">Thank You</h3>
+                                        <p style="font-size: 16px;">Thank you for choosing DentalCare. We appreciate your trust in our services and look forward to serving you again in the future. If you have any questions or feedback, please don't hesitate to contact us.</p>
                                     </div>
                                 </div>
                             </div>
@@ -310,9 +257,6 @@
                     <div class="invoice-btn-section clearfix d-print-none">
                         <a href="javascript:window.print()" class="btn btn-lg btn-print">
                             <i class="fa fa-print"></i> Print Invoice
-                        </a>
-                        <a id="invoice_download_btn" class="btn btn-lg btn-download btn-theme">
-                            <i class="fa fa-download"></i> Download Invoice
                         </a>
                     </div>
                 </div>
