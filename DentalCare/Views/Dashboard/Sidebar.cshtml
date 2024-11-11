@@ -177,8 +177,8 @@
                     <i class="fas fa-file-medical me-2"></i>Health Report
                 </a>
                 <div class="dropdown-menu bg-transparent border-0">
-                    <a style="padding-left: 50px !important" href="@Url.Action("Add", "HealthReport")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "HealthReport" &&
-                                                                                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ? "active" : "")">Add</a>
+                    <a style="padding-left: 50px !important" href="@Url.Action("Add", "HealthReport")" class="dropdown-item @((ViewContext?.RouteData?.Values["controller"]?.ToString() == "HealthReport" &&
+                                                                                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Add") ? "active" : "")">Add</a>
                     <a style="padding-left: 50px !important" href="@Url.Action("Index", "HealthReport")" class="dropdown-item @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "HealthReport" &&
                                                                                                                                   ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")">Manage</a>
                 </div>
@@ -190,47 +190,34 @@
 <!-- Sidebar End -->
 
 <script>
-    function handleDropdownState(dropdownId) {
-        const dropdownElement = document.getElementById(dropdownId);
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdowns = document.querySelectorAll('.nav-item.dropdown');
 
-        if (localStorage.getItem('openDropdown') === dropdownId) {
-            const dropdown = new bootstrap.Dropdown(dropdownElement.querySelector('.dropdown-toggle'));
-            dropdown.show();
-        }
+        dropdowns.forEach(dropdown => {
+            const dropdownId = dropdown.id;
 
-        dropdownElement.querySelectorAll('.dropdown-item').forEach(item => {
-            item.addEventListener('click', () => {
-                localStorage.setItem('openDropdown', dropdownId);
+            // Hiển thị trạng thái mở nếu tồn tại trong localStorage
+            if (localStorage.getItem('openDropdown') === dropdownId) {
+                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+                const bootstrapDropdown = new bootstrap.Dropdown(dropdownToggle);
+                bootstrapDropdown.show();
+            }
+
+            // Lưu trạng thái khi click vào dropdown
+            dropdown.querySelector('.dropdown-toggle').addEventListener('click', function () {
+                if (localStorage.getItem('openDropdown') === dropdownId) {
+                    localStorage.removeItem('openDropdown');
+                } else {
+                    localStorage.setItem('openDropdown', dropdownId);
+                }
             });
         });
-    }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        handleDropdownState('invoiceDropdown');
-        handleDropdownState('employeeDropdown');
-        handleDropdownState('shiftDropdown');
-        handleDropdownState('appointmentDropdown');
-        handleDropdownState('prescriptionDropdown');
-        handleDropdownState('inventoryDropdown');
-        handleDropdownState('mesTechDropdown');
-        handleDropdownState('equipmentDropdown');
-        handleDropdownState('healthreportDropdown');
-
+        // Reset trạng thái khi nhấn vào link không phải dropdown
         document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
             link.addEventListener('click', () => {
                 localStorage.removeItem('openDropdown');
             });
-        });
-    });
-
-    document.querySelectorAll('.dropdown-toggle').forEach(item => {
-        item.addEventListener('click', function () {
-            const dropdownId = item.closest('.dropdown').id;
-            if (localStorage.getItem('openDropdown') === dropdownId) {
-                localStorage.removeItem('openDropdown');
-            } else {
-                localStorage.setItem('openDropdown', dropdownId);
-            }
         });
     });
 </script>
