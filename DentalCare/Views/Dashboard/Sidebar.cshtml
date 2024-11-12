@@ -188,36 +188,52 @@
     </nav>
 </div>
 <!-- Sidebar End -->
-
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const dropdowns = document.querySelectorAll('.nav-item.dropdown');
+    // Chỉ xử lý dropdowns trong .sidebar
+    const sidebar = document.querySelector('.sidebar');
+    if (!sidebar) return; // Nếu không tìm thấy sidebar, dừng script
 
-        dropdowns.forEach(dropdown => {
-            const dropdownId = dropdown.id;
+    const dropdowns = sidebar.querySelectorAll('.nav-item.dropdown');
 
-            // Hiển thị trạng thái mở nếu tồn tại trong localStorage
+    dropdowns.forEach(dropdown => {
+        const dropdownId = dropdown.id;
+
+        // Hiển thị trạng thái mở nếu tồn tại trong localStorage
+        if (localStorage.getItem('openDropdown') === dropdownId) {
+            const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
+            const bootstrapDropdown = new bootstrap.Dropdown(dropdownToggle);
+            bootstrapDropdown.show();
+        }
+
+        // Lưu trạng thái khi click vào dropdown
+        dropdown.querySelector('.dropdown-toggle').addEventListener('click', function () {
             if (localStorage.getItem('openDropdown') === dropdownId) {
-                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
-                const bootstrapDropdown = new bootstrap.Dropdown(dropdownToggle);
-                bootstrapDropdown.show();
+                localStorage.removeItem('openDropdown');
+            } else {
+                localStorage.setItem('openDropdown', dropdownId);
             }
+        });
 
-            // Lưu trạng thái khi click vào dropdown
-            dropdown.querySelector('.dropdown-toggle').addEventListener('click', function () {
-                if (localStorage.getItem('openDropdown') === dropdownId) {
-                    localStorage.removeItem('openDropdown');
-                } else {
-                    localStorage.setItem('openDropdown', dropdownId);
+        // Xử lý click vào các liên kết bên trong dropdown
+        dropdown.querySelectorAll('.dropdown-item').forEach(link => {
+            link.addEventListener('click', function () {
+                const url = new URL(this.href, window.location.origin);
+                const currentAction = url.searchParams.get('action') || url.pathname.split('/').pop();
+
+                if (currentAction.toLowerCase() === 'add') {
+                    localStorage.setItem('openDropdown', dropdownId); // Giữ dropdown mở nếu nhấn vào Add
                 }
             });
         });
+    });
 
-        // Reset trạng thái khi nhấn vào link không phải dropdown
-        document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
-            link.addEventListener('click', () => {
-                localStorage.removeItem('openDropdown');
-            });
+    // Reset trạng thái khi nhấn vào link không phải dropdown
+    sidebar.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
+        link.addEventListener('click', () => {
+            localStorage.removeItem('openDropdown'); // Đóng dropdown nếu không phải dropdown link
         });
     });
+});
+
 </script>

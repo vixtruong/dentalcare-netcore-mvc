@@ -34,6 +34,31 @@ namespace DentalCare.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
+        public IActionResult GetDoctorFreeTime(string doctorId, DateTime date)
+        {
+            List<string> allTimeSlots = new List<string>();
+            DateTime startTime = DateTime.Parse("07:30");
+            DateTime endTime = DateTime.Parse("17:00");
+
+            while (startTime <= endTime)
+            {
+                allTimeSlots.Add(startTime.ToString("HH:mm"));
+                startTime = startTime.AddMinutes(30); // Thêm 30 phút mỗi lần
+            }
+
+            var bookedList = _appointmentService.GetAll()
+                .Where(x => x.Date.Date == date.Date && x.Doctorid == doctorId)
+                .Select(a => a.Time.ToString("HH:mm"))
+                .ToList();
+
+            var freeTimeSlots = allTimeSlots.Except(bookedList).ToList();
+
+            return Json(freeTimeSlots);
+        }
+
+
+        [HttpGet]
         public IActionResult GetCustomerByPhone(string phone)
         {
             var customer = _customerService.GetByPhone(phone);
@@ -148,6 +173,12 @@ namespace DentalCare.Controllers
             ViewBag.SortColumn = sortColumn;
             ViewBag.SortDirection = sortDirection;
             ViewBag.NextSortDirection = sortDirection == "asc" ? "desc" : "asc";
+
+            var UserId = HttpContext.Session.GetString("UserId");
+            if (UserId.Contains("D"))
+            {
+                appointments = appointments.Where(x => x.Doctorid == UserId).ToList();
+            }
 
             var pagedList = appointments.ToPagedList(pageNumber, pageSize);
             return View(pagedList);

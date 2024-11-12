@@ -97,7 +97,7 @@
                 <i class="fa fa-chart-line fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Today Sale</p>
-                    <h6 class="mb-0">@Model.TodaySale VND</h6>
+                    <h6 class="mb-0">@Model.TodaySale.ToString("N0") VND</h6>
                 </div>
             </div>
         </div>
@@ -106,7 +106,7 @@
                 <i class="fa fa-chart-bar fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Total Month Sale</p>
-                    <h6 class="mb-0">@Model.TotalSale VND</h6>
+                    <h6 class="mb-0">@Model.TotalSale.ToString("N0") VND</h6>
                 </div>
             </div>
         </div>
@@ -291,7 +291,6 @@
                 console.error('Error fetching revenue data:', error);  // Bắt lỗi nếu có vấn đề
             });
     }
-
 
     function LoadCurrentMonthRevenue() {
         fetch('/Dashboard/GetRevenueCurrentMonth')
