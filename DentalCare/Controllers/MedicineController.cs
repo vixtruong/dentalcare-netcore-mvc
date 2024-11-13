@@ -28,6 +28,13 @@ namespace DentalCare.Controllers
         [Route("medicine")]
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ViewBag.MedicineTypes = _medicineTypeService.GetAll();
             var pageNumber = (page ?? 1);
             var pageSize = 10;
@@ -64,6 +71,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult AddType()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             return View();
         }
 
@@ -83,10 +97,18 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ViewBag.Types = _medicineTypeService.GetAll();
             return View();
         }
 
+        [HttpPost]
         public IActionResult Add(Medicine medicine)
         {
             medicine.Id = _medicineService.GenerateID();
@@ -97,6 +119,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             var medicine = _medicineService.Get(id);
             ViewBag.Types = _medicineTypeService.GetAll();
             return View(medicine);
@@ -109,8 +138,16 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index", "Medicine");
         }
 
+        [HttpGet]
         public IActionResult Delete(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             try
             {
                 _medicineService.Delete(id);

@@ -21,6 +21,13 @@ namespace DentalCare.Controllers
         [Route("equipment")]
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ViewBag.Types = _equipmentTypeService.GetAll();
             var pageNumber = (page ?? 1);
             var pageSize = 10;
@@ -64,6 +71,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult AddType()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             return View();
         }
 
@@ -78,6 +92,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ViewBag.Types = _equipmentTypeService.GetAll();
             return View();
         }
@@ -92,6 +113,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             var equipment = _equipmentService.Get(id);
             ViewBag.Types = _equipmentTypeService.GetAll();
             return View(equipment);
@@ -106,6 +134,13 @@ namespace DentalCare.Controllers
 
         public IActionResult Delete(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             _equipmentService.Delete(id);
             return RedirectToAction("Index");
         }

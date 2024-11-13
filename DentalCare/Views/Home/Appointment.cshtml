@@ -180,6 +180,9 @@
     </script>
 }
 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     const doctorSelect = document.getElementById('doctor');
     const dateInput = document.getElementById('date');
@@ -190,6 +193,25 @@
 
     doctorSelect.addEventListener('change', () => {
         if (doctorSelect.value) {
+            var doctorId = doctorSelect.value;
+            fetch(`/Appointment/GetDoctorShift?doctorId=${doctorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data: ", data.$values);
+
+                    const allowedDates = data.$values.map(date => date.split('T')[0]);
+                    console.log("allowDate: ", allowedDates);
+
+                    flatpickr(dateInput, {
+                        enable: allowedDates,
+                        dateFormat: "m/d/Y"
+                    });
+
+                    dateInput.disabled = false;
+                })
+                .catch(error => console.error('Error:', error));
+
+
             dateInput.disabled = false;
             dateInput.value = null;
             dateInput.classList.remove('bg-light');
@@ -208,6 +230,7 @@
     dateInput.addEventListener('change', () => {
         if (doctorSelect.value && dateInput.value) {
             timeSelect.disabled = false;
+            timeSelect.innerHTML = '';
 
             var doctorId = doctorSelect.value;
             var date = dateInput.value;

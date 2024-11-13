@@ -15,23 +15,37 @@ namespace DentalCare.Controllers
         private readonly CustomerService _customerService;
         private readonly FacultyService _facultyService;
         private readonly AppointmentService _appointmentService;
+        private readonly ShiftService _shiftService;
 
-        public AppointmentController(DoctorService doctorService, CustomerService customerService, FacultyService facultyService, AppointmentService appointmentService)
+        public AppointmentController(DoctorService doctorService, CustomerService customerService, FacultyService facultyService, AppointmentService appointmentService, ShiftService shiftService)
         {
             _doctorService = doctorService;
             _customerService = customerService;
             _facultyService = facultyService;
             _appointmentService = appointmentService;
+            _shiftService = shiftService;
         }
 
         [HttpGet]
         [AllowAnonymous]
         public JsonResult GetDoctorsByFaculty(string facultyId)
         {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (userId != null && userId.Contains("D"))
+            {
+                var user = _doctorService.GetByFacultyId(facultyId).Where(x => x.Id == userId).ToList();
+                var userList = user.Select(d => new { id = d.Id, name = d.Name }).ToList();
+
+                return Json(userList);
+            }
+
             var doctors = _doctorService.GetByFacultyId(facultyId);
             var doctorList = doctors.Select(d => new { id = d.Id, name = d.Name }).ToList();
             return Json(doctorList);
         }
+
+        [HttpGet]
 
         [HttpGet]
         [AllowAnonymous]
@@ -59,6 +73,14 @@ namespace DentalCare.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
+        public IActionResult GetDoctorShift(string doctorId)
+        {
+            var targetShift = _shiftService.GetAll().Where(x => x.Doctorid == doctorId).Select(x => x.Date).ToList();
+
+            return Json(targetShift);
+        }
+
         public IActionResult GetCustomerByPhone(string phone)
         {
             var customer = _customerService.GetByPhone(phone);
@@ -78,13 +100,25 @@ namespace DentalCare.Controllers
             return Json(new { success = false });
         }
 
+        [HttpGet]
         public IActionResult Add()
         {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (userId.Contains("D"))
+            {
+                var doctor = _doctorService.Get(userId);
+                ViewBag.Faculties = _facultyService.GetAll().Where(x => x.Id == doctor.Facultyid);
+
+                return View();
+            }
+
             ViewBag.Faculties = _facultyService.GetAll();
             if (ViewBag.Faculties == null)
             {
                 return Content("Data not found");
             }
+
             return View();
         }
 

@@ -29,6 +29,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             var faculties = _facultyService.GetAll();
             ViewBag.Faculties = faculties;
             return View();
@@ -175,6 +182,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             var faculties = _facultyService.GetAll();
             ViewBag.Faculties = faculties;
 
@@ -415,6 +429,13 @@ namespace DentalCare.Controllers
         [Route("employee")]
         public IActionResult Manage(string role, int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             int pagenumber = (page ?? 1);
             int pageSize = 10;
 

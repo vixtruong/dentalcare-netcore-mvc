@@ -33,6 +33,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ViewBag.Nurses = _nurseService.GetAll();
             ViewBag.Faculties = _facultyService.GetAll();
 
@@ -61,6 +68,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             var shift = _shiftService.Get(id);
                 
             ViewBag.Doctor = _doctorService.Get(shift.Doctorid);
@@ -99,6 +113,13 @@ namespace DentalCare.Controllers
         [Route("shift")]
         public IActionResult Manage(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ViewBag.Doctors = _doctorService.GetAll();
             ViewBag.Nurses = _nurseService.GetAll();
             var shiftList = _shiftService.GetAll();
