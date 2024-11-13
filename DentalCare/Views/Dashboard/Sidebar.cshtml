@@ -61,7 +61,7 @@
         <div class="navbar-nav w-100">
             <a href="@Url.Action("Index", "Dashboard")" class="nav-item nav-link @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Dashboard" && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
 
-            <div class="nav-item dropdown" id="employeeDropdown">
+            <div class="nav-item dropdown @(userRole == "Doctor" ? "d-none" : "")" id="employeeDropdown">
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Employee" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
@@ -75,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="nav-item dropdown" id="shiftDropdown">
+            <div class="nav-item dropdown @(userRole == "Doctor" ? "d-none" : "")" id="shiftDropdown">
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Shift" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Manage") ? "active" : "")" data-bs-toggle="dropdown">
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="nav-item dropdown" id="invoiceDropdown">
+            <div class="nav-item dropdown @(userRole == "Doctor" ? "d-none" : "")" id="invoiceDropdown">
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Invoice" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Index") ? "active" : "")" data-bs-toggle="dropdown">
@@ -117,7 +117,7 @@
                 </div>
             </div>
 
-            <div class="nav-item dropdown" id="inventoryDropdown">
+            <div class="nav-item dropdown @(userRole == "Doctor" ? "d-none" : "")" id="inventoryDropdown">
                 <a href="#" class="nav-link dropdown-toggle @((ViewContext?.RouteData?.Values["controller"]?.ToString() == "Medicine" || ViewContext?.RouteData?.Values["controller"]?.ToString() == "Equipment" || ViewContext?.RouteData?.Values["controller"]?.ToString() == "Technique") && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")" data-bs-toggle="dropdown">
                     <i class="fa fa-box me-2"></i>Inventory
                 </a>
@@ -128,7 +128,7 @@
                 </div>
             </div>
 
-            <div class="nav-item dropdown" id="prescriptionDropdown">
+            <div class="nav-item dropdown @(userRole == "Receptionist" ? "d-none" : "")" id="prescriptionDropdown">
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Prescription" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Index") ? "active" : "")" data-bs-toggle="dropdown">
@@ -142,7 +142,7 @@
                 </div>
             </div>
 
-            <div class="nav-item dropdown" id="mesTechDropdown">
+            <div class="nav-item dropdown @(userRole == "Receptionist" ? "d-none" : "")" id="mesTechDropdown">
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "TechSheet" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Index") ? "active" : "")" data-bs-toggle="dropdown">
@@ -156,7 +156,7 @@
                 </div>
             </div>
 
-            <div class="nav-item dropdown" id="equipmentDropdown">
+            <div class="nav-item dropdown @(userRole == "Receptionist" ? "d-none" : "")" id="equipmentDropdown">
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "EquipmentSheet" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Index") ? "active" : "")" data-bs-toggle="dropdown">
@@ -170,7 +170,7 @@
                 </div>
             </div>
 
-            <div class="nav-item dropdown" id="healthreportDropdown">
+            <div class="nav-item dropdown @(userRole == "Receptionist" ? "d-none" : "")" id="healthreportDropdown">
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "HealthReport" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Index") ? "active" : "")" data-bs-toggle="dropdown">
@@ -183,28 +183,48 @@
                                                                                                                                   ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")">Manage</a>
                 </div>
             </div>
-            <a href="@Url.Action("Index", "Statistic")" class="nav-item nav-link @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Statistic" && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")"><i class="fa fa-chart-bar me-2"></i>Statistic</a>
+            <a href="@Url.Action("Index", "Statistic")" class="@(userRole == "Doctor" ? "d-none" : "") nav-item nav-link @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "Statistic" && ViewContext?.RouteData?.Values["action"]?.ToString() == "Index" ? "active" : "")"><i class="fa fa-chart-bar me-2"></i>Statistic</a>
         </div>
     </nav>
 </div>
 <!-- Sidebar End -->
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dropdowns = document.querySelectorAll('.nav-item.dropdown');
+    function handleDropdownState(dropdownId) {
+            const dropdownElement = document.getElementById(dropdownId);
 
-        dropdowns.forEach(dropdown => {
-            const dropdownId = dropdown.id;
-
-            // Hiển thị trạng thái mở nếu tồn tại trong localStorage
             if (localStorage.getItem('openDropdown') === dropdownId) {
-                const dropdownToggle = dropdown.querySelector('.dropdown-toggle');
-                const bootstrapDropdown = new bootstrap.Dropdown(dropdownToggle);
-                bootstrapDropdown.show();
+                const dropdown = new bootstrap.Dropdown(dropdownElement.querySelector('.dropdown-toggle'));
+                dropdown.show();
             }
 
-            // Lưu trạng thái khi click vào dropdown
-            dropdown.querySelector('.dropdown-toggle').addEventListener('click', function () {
+            dropdownElement.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    localStorage.setItem('openDropdown', dropdownId);
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            handleDropdownState('invoiceDropdown');
+            handleDropdownState('employeeDropdown');
+            handleDropdownState('shiftDropdown');
+            handleDropdownState('appointmentDropdown');
+            handleDropdownState('prescriptionDropdown');
+            handleDropdownState('inventoryDropdown');
+            handleDropdownState('mesTechDropdown');
+            handleDropdownState('equipmentDropdown');
+            handleDropdownState('healthreportDropdown');
+
+            document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
+                link.addEventListener('click', () => {
+                    localStorage.removeItem('openDropdown');
+                });
+            });
+        });
+
+        document.querySelectorAll('.dropdown-toggle').forEach(item => {
+            item.addEventListener('click', function () {
+                const dropdownId = item.closest('.dropdown').id;
                 if (localStorage.getItem('openDropdown') === dropdownId) {
                     localStorage.removeItem('openDropdown');
                 } else {
@@ -212,12 +232,4 @@
                 }
             });
         });
-
-        // Reset trạng thái khi nhấn vào link không phải dropdown
-        document.querySelectorAll('.nav-link:not(.dropdown-toggle)').forEach(link => {
-            link.addEventListener('click', () => {
-                localStorage.removeItem('openDropdown');
-            });
-        });
-    });
 </script>

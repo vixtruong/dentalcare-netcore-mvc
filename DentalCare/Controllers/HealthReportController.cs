@@ -52,10 +52,20 @@ namespace DentalCare.Controllers
 
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetString("UserId");
+
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             ViewBag.Doctors = _doctorService.GetAll();
             ViewBag.Customers = _customerService.GetAll();
-            var prescriptions = _healthReportService.GetAll();
+
+            var prescriptions = _healthReportService.GetAll().Where(x => x.Medicalexamination.Doctorid == userId);
             int pageNumber = (page ?? 1);
             int pageSize = 10;
 
@@ -95,7 +105,16 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.MedicalExams = _medicalExamService.GetAll();
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetString("UserId");
+
+            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId);
             return View();
         }
 
@@ -120,6 +139,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             var healthReport = _healthReportService.Get(id);
             return View(healthReport);
@@ -128,6 +154,13 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Edit(Healthreport model)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
             var healthReport = _healthReportService.Get(model.Id);
             healthReport.Status = model.Status;
 
@@ -137,6 +170,13 @@ namespace DentalCare.Controllers
 
         public IActionResult Delete(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
             return RedirectToAction("Index");
         }
     }

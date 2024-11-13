@@ -72,17 +72,37 @@ namespace DentalCare.Controllers
 
         public IActionResult Index()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
             return View();
         }
 
         public IActionResult Export()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             return View();
         }
 
         [HttpGet]
         public IActionResult ExportInvoices(DateTime from, DateTime to)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             var baseFileName = $"Invoices_{from:ddMMyyyy}_to_{to:ddMMyyyy}.xlsx";
@@ -187,6 +207,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult ExportDoctors(DateTime from, DateTime to)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             var baseFileName = $"Doctors_{from:ddMMyyyy}_to_{to:ddMMyyyy}.xlsx";

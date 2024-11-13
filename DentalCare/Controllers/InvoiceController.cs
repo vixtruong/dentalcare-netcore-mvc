@@ -44,6 +44,13 @@ namespace DentalCare.Controllers
         [Route("invoice")]
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             var invoices = _invoiceService.GetAll();
             ViewBag.Receptionists = _receptionistService.GetAll();
             ViewBag.Customers = _customerService.GetAll();
@@ -159,6 +166,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             ViewBag.Prescriptions = _prescriptionService.GetAll();
             ViewBag.PrescriptionDetails = _prescriptionDetailService.GetAll();
@@ -231,6 +245,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             var invoice = _invoiceService.Get(id);
             return View(invoice);
         }
@@ -255,6 +276,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Detail(string invoiceId)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("D"))
+            {
+                return NotFound();
+            }
+
             var invoice = _invoiceService.Get(invoiceId);
             if (invoice == null) return NotFound();
 

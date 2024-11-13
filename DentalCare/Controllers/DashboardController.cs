@@ -1,6 +1,7 @@
 ﻿using DentalCare.Models;
 using DentalCare.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DentalCare.Controllers
@@ -20,6 +21,47 @@ namespace DentalCare.Controllers
         [Route("dashboard")]
         public IActionResult Index()
         {
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (userId.Contains("D"))
+            {
+                long uTotalSale = 0;
+                long uTodaySale = 0;
+                int uCustomerQuantity = 0;
+                int uInvoiceQuantity = 0;
+
+                var mesList = _medicalExamService.GetAll().Where(x => x.Doctorid == userId);
+
+                foreach (var invoice in _invoiceService.GetAll().Where(x => mesList.Any(m => m.Id == x.Medicalexaminationid)))
+                {
+                    if (invoice.Date == DateTime.Today)
+                    {
+                        uTodaySale += invoice.Finaltotal;
+                        uInvoiceQuantity += 1;
+                    }
+
+                    uTotalSale += invoice.Finaltotal;
+                }
+
+                foreach (var mes in mesList)
+                {
+                    if (mes.Date == DateTime.Today)
+                    {
+                        uCustomerQuantity += 1;
+                    }
+                }
+
+                var uRevenue = new SaleRevenueViewModel
+                {
+                    TotalSale = uTotalSale,
+                    TodaySale = uTodaySale,
+                    CustomerQuantity = uCustomerQuantity,
+                    InvoiceQuantity = uInvoiceQuantity
+                };
+
+                return View(uRevenue);
+            }
+
             long totalSale = 0;
             long todaySale = 0;
             int customerQuantity = 0;

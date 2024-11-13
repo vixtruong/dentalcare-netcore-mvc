@@ -32,14 +32,23 @@ namespace DentalCare.Controllers
 
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
             var pageNumber = (page ?? 1);
             var pageSize = 10;
+
+            var userId = HttpContext.Session.GetString("UserId");
 
             ViewBag.Doctors = _doctorService.GetAll();
             ViewBag.Customers = _customerService.GetAll();
             ViewBag.MedicalExams = _medicalExamService.GetAll();
 
-            var techSheets = _techSheetService.GetAll();
+            var techSheets = _techSheetService.GetAll().Where(x => x.Medicalexamination.Doctorid == userId).ToList();
 
             if (!string.IsNullOrEmpty(searchQuery))
             {
@@ -83,7 +92,16 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.MedicalExams = _medicalExamService.GetAll();
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetString("UserId");
+
+            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId).ToList();
             ViewBag.Types = _techniqueService.GetAll();
             ViewBag.Medicines = _techWorkService.GetAll();
             return View();
@@ -92,7 +110,6 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Add(TechSheetViewModel model)
         {
-
             if (_invoiceService.GetAll().Any(x => x.Medicalexaminationid == model.MedicalExamId))
             {
                 TempData["ErrorDetailNullMessage"] = "MES has been created invoice before.";
@@ -139,6 +156,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             ViewBag.Types = _techniqueService.GetAll();
             ViewBag.Medicines = _techWorkService.GetAll();
@@ -192,6 +216,13 @@ namespace DentalCare.Controllers
 
         public IActionResult Delete(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
             foreach (var detail in _techDetailService.GetAll())
             {
                 if (id == detail.TechsheetId)

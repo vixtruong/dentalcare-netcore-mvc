@@ -131,16 +131,16 @@
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Date">Date</label>
-                                <input asp-for="Date" type="date" id="phone" class="form-control"
-                                    placeholder="Date" required>
+                                <input asp-for="Date" type="date" id="date" class="form-control bg-light"
+                                    placeholder="Date" disabled required>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Time">Time</label>
                                 <select asp-for="Time" id="timeSelect"
-                                    class="form-control select-picker" data-live-search="true"
-                                    data-dropup-auto="false" required></select>
+                                    class="form-control select-picker time-select border border-1" data-live-search="true"
+                                        data-dropup-auto="false" title="Select Time" disabled required></select>
                             </div>
                         </div>
 
@@ -206,19 +206,82 @@
     }
 </script>
 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
+    const doctorSelect = document.getElementById('doctor');
+    const dateInput = document.getElementById('date');
     const timeSelect = document.getElementById('timeSelect');
 
-    for (let hour = 7; hour <= 17; hour++) { // Giới hạn từ 7:00 sáng đến 5:30 chiều
-        for (let minute = 0; minute < 60; minute += 30) { // Tăng phút theo từng 30 phút
-            const timeOption = document.createElement('option');
-            const formattedHour = String(hour).padStart(2, '0'); // Đảm bảo giờ luôn có 2 chữ số
-            const formattedMinute = String(minute).padStart(2, '0'); // Đảm bảo phút luôn có 2 chữ số
-            timeOption.value = `${formattedHour}:${formattedMinute}`;
-            timeOption.textContent = `${formattedHour}:${formattedMinute}`;
-            timeSelect.appendChild(timeOption);
+    dateInput.disabled = true;
+    timeSelect.disabled = true;
+
+    doctorSelect.addEventListener('change', () => {
+        if (doctorSelect.value) {
+            var doctorId = doctorSelect.value;
+            fetch(`/Appointment/GetDoctorShift?doctorId=${doctorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data: ", data.$values);
+
+                    const allowedDates = data.$values.map(date => date.split('T')[0]);
+                    console.log("allowDate: ", allowedDates);
+
+                    flatpickr(dateInput, {
+                        enable: allowedDates,
+                        dateFormat: "m/d/Y"
+                    });
+
+                    dateInput.disabled = false; // Bật lại dateInput
+                })
+                .catch(error => console.error('Error:', error));
+
+            dateInput.disabled = false;
+            dateInput.value = null;
+            dateInput.classList.remove('bg-light');
+            dateInput.classList.add('bg-white');
+
+            timeSelect.disabled = true;
+            timeSelect.innerHTML = '';
+
+
+            $('.time-select').selectpicker('refresh');
+        } else {
+            dateInput.disabled = true;
+            timeSelect.disabled = true;
         }
-    }
+    });
+
+    // Enable time select when both doctor and date are selected
+    dateInput.addEventListener('change', () => {
+        if (doctorSelect.value && dateInput.value) {
+            timeSelect.disabled = false;
+            timeSelect.innerHTML = '';
+
+            var doctorId = doctorSelect.value;
+            var date = dateInput.value;
+            
+            fetch(`/Appointment/GetDoctorFreeTime?doctorId=${doctorId}&date=${date}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.$values);
+
+                    data.$values.forEach(function (time) {
+                        const timeOption = document.createElement('option');
+                        timeOption.value = time;
+                        timeOption.textContent = time;
+                        timeSelect.appendChild(timeOption);
+                    });
+                    $('.time-select').selectpicker('refresh');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            timeSelect.disabled = true;
+        }
+    });
 </script>
 
 <script>

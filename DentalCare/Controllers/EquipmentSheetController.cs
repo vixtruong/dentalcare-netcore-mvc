@@ -31,13 +31,23 @@ namespace DentalCare.Controllers
 
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetString("UserId");
+
             var pageSize = 10;
             var pageNumber = (page ?? 1);
-            var prescriptions = _equipmentSheetService.GetAll();
             
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             ViewBag.Doctors = _doctorService.GetAll();
             ViewBag.Customers = _customerService.GetAll();
+
+            var prescriptions = _equipmentSheetService.GetAll().Where(x => x.Medicalexamination.Doctorid == userId);
 
             if (!string.IsNullOrEmpty(searchQuery))
             {
@@ -81,7 +91,16 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            ViewBag.MedicalExams = _medicalExamService.GetAll();
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetString("UserId");
+
+            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId).ToList();
             ViewBag.Types = _equipmentTypeService.GetAll();
             ViewBag.Medicines = _equipmentService.GetAll();
             return View();
@@ -135,6 +154,13 @@ namespace DentalCare.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             ViewBag.Types = _equipmentTypeService.GetAll();
             ViewBag.Medicines = _equipmentService.GetAll();
@@ -217,6 +243,13 @@ namespace DentalCare.Controllers
 
         public IActionResult Delete(string id)
         {
+            var userRole = HttpContext.Session.GetString("UserRole");
+
+            if (userRole.Contains("R"))
+            {
+                return NotFound();
+            }
+
             if (_equipmentDetailService.GetAll().Any(x => x.EquipmentsheetId == id))
             {
                 TempData["ErrorMessage"] = "This equipment sheet relate to your business database! Can not delete!";

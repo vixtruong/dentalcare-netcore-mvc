@@ -11,7 +11,7 @@
         <i class="fa fa-bars"></i>
     </a>
     <form class="d-none d-md-flex ms-4">
-        <input class="form-control border-0" type="search" placeholder="Search">
+        <input class="form-control border-0" id="sidebarSearch" type="search" placeholder="Search">
     </form>
     <div class="navbar-nav align-items-center ms-auto">
         <div class="nav-item dropdown">
@@ -95,3 +95,60 @@
         </div>
     </div>
 </nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const searchInput = document.getElementById("sidebarSearch"); // Input search
+        const sidebar = document.querySelector(".sidebar"); // Chỉ trong sidebar
+        if (!sidebar || !searchInput) return; // Dừng nếu không có sidebar hoặc input
+
+        const dropdowns = sidebar.querySelectorAll(".nav-item .dropdown"); // Các dropdown
+        const items = sidebar.querySelectorAll(".navbar-nav .nav-item, .navbar-nav .dropdown-item .dropdown-toggle"); // Các mục trong menu
+
+        searchInput.addEventListener("input", function () {
+            const query = this.value.toLowerCase().trim();
+
+            // Lặp qua tất cả các mục (bao gồm cả dropdown và dropdown-item)
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const isDropdown = item.classList.contains("dropdown"); // Kiểm tra xem có phải dropdown không
+
+                if (text.includes(query)) {
+                    item.style.display = ""; // Hiển thị nếu khớp
+                    if (isDropdown) {
+                        // Nếu là dropdown, hiển thị các dropdown-item bên trong
+                        const dropdownItems = item.querySelectorAll(".dropdown-item");
+                        dropdownItems.forEach(dropdownItem => {
+                            dropdownItem.style.display = ""; // Hiển thị tất cả các dropdown-item
+                        });
+                    }
+                } else {
+                    // Ẩn nếu không khớp
+                    item.style.display = "none";
+                    if (isDropdown) {
+                        // Ẩn tất cả các dropdown-item bên trong nếu dropdown không khớp
+                        const dropdownItems = item.querySelectorAll(".dropdown-item");
+                        dropdownItems.forEach(dropdownItem => {
+                            dropdownItem.style.display = "none";
+                        });
+                    }
+                }
+            });
+
+            // Đảm bảo các dropdown khớp được mở
+            dropdowns.forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector(".dropdown-toggle");
+                const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+                const anyVisibleItem = dropdownMenu.querySelector(".dropdown-item[style='display: block;']");
+
+                if (anyVisibleItem) {
+                    dropdownToggle.classList.add("show");
+                    dropdownMenu.classList.add("show");
+                } else {
+                    dropdownToggle.classList.remove("show");
+                    dropdownMenu.classList.remove("show");
+                }
+            });
+        });
+    });
+</script>

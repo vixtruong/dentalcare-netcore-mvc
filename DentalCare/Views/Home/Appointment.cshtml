@@ -137,13 +137,13 @@
                             </div>
                             <div class="col-12 col-sm-6">
                                 <div class="date" id="date1" data-target-input="nearest">
-                                    <input asp-for="Date" type="date"
+                                    <input asp-for="Date" type="date" id="date"
                                            class="form-control bg-light border-0"
                                            placeholder="Appointment Date" data-target="#date1" data-toggle="datetimepicker"  required>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-6">
-                                <select asp-for="Time" id="timeSelect" class="form-control select-picker bg-light border-0" data-live-search="true" data-dropup-auto="false" required>
+                                <select asp-for="Time" id="timeSelect" class="form-control select-picker time-select bg-light border-0" data-live-search="true" data-dropup-auto="false" title="Select Time" required>
                                 </select>
                             </div>
                             <div class="col-12">
@@ -180,19 +180,81 @@
     </script>
 }
 
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
+    const doctorSelect = document.getElementById('doctor');
+    const dateInput = document.getElementById('date');
     const timeSelect = document.getElementById('timeSelect');
 
-    for (let hour = 7; hour <= 17; hour++) {
-        for (let minute = 0; minute < 60; minute += 30) {
-            const timeOption = document.createElement('option');
-            const formattedHour = String(hour).padStart(2, '0');
-            const formattedMinute = String(minute).padStart(2, '0');
-            timeOption.value = `${formattedHour}:${formattedMinute}`;
-            timeOption.textContent = `${formattedHour}:${formattedMinute}`;
-            timeSelect.appendChild(timeOption);
+    dateInput.disabled = true;
+    timeSelect.disabled = true;
+
+    doctorSelect.addEventListener('change', () => {
+        if (doctorSelect.value) {
+            var doctorId = doctorSelect.value;
+            fetch(`/Appointment/GetDoctorShift?doctorId=${doctorId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data: ", data.$values);
+
+                    const allowedDates = data.$values.map(date => date.split('T')[0]);
+                    console.log("allowDate: ", allowedDates);
+
+                    flatpickr(dateInput, {
+                        enable: allowedDates,
+                        dateFormat: "m/d/Y"
+                    });
+
+                    dateInput.disabled = false;
+                })
+                .catch(error => console.error('Error:', error));
+
+
+            dateInput.disabled = false;
+            dateInput.value = null;
+            dateInput.classList.remove('bg-light');
+            dateInput.classList.add('bg-white');
+
+            timeSelect.disabled = true;
+            timeSelect.innerHTML = '';
+            $('.time-select').selectpicker('refresh');
+        } else {
+            dateInput.disabled = true;
+            timeSelect.disabled = true;
         }
-    }
+    });
+
+    // Enable time select when both doctor and date are selected
+    dateInput.addEventListener('change', () => {
+        if (doctorSelect.value && dateInput.value) {
+            timeSelect.disabled = false;
+            timeSelect.innerHTML = '';
+
+            var doctorId = doctorSelect.value;
+            var date = dateInput.value;
+
+            fetch(`/Appointment/GetDoctorFreeTime?doctorId=${doctorId}&date=${date}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.$values);
+
+                    data.$values.forEach(function (time) {
+                        const timeOption = document.createElement('option');
+                        timeOption.value = time;
+                        timeOption.textContent = time;
+                        timeSelect.appendChild(timeOption);
+                    });
+                    $('.time-select').selectpicker('refresh');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        } else {
+            timeSelect.disabled = true;
+        }
+    });
 </script>
 
 <script>
