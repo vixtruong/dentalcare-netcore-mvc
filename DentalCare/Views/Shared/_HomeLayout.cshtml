@@ -91,12 +91,12 @@
                    data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu m-0">
                     <a href="@Url.Action("Pricing", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Pricing" ? "active" : "")">Pricing Plan</a>
-                    <a href="@Url.Action("Team", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Team" ? "active" : "")">Our Dentist</a>
+                    <a href="@Url.Action("Team", "Home")" class="d-none dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Team" ? "active" : "")">Our Dentist</a>
                     <a href="@Url.Action("Appointment", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Appointment" ? "active" : "")">Appointment</a>
                 </div>
             </div>
 
-            <a href="@Url.Action("Contact", "Home")" class="nav-item nav-link @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Contact" ? "active" : "")">Contact</a>
+            <a href="@Url.Action("Contact", "Home")" class="nav-item nav-link d-none @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Contact" ? "active" : "")">Contact</a>
         </div>
         <button type="button" class="btn text-dark" data-bs-toggle="modal"
                 data-bs-target="#searchModal">
@@ -128,22 +128,6 @@
 <!-- Sub Body -->
 @RenderBody()
 
-<!-- Newsletter Start -->
-<div class="container-fluid position-relative pt-5 wow fadeInUp" data-wow-delay="0.1s"
-     style="z-index: 1;">
-    <div class="container">
-        <div class="bg-primary p-5">
-            <form class="mx-auto" style="max-width: 600px;">
-                <div class="input-group">
-                    <input type="text" class="form-control border-white p-3"
-                           placeholder="Your Email">
-                    <button class="btn btn-dark px-4">Sign Up</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- Newsletter End -->
 <!-- Footer Start -->
 <div class="footer container-fluid bg-dark text-light py-5 wow fadeInUp" data-wow-delay="0.3s"
      style="margin-top: -75px;">
@@ -161,7 +145,7 @@
                     <a class="text-light mb-2" href="@Url.Action("Service", "Home")">
                         <i class="bi bi-arrow-right text-primary me-2"></i>Our Services
                     </a>
-                    <a class="text-light" href="@Url.Action("Contact", "Home")">
+                    <a class="text-light d-none" href="@Url.Action("Contact", "Home")">
                         <i class="bi bi-arrow-right text-primary me-2"></i>Contact Us
                     </a>
                 </div>

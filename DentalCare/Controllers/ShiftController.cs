@@ -53,6 +53,18 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Add(Shift shift)
         {
+            if (_shiftService.GetAll().Any(x => x.Doctorid == shift.Doctorid && x.Date == shift.Date))
+            {
+                TempData["ErrorMessage"] = "The selected doctor already has a shift scheduled on this date.";
+                return RedirectToAction("Add", shift);
+            }
+
+            if (_shiftService.GetAll().Any(x => x.Nurseid == shift.Nurseid && x.Date == shift.Date))
+            {
+                TempData["ErrorMessage"] = "The selected nurse already has a shift scheduled on this date.";
+                return RedirectToAction("Add", shift);
+            }
+
             var newShift = new Shift
             {
                 Id = _shiftService.GenerateID(),
@@ -93,6 +105,18 @@ namespace DentalCare.Controllers
         public IActionResult Edit(Shift model)
         {
             var shift = _shiftService.Get(model.Id);
+
+            if (_shiftService.GetAll().Any(x => x.Doctorid == shift.Doctorid && x.Date == shift.Date))
+            {
+                TempData["ErrorMessage"] = "The selected doctor already has a shift scheduled on this date.";
+                return RedirectToAction("Edit", model);
+            }
+
+            if (_shiftService.GetAll().Any(x => x.Nurseid == shift.Nurseid && x.Date == shift.Date))
+            {
+                TempData["ErrorMessage"] = "The selected nurse already has a shift scheduled on this date.";
+                return RedirectToAction("Edit", model);
+            }
 
             shift.Id = model.Id;
             shift.Date = model.Date;

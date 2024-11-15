@@ -79,6 +79,7 @@ namespace DentalCare.Controllers
                 HttpContext.Session.SetString("UserName", userName);
                 HttpContext.Session.SetString("UserAvatar", userAvatar);
                 HttpContext.Session.SetString("UserRole", existingAccount.Role);
+                HttpContext.Session.SetString("Phone", account.Phone);
 
                 var claims = new List<Claim>
                                     {
@@ -161,7 +162,7 @@ namespace DentalCare.Controllers
                     {
                         DoctorId = account.DoctorId,
                         Phone = model.Phone,
-                        Email = model.Email,
+                        Email = doctor.Email,
                         Password = account.Password,
                         Role = account.Role,
                     };
@@ -173,13 +174,13 @@ namespace DentalCare.Controllers
                 doctor.Facultyid = model.Faculty;
                 doctor.FacultyName = _facultyService.Get(model.Faculty).Name;
                 doctor.Phone = model.Phone;
-                doctor.Email = model.Email;
                 doctor.Gender = model.Gender.Equals("Male", StringComparison.OrdinalIgnoreCase);
                 doctor.Name = model.FullName;
                 doctor.Birthday = model.Birthday.Value;
                 doctor.Firstdayofwork = model.JoinTime.Value;
                 doctor.Avatar = (model.AvatarPath != null) ? model.AvatarPath : doctor.Avatar;
 
+                TempData["Success"] = "Edit profile successfully.";
                 _doctorService.Update(doctor);
             }
             else
@@ -194,7 +195,7 @@ namespace DentalCare.Controllers
                     {
                         ReceptionistId = account.ReceptionistId,
                         Phone = model.Phone,
-                        Email = model.Email,
+                        Email = receptionist.Email,
                         Password = account.Password,
                         Role = account.Role,
                     };
@@ -205,12 +206,13 @@ namespace DentalCare.Controllers
 
                 receptionist.Name = model.FullName;
                 receptionist.Phone = model.Phone;
-                receptionist.Email = model.Email;
                 receptionist.Gender = model.Gender.Equals("Male", StringComparison.OrdinalIgnoreCase);
                 receptionist.Birthday = model.Birthday.Value;
                 receptionist.Firstdayofwork = model.JoinTime.Value;
                 receptionist.Avatar = (model.AvatarPath != null) ? model.AvatarPath : receptionist.Avatar;
 
+
+                TempData["Success"] = "Edit profile successfully.";
                 _receptionistService.Update(receptionist);
             }
             return View();

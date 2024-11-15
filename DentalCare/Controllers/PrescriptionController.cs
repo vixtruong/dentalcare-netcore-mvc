@@ -173,11 +173,19 @@ namespace DentalCare.Controllers
                 return NotFound();
             }
 
-            ViewBag.MedicalExams = _medicalExamService.GetAll();
+            var prescription = _prescriptionService.Get(id);
+            var invoices = _invoiceService.GetAll();
+
+            if (invoices.Any(x => x.Medicalexaminationid == prescription.Medicalexaminationid))
+            {
+                TempData["ErrorMessage"] = "This prescription has already been created with an invoice. Can not edit.";
+                return RedirectToAction("Index");
+            }
+
             ViewBag.Types = _medicineTypeService.GetAll();
             ViewBag.Medicines = _medicineService.GetAll();
 
-            var prescription = _prescriptionService.Get(id);
+            
             var details = new List<PrescriptionDetailViewModel>();
             foreach (var detail in _prescriptionDetailService.GetAll())
             {
@@ -202,9 +210,6 @@ namespace DentalCare.Controllers
         public IActionResult Edit(PrescriptionViewModel model)
         {
             var prescription = _prescriptionService.Get(model.Id);
-            prescription.Date = model.Date;
-            prescription.Medicalexaminationid = model.MedicalExamId;
-            _prescriptionService.Update(prescription);
 
             var detailList = new List<Prescriptiondetail>();
             var updateMedicines = new List<Medicine>();

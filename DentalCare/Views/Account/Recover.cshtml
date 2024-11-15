@@ -60,15 +60,15 @@
                             <label asp-for="Email" for="email">Email</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input asp-for="NewPassword" type="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+                            <input asp-for="NewPassword" type="password" class="form-control" pattern=".{8,}" id="floatingPassword" placeholder="Password" required>
                             <label asp-for="NewPassword" for="floatingPassword">Password</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input asp-for="ConfirmPassword" type="password" class="form-control" id="floatingPasswordAgain" placeholder="Password" required>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" pattern=".{8,}" id="floatingPasswordAgain" placeholder="Password" required>
                             <label asp-for="ConfirmPassword" for="floatingPasswordAgain">Confirm password</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input asp-for="Otp" type="text" class="form-control" id="floatingOTP" placeholder="OTP" required>
+                            <input asp-for="Otp" type="text" class="form-control"  id="floatingOTP" placeholder="OTP" required>
                             <label asp-for="Otp" for="floatingOTP">OTP</label>
                         </div>
                         <div class="otp-message col-12">

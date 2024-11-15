@@ -46,7 +46,6 @@
     }
 </style>
 
-
 <div class="container-fluid mt-4 add-invoice">
     <div class="content">
         <div class="page-header mb-4 text-primary">
@@ -93,7 +92,7 @@
                         <div class="col-lg-6 col-sm-6 col-12 ">
                             <div class="form-group">
                                 <label asp-for="Price">Price</label>
-                                <input asp-for="Price" type="number" id="price" class="form-control" placeholder="Price" required>
+                                <input asp-for="Price" type="number" id="price" class="form-control" min="1000" placeholder="Price" required>
                             </div>
                         </div>
                         <div class="col-lg-12 text-end">

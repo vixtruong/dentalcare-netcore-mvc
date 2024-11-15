@@ -16,7 +16,7 @@ namespace DentalCare.Services
             return _context.Accounts.ToList();
         }
 
-        public Account? Get(String username)
+        public Account? Get(string username)
         {
             return _context.Accounts.FirstOrDefault(x => x.Phone.Equals(username) || x.Email.Equals(username));
         }

@@ -16,9 +16,10 @@ namespace DentalCare.Controllers
         private readonly EquipmentService _equipmentService;
         private readonly EquipmentTypeService _equipmentTypeService;
         private readonly MedicalExamService _medicalExamService;
+        private readonly InvoiceService _invoiceService;
 
         public EquipmentSheetController(DoctorService doctorService, EquipmentSheetService equipmentSheetService, EquipmentDetailService equipmentDetailService, 
-            CustomerService customerService, EquipmentService equipmentService, EquipmentTypeService equipmentTypeService, MedicalExamService medicalExamService)
+            CustomerService customerService, EquipmentService equipmentService, EquipmentTypeService equipmentTypeService, MedicalExamService medicalExamService, InvoiceService invoiceService)
         {
            _doctorService = doctorService;
            _equipmentService = equipmentService;
@@ -27,6 +28,7 @@ namespace DentalCare.Controllers
            _equipmentSheetService = equipmentSheetService;
            _equipmentDetailService = equipmentDetailService;
            _medicalExamService = medicalExamService;
+           _invoiceService = invoiceService;
         }
 
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
@@ -161,11 +163,20 @@ namespace DentalCare.Controllers
                 return NotFound();
             }
 
+            var prescription = _equipmentSheetService.Get(id);
+            var invoices = _invoiceService.GetAll();
+
+            if (invoices.Any(x => x.Medicalexaminationid == prescription.MedicalexaminationId))
+            {
+                TempData["ErrorMessage"] = "This equipment sheet has already been created with an invoice. Can not edit.";
+                return RedirectToAction("Index");
+            }
+
             ViewBag.MedicalExams = _medicalExamService.GetAll();
             ViewBag.Types = _equipmentTypeService.GetAll();
             ViewBag.Medicines = _equipmentService.GetAll();
 
-            var prescription = _equipmentSheetService.Get(id);
+            
             var details = new List<EquipmentDetailViewModel>();
             foreach (var detail in _equipmentDetailService.GetAll())
             {
