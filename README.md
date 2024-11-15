@@ -49,5 +49,5 @@ The **DentalCare Website** is an application designed to provide users with an e
 
 ## Contact
 For any questions or feedback, please feel free to reach out:
-- Email: [vixtruong@example.com](mailto:vixtruong@example.com)
+- Email: [vixtruong@example.com](mailto:vipro20161@gmail.com)
 - GitHub: [vixtruong](https://github.com/vixtruong)
