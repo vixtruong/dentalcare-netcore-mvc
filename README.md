@@ -46,3 +46,8 @@ The **DentalCare Website** is an application designed to provide users with an e
 1. Clone this repository to your local machine:
    ```bash
    git clone https://github.com/vixtruong/dentalcare-netcore-mvc.git
+
+## Contact
+For any questions or feedback, please feel free to reach out:
+- Email: [vixtruong@example.com](mailto:vixtruong@example.com)
+- GitHub: [vixtruong](https://github.com/vixtruong)
