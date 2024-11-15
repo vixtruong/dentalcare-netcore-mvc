@@ -163,11 +163,19 @@ namespace DentalCare.Controllers
                 return NotFound();
             }
 
-            ViewBag.MedicalExams = _medicalExamService.GetAll();
+            var prescription = _techSheetService.Get(id);
+            var invoices = _invoiceService.GetAll();
+
+            if (invoices.Any(x => x.Medicalexaminationid == prescription.MedicalexaminationId))
+            {
+                TempData["ErrorMessage"] = "This technical sheet has already been created with an invoice. Can not edit.";
+                return RedirectToAction("Index");
+            }
+
             ViewBag.Types = _techniqueService.GetAll();
             ViewBag.Medicines = _techWorkService.GetAll();
 
-            var prescription = _techSheetService.Get(id);
+            
             var details = new List<TechDetailViewModel>();
             foreach (var detail in _techDetailService.GetAll())
             {
@@ -191,9 +199,7 @@ namespace DentalCare.Controllers
         [HttpPost]
         public IActionResult Edit(TechSheetViewModel model)
         {
-            var techsheet = _techSheetService.Get(model.Id);
-            techsheet.MedicalexaminationId = model.MedicalExamId;
-            techsheet.Date = model.Date;
+            var techSheet = _techSheetService.Get(model.Id);
 
             _techDetailService.DeleteRangeByTechsheetId(model.Id);
 
@@ -202,7 +208,7 @@ namespace DentalCare.Controllers
             {
                 var updateDetail = new Techdetail
                 {
-                    TechsheetId = techsheet.Id,
+                    TechsheetId = techSheet.Id,
                     Techpositionid = detail.TechworkId,
                     Quantity = short.Parse(detail.Quantity)
                 };

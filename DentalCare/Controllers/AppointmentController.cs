@@ -81,6 +81,8 @@ namespace DentalCare.Controllers
             return Json(targetShift);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetCustomerByPhone(string phone)
         {
             var customer = _customerService.GetByPhone(phone);

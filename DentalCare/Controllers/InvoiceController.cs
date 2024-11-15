@@ -173,11 +173,17 @@ namespace DentalCare.Controllers
                 return NotFound();
             }
 
-            ViewBag.MedicalExams = _medicalExamService.GetAll();
-            ViewBag.Prescriptions = _prescriptionService.GetAll();
+            var invoices = _invoiceService.GetAll();
+            var prescriptions = _prescriptionService.GetAll();
+            var techSheets = _techSheetService.GetAll();
+
+            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(m => (prescriptions.Any(p => p.Medicalexaminationid == m.Id) 
+                                                                           || techSheets.Any(t => t.MedicalexaminationId == m.Id))
+                                                                           && !invoices.Any(i => i.Medicalexaminationid == m.Id)).ToList();
+            ViewBag.Prescriptions = prescriptions;
             ViewBag.PrescriptionDetails = _prescriptionDetailService.GetAll();
             ViewBag.Medicines = _medicineService.GetAll();
-            ViewBag.TechSheets = _techSheetService.GetAll();
+            ViewBag.TechSheets = techSheets;
             ViewBag.TechWorks = _techWorkService.GetAll();
             ViewBag.TechDetails = _techDetailService.GetAll();
             return View();
@@ -253,6 +259,7 @@ namespace DentalCare.Controllers
             }
 
             var invoice = _invoiceService.Get(id);
+
             return View(invoice);
         }
 

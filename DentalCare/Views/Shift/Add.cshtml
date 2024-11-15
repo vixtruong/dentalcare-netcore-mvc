@@ -26,8 +26,23 @@
         border: #cccccc solid 1px;
         border-radius: 4px;
     }
+
+    .message {
+        position: absolute;
+        right: 10px;
+        top: 75px;
+        z-index: 1051;
+        max-width: 500px;
+        transition: opacity 1s ease-out;
+    }
 </style>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="message alert alert-danger" id="errorMessage">
+        <strong>Error:</strong> @TempData["ErrorMessage"]
+    </div>
+}
 
 <div class="container-fluid mt-4 add-invoice">
     <!-- Use container-fluid or container for better alignment -->
@@ -123,6 +138,20 @@
 }
 
 <script>
+    window.onload = function () {
+        loadMedicinesFromLocalStorage();
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
+    }
+
     function loadDoctorsByFaculty() {
         var facultyId = document.getElementById("faculty").value;
 

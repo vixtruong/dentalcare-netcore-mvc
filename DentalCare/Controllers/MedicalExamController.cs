@@ -41,7 +41,6 @@ namespace DentalCare.Controllers
             return Print(medicalExam, appointment, doctor, customer);
         }
 
-
         public IActionResult Print(Medicalexamination medicalExam, Appointment appointment, Doctor doctor, Customer customer)
         {
             string htmlContent = $@"
@@ -61,20 +60,15 @@ namespace DentalCare.Controllers
                                         <h2 style='color: #0066cc;'>Appointment Information</h2>
                                         <p><strong>Date:</strong> {appointment.Date.ToString("dd/MM/yyyy")}</p>
                                         <p><strong>Time:</strong> {appointment.Time}</p>
-                                        <p><strong>Demand Description:</strong> {appointment.Demand}</p>
 
                                         <h2 style='color: #0066cc;'>Doctor Information</h2>
                                         <p><strong>ID:</strong> {doctor.Id}</p>
                                         <p><strong>Name:</strong> {doctor.Name}</p>
-                                        <p><strong>Phone:</strong> {doctor.Phone}</p>
-                                        <p><strong>Email:</strong> {doctor.Email}</p>
                                         <p><strong>Faculty:</strong> {doctor.FacultyName}</p>
 
                                         <h2 style='color: #0066cc;'>Customer Information</h2>
                                         <p><strong>ID:</strong> {customer.Id}</p>
                                         <p><strong>Full Name:</strong> {customer.Name}</p>
-                                        <p><strong>Phone:</strong> {customer.Phone}</p>
-                                        <p><strong>Email:</strong> {customer.Email}</p>
                                     </div>
 
                                     <div style='background-color: #0066cc; color: white; text-align: center; padding: 10px; font-size: 1.1em;'>

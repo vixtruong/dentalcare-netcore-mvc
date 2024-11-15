@@ -18,7 +18,9 @@
                 && !path.Equals("/")
                 && context.Session.GetString("UserId") == null
                 && !path.StartsWithSegments("/Appointment/GetDoctorsByFaculty")
-                && !path.StartsWithSegments("/Appointment/GetCustomerByPhone"))
+                && !path.StartsWithSegments("/Appointment/GetCustomerByPhone")
+                && !path.StartsWithSegments("/Appointment/GetDoctorFreeTime")
+                && !path.StartsWithSegments("/Appointment/GetDoctorShift"))
             {
                 context.Response.Redirect("/Account/Index");
                 return;

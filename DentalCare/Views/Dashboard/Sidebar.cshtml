@@ -174,7 +174,7 @@
                 <a href="#" class="nav-link dropdown-toggle @(ViewContext?.RouteData?.Values["controller"]?.ToString() == "HealthReport" &&
                                                               (ViewContext?.RouteData?.Values["action"]?.ToString() == "Add" ||
                                                                ViewContext?.RouteData?.Values["action"]?.ToString() == "Index") ? "active" : "")" data-bs-toggle="dropdown">
-                    <i class="fas fa-file-medical me-2"></i>Health Report
+                    <i class="fas fa-file-medical me-2"></i>Health Record
                 </a>
                 <div class="dropdown-menu bg-transparent border-0">
                     <a style="padding-left: 50px !important" href="@Url.Action("Add", "HealthReport")" class="dropdown-item @((ViewContext?.RouteData?.Values["controller"]?.ToString() == "HealthReport" &&

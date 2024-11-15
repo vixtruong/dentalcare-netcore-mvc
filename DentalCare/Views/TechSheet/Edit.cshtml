@@ -58,22 +58,14 @@
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="MedicalExamId" for="medicine">MES ID</label>
-                                <select asp-for="MedicalExamId" id="mes-id" class="select-picker form-control" data-live-search="true" title="Select MES" required>
-                                    @if (ViewBag.MedicalExams != null)
-                                    {
-                                        @foreach (var e in ViewBag.MedicalExams)
-                                        {
-                                            <option value="@e.Id">@e.Id</option>
-                                        }
-                                    }
-                                </select>
+                                <input asp-for="Id" class="form-control" id="mes-id" value="@Model.Id" disabled required />
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Date">Date</label>
                                 <input asp-for="Date" type="date" class="form-control" id="date"
-                                       placeholder="TechSheet Date" required>
+                                       placeholder="TechSheet Date" disabled required>
                             </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

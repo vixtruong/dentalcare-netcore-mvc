@@ -132,7 +132,23 @@
             padding-left: 32px;
             padding-bottom: -16px !important;
         }
+
+        .message {
+            position: absolute;
+            right: 10px;
+            top: 75px;
+            z-index: 1051;
+            max-width: 500px;
+            transition: opacity 1s ease-out;
+        }
     </style>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="message alert alert-success" id="errorMessage">
+        <strong>Success:</strong> @TempData["Success"]
+    </div>
 }
 
 <div class="page-header text-primary">
@@ -247,7 +263,7 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Phone">Phone</label>
-                                <input asp-for="Phone" type="text" class="form-control phone"
+                                <input asp-for="Phone" type="text" pattern="\d{10}" class="form-control phone"
                                     id="phone" value="@user.Phone" required disabled>
                             </div>
                         </div>
@@ -359,10 +375,26 @@
 
         // Keep the role dropdown always disabled
         document.querySelector('.role').setAttribute('disabled', true);
+        document.querySelector('#eMail').setAttribute('disabled', true);
 
         // Show Cancel and Update buttons, hide Edit button
         document.getElementById('editButton').classList.add('d-none');
         document.getElementById('cancelButton').classList.remove('d-none');
         document.getElementById('submitButton').classList.remove('d-none');
+    }
+</script>
+
+<script>
+    window.onload = function () {
+        var errorMessage = document.getElementById("errorMessage");
+        if (errorMessage) {
+            setTimeout(function () {
+                errorMessage.style.opacity = '0';
+            }, 3000);
+
+            setTimeout(function () {
+                errorMessage.style.display = 'none';
+            }, 6000);
+        }
     }
 </script>
