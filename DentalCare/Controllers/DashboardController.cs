@@ -40,7 +40,10 @@ namespace DentalCare.Controllers
                         uInvoiceQuantity += 1;
                     }
 
-                    uTotalSale += invoice.Finaltotal;
+                    if (invoice.Date.Month == DateTime.Today.Month)
+                    {
+                        uTotalSale += invoice.Finaltotal;
+                    }
                 }
 
                 foreach (var mes in mesList)
@@ -75,7 +78,10 @@ namespace DentalCare.Controllers
                     invoiceQuantity += 1;
                 }
 
-                totalSale += invoice.Finaltotal;
+                if (invoice.Date.Month == DateTime.Today.Month)
+                {
+                    totalSale += invoice.Finaltotal;
+                }
             }
 
             foreach (var mes in _medicalExamService.GetAll())
@@ -111,12 +117,21 @@ namespace DentalCare.Controllers
 
             int daysInPreMonth = DateTime.DaysInMonth(currentYear, preMonth);
 
+            var invoices = _invoiceService.GetAll();
+            var userId = HttpContext.Session.GetString("UserId");
+            var doctorMes = _medicalExamService.GetAll().Where(x => x.Doctorid == userId);
+
+            if (userId != null && userId.Contains("D"))
+            {
+                invoices = invoices.Where(x => doctorMes.Any(m => m.Id == x.Medicalexaminationid)).ToList();
+            }
+
             Dictionary<int, int> revenue = new Dictionary<int, int>();
 
             for (int i = 1; i <= daysInPreMonth; i++)
             {
                 int sum = 0;
-                foreach (var invoice in _invoiceService.GetAll())
+                foreach (var invoice in invoices)
                 {
                     if (invoice.Date.Year == currentYear && invoice.Date.Month == preMonth && invoice.Date.Day == i)
                     {
@@ -140,10 +155,19 @@ namespace DentalCare.Controllers
 
             Dictionary<int, int> revenue = new Dictionary<int, int>();
 
+            var invoices = _invoiceService.GetAll();
+            var userId = HttpContext.Session.GetString("UserId");
+            var doctorMes = _medicalExamService.GetAll().Where(x => x.Doctorid == userId);
+
+            if (userId != null && userId.Contains("D"))
+            {
+                invoices = invoices.Where(x => doctorMes.Any(m => m.Id == x.Medicalexaminationid)).ToList();
+            }
+
             for (int i = 1; i <= daysInCurrentMonth; i++)
             {
                 int sum = 0;
-                foreach (var invoice in _invoiceService.GetAll())
+                foreach (var invoice in invoices)
                 {
                     if (invoice.Date.Year == currentYear && invoice.Date.Month == currentMonth && invoice.Date.Day == i)
                     {

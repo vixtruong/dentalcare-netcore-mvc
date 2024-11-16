@@ -72,8 +72,8 @@
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="Date">Date</label>
-                                <input asp-for="Date" type="date" class="form-control" id="date"
-                                       placeholder="Prescription Date" required>
+                                <input asp-for="Date" type="date" class="form-control" id="dateInput"
+                                       placeholder="Prescription Date" disabled>
                             </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -154,6 +154,14 @@
         $('.select-picker').selectpicker();
     </script>
 }
+
+<script>
+    // Lấy ngày hiện tại
+    const today = new Date().toISOString().split('T')[0];
+
+    // Gán giá trị ngày hiện tại vào input
+    document.getElementById('dateInput').value = today;
+</script>
 
 @* Xử lý thêm danh sách thuốc *@
 <script>

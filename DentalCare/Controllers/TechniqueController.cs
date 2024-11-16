@@ -19,7 +19,7 @@ namespace DentalCare.Controllers
         }
 
         [Route("technique")]
-        public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
+        public IActionResult Index(string sortColumn, string sortDirection, string searchQuery, int? page = 1)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
 

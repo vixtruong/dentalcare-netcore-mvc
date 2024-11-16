@@ -104,7 +104,7 @@ namespace DentalCare.Controllers
 
             var userId = HttpContext.Session.GetString("UserId");
 
-            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId);
+            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId && x.Date == DateTime.Today);
             ViewBag.Types = _medicineTypeService.GetAll();
             ViewBag.Medicines = _medicineService.GetAll();
             return View();
@@ -135,7 +135,7 @@ namespace DentalCare.Controllers
             var prescription = new Prescription
             {
                 Id = _prescriptionService.GenerateID(),
-                Date = model.Date,
+                Date = DateTime.Today,
                 Doctorid = mes.Doctorid,
                 Medicalexaminationid = mes.Id
             };
