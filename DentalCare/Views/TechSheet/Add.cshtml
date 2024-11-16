@@ -87,7 +87,7 @@
                             <div class="form-group">
                                 <label asp-for="Date">Date</label>
                                 <input asp-for="Date" type="date" class="form-control" id="date"
-                                       placeholder="TechSheet Date" required>
+                                       placeholder="TechSheet Date" disabled>
                             </div>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -167,6 +167,14 @@
         $('.select-picker').selectpicker();
     </script>
 }
+
+<script>
+    // Lấy ngày hiện tại
+    const today = new Date().toISOString().split('T')[0];
+
+    // Gán giá trị ngày hiện tại vào input
+    document.getElementById('date').value = today;
+</script>
 
 @* Xử lý thêm danh sách thuốc *@
 <script>

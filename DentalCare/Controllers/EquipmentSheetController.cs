@@ -102,7 +102,7 @@ namespace DentalCare.Controllers
 
             var userId = HttpContext.Session.GetString("UserId");
 
-            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId).ToList();
+            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId && x.Date == DateTime.Today).ToList();
             ViewBag.Types = _equipmentTypeService.GetAll();
             ViewBag.Medicines = _equipmentService.GetAll();
             return View();
@@ -127,7 +127,7 @@ namespace DentalCare.Controllers
             var equipmentSheet = new EquipmentSheet
             {
                 Id = _equipmentSheetService.GenerateID(),
-                Date = model.Date,
+                Date = DateTime.Today,
                 MedicalexaminationId = model.MedicalExamId
             };
             _equipmentSheetService.Add(equipmentSheet);
@@ -201,7 +201,6 @@ namespace DentalCare.Controllers
         public IActionResult Edit(EquipmentSheetViewModel model)
         {
             var prescription = _equipmentSheetService.Get(model.Id);
-            prescription.Date = model.Date;
             prescription.MedicalexaminationId = model.MedicalExamId;
             _equipmentSheetService.Update(prescription);
 

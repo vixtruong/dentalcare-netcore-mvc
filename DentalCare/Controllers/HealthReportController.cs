@@ -114,7 +114,7 @@ namespace DentalCare.Controllers
 
             var userId = HttpContext.Session.GetString("UserId");
 
-            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId);
+            ViewBag.MedicalExams = _medicalExamService.GetAll().Where(x => x.Doctorid == userId && x.Date == DateTime.Today);
             return View();
         }
 

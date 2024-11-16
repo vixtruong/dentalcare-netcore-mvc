@@ -53,6 +53,12 @@
         opacity: 0.5;
     }
 
+    td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     thead th a {
         text-decoration: none;
         color: #000000;
@@ -207,29 +213,32 @@
         <!-- Pagination controls -->
         <nav aria-label="Page navigation">
             <ul class="pagination pagination-md justify-content-center">
-                @if (Model.HasPreviousPage)
+                @if (Model != null)
                 {
-                    <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                }
+                    @if (Model.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber - 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
 
-                @for (int i = 1; i <= Model.PageCount; i++)
-                {
-                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Index", new { page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })">@i</a>
-                    </li>
-                }
+                    @for (int i = 1; i <= Model.PageCount; i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Index", new { page = i, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })">@i</a>
+                        </li>
+                    }
 
-                @if (Model.HasNextPage)
-                {
-                    <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
+                    @if (Model.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { page = Model.PageNumber + 1, sortColumn = ViewBag.SortColumn, sortDirection = ViewBag.SortDirection, searchQuery = ViewBag.SearchQuery })" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
                 }
             </ul>
         </nav>

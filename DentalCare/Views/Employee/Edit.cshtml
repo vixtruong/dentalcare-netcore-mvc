@@ -308,3 +308,18 @@
         toggleFacultyField();
     };
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const birthdayInput = document.getElementById('birthday');
+
+        // Lấy ngày hôm nay
+        const today = new Date();
+        today.setDate(today.getDate() - 1); // Trừ 1 ngày để loại bỏ ngày mai
+
+        // Định dạng ngày theo yyyy-MM-dd
+        const maxDate = today.toISOString().split('T')[0];
+
+        // Gán giá trị max cho trường Birthday
+        birthdayInput.setAttribute('max', maxDate);
+    });
+</script>
