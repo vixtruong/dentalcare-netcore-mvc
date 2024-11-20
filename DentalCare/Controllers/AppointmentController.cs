@@ -46,8 +46,6 @@ namespace DentalCare.Controllers
         }
 
         [HttpGet]
-
-        [HttpGet]
         [AllowAnonymous]
         public IActionResult GetDoctorFreeTime(string doctorId, DateTime date)
         {
