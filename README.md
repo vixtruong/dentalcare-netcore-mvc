@@ -22,9 +22,6 @@ The **DentalCare Website** is an application designed to provide users with an e
 - **Cookie Authentication**
 - **Middleware**
 - **Dependency Injection**
-- **HttpClient**
-- **Session Management**
-- **Momo Payment Integration**
 
 ## Features
 - User authentication (login/logout).
