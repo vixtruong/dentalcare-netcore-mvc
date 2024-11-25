@@ -96,8 +96,31 @@ namespace DentalCare.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Techposition tech)
+        public async Task<IActionResult> Add(Techposition tech, IFormFile techImg)
         {
+            try
+            {
+                if (techImg != null && techImg.Length > 0)
+                {
+                    var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/technique-imgs");
+                    var fileName = Path.GetFileName(techImg.FileName);
+                    var filePath = Path.Combine(uploads, fileName);
+
+                    Directory.CreateDirectory(uploads);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await techImg.CopyToAsync(fileStream);
+                    }
+
+                    tech.Image = $"/uploads/technique-imgs/{fileName}";
+                }
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", "File upload failed");
+            }
+
             var techniqueName = _techniqueService.Get(tech.Techniqueid).Name;
             tech.Id = _techWorkService.GenerateID();
             tech.Techniquename = techniqueName;
@@ -121,11 +144,48 @@ namespace DentalCare.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Techposition tech)
+        public async Task<IActionResult> Edit(Techposition tech, IFormFile techImg)
         {
+            try
+            {
+                if (techImg != null && techImg.Length > 0)
+                {
+                    var uploads = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/technique-imgs");
+                    var fileName = Path.GetFileName(techImg.FileName);
+                    var filePath = Path.Combine(uploads, fileName);
+
+                    Directory.CreateDirectory(uploads);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await techImg.CopyToAsync(fileStream);
+                    }
+
+                    tech.Image = $"/uploads/technique-imgs/{fileName}";
+                }
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", "File upload failed");
+            }
+
+            var oldTech = _techWorkService.Get(tech.Id);
+
             var techniqueName = _techniqueService.Get(tech.Techniqueid).Name;
-            tech.Techniquename = techniqueName;
-            _techWorkService.Update(tech);
+
+            oldTech.Name = tech.Name;
+            oldTech.Unit = tech.Unit;
+            oldTech.Price = tech.Price;
+            oldTech.Detail = tech.Detail;
+            oldTech.Techniqueid = tech.Techniqueid;
+            oldTech.Techniquename = techniqueName;
+
+            if (tech.Image != null)
+            {
+                oldTech.Image = tech.Image;
+            }
+
+            _techWorkService.Update(oldTech);
             return RedirectToAction("Index");
         }
 

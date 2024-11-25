@@ -56,7 +56,7 @@
 
         <div class="card shadow-sm">
             <div class="card-body">
-                <form asp-action="Add" asp-controller="Technique" method="post">
+                <form asp-action="Add" asp-controller="Technique" method="post" enctype="multipart/form-data">
                     <div class="row g-3 p-1">
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <h5 class="text-primary">TechWork Detail</h5>
@@ -74,10 +74,9 @@
                                         }
                                     }
                                 </select>
-
                             </div>
                         </div>
-                        <div class="col-lg-6 col-sm-6 col-12 ">
+                        <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Name">Name</label>
                                 <input asp-for="Name" type="text" id="name" class="form-control" placeholder="Name" required>
@@ -89,10 +88,27 @@
                                 <input asp-for="Unit" type="text" id="unit" class="form-control" placeholder="Unit" required>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-sm-6 col-12 ">
+                        <div class="col-lg-6 col-sm-6 col-12">
                             <div class="form-group">
                                 <label asp-for="Price">Price</label>
                                 <input asp-for="Price" type="number" id="price" class="form-control" min="1000" placeholder="Price" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group d-flex align-items-center">
+                                <div class="col-9">
+                                    <label>Image</label>
+                                    <input name="techImg" type="file" class="form-control bg-white" id="tech-file" accept="image/*" required>
+                                </div>
+                                <div class="col-3 d-flex justify-content-center align-items-center">
+                                    <img id="tech-img" src="https://nkluck.vn/images/nha-khoa-ky-thuat-so-1.jpg" class="img-fluid rounded img-thumbnail w-50" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label asp-for="Detail">Detail</label>
+                                <textarea asp-for="Detail" id="editor" class="form-control" required></textarea>
                             </div>
                         </div>
                         <div class="col-lg-12 text-end">
@@ -120,6 +136,20 @@
 }
 
 <script>
+    const inputFile = document.getElementById('tech-file');
+    const avatarImage = document.getElementById('tech-img');
+
+    inputFile.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                avatarImage.src = event.target.result; // Thay đổi src của ảnh
+            };
+            reader.readAsDataURL(file); // Đọc file dưới dạng URL
+        }
+    });
+
     document.querySelector('form').addEventListener('submit', function (e) {
         var selectType = document.getElementById('type');
         if (selectType.value === "" || selectType.value === "Select Tech") {
@@ -130,3 +160,157 @@
     });
 </script>
 
+<!-- CK EDITOR -->
+<script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/super-build/ckeditor.js"></script>
+<script>
+    let editor;
+    CKEDITOR.ClassicEditor.create(document.getElementById("editor"), {
+        toolbar: {
+            items: [
+                'exportPDF', 'exportWord', '|',
+                'findAndReplace', 'selectAll', '|',
+                'heading', '|',
+                'bold', 'italic', 'strikethrough', 'underline', 'code', 'subscript', 'superscript', 'removeFormat', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'outdent', 'indent', '|',
+                'undo', 'redo',
+                '-',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'highlight', '|',
+                'alignment', '|',
+                'link', 'uploadImage', 'blockQuote', 'insertTable', 'mediaEmbed', 'codeBlock', 'htmlEmbed', '|',
+                'specialCharacters', 'horizontalLine', 'pageBreak', '|',
+                'textPartLanguage', '|',
+                'sourceEditing'
+            ],
+            shouldNotGroupWhenFull: true
+        },
+        list: {
+            properties: {
+                styles: true,
+                startIndex: true,
+                reversed: true
+            }
+        },
+        heading: {
+            options: [{
+                model: 'paragraph',
+                title: 'Paragraph',
+                class: 'ck-heading_paragraph'
+            },
+            {
+                model: 'heading1',
+                view: 'h1',
+                title: 'Heading 1',
+                class: 'ck-heading_heading1'
+            },
+            {
+                model: 'heading2',
+                view: 'h2',
+                title: 'Heading 2',
+                class: 'ck-heading_heading2'
+            },
+            {
+                model: 'heading3',
+                view: 'h3',
+                title: 'Heading 3',
+                class: 'ck-heading_heading3'
+            },
+            {
+                model: 'heading4',
+                view: 'h4',
+                title: 'Heading 4',
+                class: 'ck-heading_heading4'
+            },
+            {
+                model: 'heading5',
+                view: 'h5',
+                title: 'Heading 5',
+                class: 'ck-heading_heading5'
+            },
+            {
+                model: 'heading6',
+                view: 'h6',
+                title: 'Heading 6',
+                class: 'ck-heading_heading6'
+            }
+            ]
+        },
+        placeholder: 'Viết bài báo tại đây',
+        fontFamily: {
+            options: [
+                'default',
+                'Arial, Helvetica, sans-serif',
+                'Courier New, Courier, monospace',
+                'Georgia, serif',
+                'Lucida Sans Unicode, Lucida Grande, sans-serif',
+                'Tahoma, Geneva, sans-serif',
+                'Times New Roman, Times, serif',
+                'Trebuchet MS, Helvetica, sans-serif',
+                'Verdana, Geneva, sans-serif'
+            ],
+            supportAllValues: true
+        },
+        fontSize: {
+            options: [10, 12, 14, 'default', 18, 20, 22],
+            supportAllValues: true
+        },
+        htmlSupport: {
+            allow: [{
+                name: /.*/,
+                attributes: true,
+                classes: true,
+                styles: true
+            }]
+        },
+        htmlEmbed: {
+            showPreviews: true
+        },
+        link: {
+            decorators: {
+                addTargetToExternalLinks: true,
+                defaultProtocol: 'https://',
+                toggleDownloadable: {
+                    mode: 'manual',
+                    label: 'Downloadable',
+                    attributes: {
+                        download: 'file'
+                    }
+                }
+            }
+        },
+        removePlugins: [
+            'AIAssistant',
+            'CKBox',
+            'CKFinder',
+            'EasyImage',
+            'MultiLevelList',
+            'RealTimeCollaborativeComments',
+            'RealTimeCollaborativeTrackChanges',
+            'RealTimeCollaborativeRevisionHistory',
+            'PresenceList',
+            'Comments',
+            'TrackChanges',
+            'TrackChangesData',
+            'RevisionHistory',
+            'Pagination',
+            'WProofreader',
+            'MathType',
+            'SlashCommand',
+            'Template',
+            'DocumentOutline',
+            'FormatPainter',
+            'TableOfContents',
+            'PasteFromOfficeEnhanced',
+            'CaseChange'
+        ]
+    }).then(newEditor => {
+        editor = newEditor;
+        editor.model.document.on('change:data', () => {
+            const content = document.querySelector(".content");
+            content.value = editor.getData();
+        });
+    })
+        .catch(error => {
+            console.error(error);
+        });
+</script>

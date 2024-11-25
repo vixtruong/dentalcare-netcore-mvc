@@ -19,9 +19,9 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Template Stylesheet -->
     <link href="~/css/dashboard/style.css" rel="stylesheet">
+
 
     @RenderSection("Profile", false)
     @RenderSection("Invoice", false)
@@ -60,7 +60,6 @@
 
     <!-- Template Javascript -->
     <script src="~/js/dashboard/main.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
-@RenderSection("Scripts", required: false)
-
 </html>

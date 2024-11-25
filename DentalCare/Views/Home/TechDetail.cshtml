@@ -1,0 +1,57 @@
+﻿@model Techposition
+
+<style>
+    .rich-text-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .rich-text-content img {
+        max-width: 100%; /* Đảm bảo hình ảnh không vượt quá vùng chứa */
+        height: auto; /* Giữ nguyên tỷ lệ ảnh */
+    }
+
+    .rich-text-content > * {
+        margin-bottom: 16px !important;
+    }
+
+
+</style>
+
+<div class="container-fluid bg-primary py-5 hero-header">
+    <div class="row py-3">
+        <div class="col-12 text-center">
+            <h1 class="display-3 text-white animated zoomIn">Technique Detail</h1>
+            <a href="@Url.Action("Index", "Home")" class="h4 text-white">Home</a>
+            <i class="far fa-circle text-white px-2"></i>
+            <a href="@Url.Action("Pricing", "Home")" class="h4 text-white">Pricing</a>
+        </div>
+    </div>
+</div>
+
+<!-- Hero End -->
+<!-- Pricing Start -->
+<div class="container-fluid py-5 wow fadeInUp mb-4" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row g-5 mb-4">
+            <div class="col-lg-5">
+                <div class="section-title mb-4">
+                    <h5 class="position-relative d-inline-block text-primary text-uppercase">Technique Details</h5>
+                    <h4 class="display-5 mb-0">@Model.Techniquename</h4>
+                    <h5>@Model.Name</h5>
+                </div>
+                <h2 class="mb-4">@Model.Price VNĐ / @Model.Unit</h2>
+                <h5 class="text-uppercase text-primary wow fadeInUp" data-wow-delay="0.3s">Call for Appointment</h5>
+                <h1 class="wow fadeInUp" data-wow-delay="0.6s">+012 345 6789</h1>
+            </div>
+            <div class="col-7 tech-detail">
+                <div class="rich-text-content">
+                    @Html.Raw(Model.Detail)
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Pricing End -->

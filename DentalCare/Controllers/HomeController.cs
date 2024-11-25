@@ -16,15 +16,19 @@ namespace DentalCare.Controllers
         private readonly FacultyService _facultyService;
         private readonly AppointmentService _appointmentService;
         private readonly CustomerService _customerService;
+        private readonly TechWorkService _techWorkService;
+        private readonly TechniqueService _techniqueService;
 
         public HomeController(ILogger<HomeController> logger, DoctorService doctorService,
-            FacultyService facultyService, AppointmentService appointmentService, CustomerService customerService)
+            FacultyService facultyService, AppointmentService appointmentService, CustomerService customerService, TechWorkService techWorkService, TechniqueService techniqueService)
         {
             _logger = logger;
             _doctorService = doctorService;
             _facultyService = facultyService;
             _appointmentService = appointmentService;
             _customerService = customerService;
+            _techWorkService = techWorkService;
+            _techniqueService = techniqueService;
         }
 
         public IActionResult Index()
@@ -106,9 +110,30 @@ namespace DentalCare.Controllers
             return View();
         }
 
-        public IActionResult Pricing()
+        [HttpGet]
+        public IActionResult Pricing(string typeId = "all")
         {
-            return View();
+            ViewBag.Techniques = _techniqueService.GetAll();
+            List<Techposition> techList;
+
+            if (string.IsNullOrEmpty(typeId) || typeId == "all")
+            {
+                techList = _techWorkService.GetAll();
+            }
+            else
+            {
+                techList = _techWorkService.GetAll().Where(x => x.Techniqueid == typeId).ToList();
+            }
+
+            return View(techList);
+        }
+
+
+        [HttpGet]
+        public IActionResult TechDetail(string id)
+        {
+            var tech = _techWorkService.Get(id);
+            return View(tech);
         }
 
         public IActionResult Contact()

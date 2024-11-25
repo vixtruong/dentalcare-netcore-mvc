@@ -1,5 +1,4 @@
-﻿using DentalCare.Middlewares;
-using DentalCare.Models;
+﻿using DentalCare.Models;
 using DentalCare.Payments.Momo.Config;
 using DentalCare.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -97,8 +96,6 @@ namespace DentalCare
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseMiddleware<SessionCheckMiddleware>();
-            
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Account}/{action=Index}/{id?}");

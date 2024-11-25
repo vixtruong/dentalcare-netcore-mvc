@@ -760,6 +760,11 @@ public partial class DentalcareContext : DbContext
             entity.Property(e => e.Techniquename)
                 .HasMaxLength(50)
                 .HasColumnName("TECHNIQUENAME");
+            entity.Property(e => e.Detail)
+                .HasColumnName("DETAIL");
+            entity.Property(e => e.Image)
+                .HasMaxLength(200)
+                .HasColumnName("IMG");
 
             entity.HasOne(d => d.Technique).WithMany(p => p.Techpositions)
                 .HasForeignKey(d => d.Techniqueid)
