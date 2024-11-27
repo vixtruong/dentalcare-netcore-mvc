@@ -188,8 +188,10 @@
     </nav>
 </div>
 <!-- Sidebar End -->
-<script>
-    function handleDropdownState(dropdownId) {
+@section Sidebar
+{
+    <script>
+        function handleDropdownState(dropdownId) {
             const dropdownElement = document.getElementById(dropdownId);
 
             if (localStorage.getItem('openDropdown') === dropdownId) {
@@ -232,4 +234,5 @@
                 }
             });
         });
-</script>
+    </script>
+}

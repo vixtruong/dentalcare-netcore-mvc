@@ -48,7 +48,7 @@ namespace DentalCare.Services
         public string GenerateID()
         {
             var nurseWithHighestID = GetAll()
-                .Where(n => n.Id.StartsWith("TW") && n.Id.Length == 10 && long.TryParse(n.Id.Substring(2), out _))
+                .Where(n => n.Id.StartsWith("TP") && n.Id.Length == 6 && long.TryParse(n.Id.Substring(2), out _))
                 .OrderByDescending(n => long.Parse(n.Id.Substring(2)))
                 .FirstOrDefault();
 
@@ -57,9 +57,9 @@ namespace DentalCare.Services
                 long idNumber = long.Parse(nurseWithHighestID.Id.Substring(2));
                 idNumber++;
 
-                if (idNumber.ToString("D8").Length <= 8)
+                if (idNumber.ToString("D4").Length <= 4)
                 {
-                    return "TW" + idNumber.ToString("D8");
+                    return "TP" + idNumber.ToString("D4");
                 }
                 else
                 {
@@ -67,7 +67,7 @@ namespace DentalCare.Services
                 }
             }
 
-            return "TW00000001";
+            return "TP0001";
         }
     }
 }

@@ -1,0 +1,203 @@
+﻿@{
+    var healthReports = ViewBag.HealthReports as List<Healthreport>;
+    var mesList = ViewBag.MES as List<Medicalexamination>;
+    var doctors = ViewBag.Doctors as List<Doctor>;
+}
+
+<style>
+    .accordion-collapse {
+        height: 0;
+        overflow: hidden;
+        transition: height 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); /* Thêm hiệu ứng easing mềm mại */
+    }
+
+    .accordion-collapse.show {
+        height: auto; /* Giá trị này sẽ được cập nhật bằng JavaScript sau khi quá trình mở kết thúc */
+    }
+</style>
+
+<!-- Hero Start -->
+<div class="container-fluid bg-primary py-5 hero-header">
+    <div class="row py-3">
+        <div class="col-12 text-center">
+            <h1 class="display-3 text-white animated zoomIn">Medical History</h1>
+            <a href="@Url.Action("Index", "Home")" class="h4 text-white">Home</a>
+            <i class="far fa-circle text-white px-2"></i>
+            <a href="@Url.Action("MedicalHistory", "Home")" class="h4 text-white">Medical History</a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-5 wow fadeInUp mb-4" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="page-header mb-4 text-primary">
+            <div class="page-title">
+                <h1>Medical History</h1>
+            </div>
+        </div>
+
+        <div class="row g-5 mb-4">
+            <div class="col-lg-5 col-sm-5 col-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <form asp-action="MedicalHistory" asp-controller="Home" method="post">
+                            <div class="row g-3">
+                                <div class="col-lg-12 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input name="email" type="text" id="email" class="form-control"
+                                               placeholder="Email" required>
+                                        <small id="phoneMessage" class="form-text"></small>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="button" id="btn-otp" class="btn btn-secondary me-2">Send OTP</button>
+                                </div>
+                                <div class="col-lg-12 col-sm-12 col-12">
+                                    <div class="form-group">
+                                        <label>OTP</label>
+                                        <input name="otp" type="text" id="otp"
+                                               class="form-control" placeholder="One Time Password" required>
+                                        @if (ViewBag.ErrorMessage != null)
+                                        {
+                                            <small class="form-text text-danger">@ViewBag.ErrorMessage</small>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary me-2">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 col-sm-7 col-12">
+                <div class="row g-5 mb-4">
+                    <div class="accordion @((ViewBag.HealthReports == null) ? "d-none" : "")" id="accordionCustomExample">
+                        @if (ViewBag.HealthReports != null)
+                        {
+                            foreach (var report in healthReports)
+                            {
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@report.Id" aria-expanded="false">
+                                            @report.Date.ToString("dd/MM/yyyy") (Frequency: @report.Frequency)
+                                        </button>
+                                    </h2>
+                                    <div id="collapse-@report.Id" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            @if (mesList != null && doctors != null)
+                                            {
+                                                var mes = mesList.FirstOrDefault(x => x.Id == report.MedicalexaminationId);
+                                                if (mes != null)
+                                                {
+                                                    var doctor = doctors.FirstOrDefault(x => x.Id == mes.Doctorid);
+                                                    <strong>Doctor: </strong>
+
+                                                    <span>@doctor?.Name (Faculty: @doctor?.FacultyName)</span>
+
+                                                    <br />
+                                                    <strong>Description: </strong>
+
+                                                    <span>@report.Status</span>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //xử lý khi nhấn vào lịch sử sẽ hiện ra và đóng lại
+    document.addEventListener('DOMContentLoaded', function () {
+        const accordionButtons = document.querySelectorAll('.accordion-button');
+
+        accordionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const accordionItem = button.closest('.accordion-item');
+                const accordionBody = accordionItem.querySelector('.accordion-collapse');
+
+                // Nếu accordion đang mở (có class show)
+                if (accordionBody.classList.contains('show')) {
+                    // Đặt chiều cao hiện tại để bắt đầu quá trình đóng
+                    accordionBody.style.height = `${accordionBody.scrollHeight}px`;
+
+                    // Đảm bảo chuyển động bắt đầu từ chiều cao hiện tại
+                    window.requestAnimationFrame(() => {
+                        accordionBody.style.height = '0';
+                    });
+
+                    // Sau khi chuyển động đóng kết thúc
+                    accordionBody.addEventListener('transitionend', () => {
+                        accordionBody.classList.remove('show');
+                        accordionBody.style.height = ''; // Xóa style chiều cao để làm sạch
+                    }, { once: true });
+
+                    button.classList.add('collapsed');
+                    button.setAttribute('aria-expanded', 'false');
+                } else {
+                    // Thiết lập chiều cao ban đầu là 0
+                    accordionBody.style.height = '0';
+                    accordionBody.classList.add('show');
+
+                    // Bắt đầu quá trình mở bằng cách tính toán chiều cao thật
+                    window.requestAnimationFrame(() => {
+                        accordionBody.style.height = `${accordionBody.scrollHeight}px`;
+                    });
+
+                    // Khi mở hoàn toàn, đặt lại chiều cao thành auto
+                    accordionBody.addEventListener('transitionend', () => {
+                        accordionBody.style.height = 'auto';
+                    }, { once: true });
+
+                    button.classList.remove('collapsed');
+                    button.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+    });
+
+    //Xử lý khi nhấn nút gửi OTP
+    var btnOTP = document.getElementById("btn-otp");
+    if (btnOTP) {
+        btnOTP.addEventListener('click', () => {
+            var email = document.getElementById("email").value.trim();
+            var phoneMessage = document.getElementById("phoneMessage");
+
+            // Xóa lớp hiện tại (text-success hoặc text-danger) trước khi thêm lớp mới
+            phoneMessage.classList.remove("text-danger", "text-success");
+
+            if (!email) {
+                phoneMessage.classList.add("text-danger");
+                phoneMessage.textContent = "Please enter a valid email address.";
+            } else {
+                fetch(`/Home/SendOTPToViewMedicalHistory?email=` + email)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data === "success") {
+                            console.log(data);
+                            phoneMessage.classList.add("text-success");
+                            phoneMessage.textContent = "OTP sent to your email.";
+                        }
+                        else if (data === "null") {
+                            phoneMessage.classList.add("text-danger");
+                            phoneMessage.textContent = "Email does not exist in system.";
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+
+                // Giả lập hành động gửi OTP
+                console.log(`Sending OTP to: ${email}`);
+            }
+        });
+    }
+</script>

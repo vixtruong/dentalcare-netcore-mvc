@@ -96,7 +96,7 @@
                 </div>
             </div>
 
-            <a href="@Url.Action("Contact", "Home")" class="nav-item nav-link d-none @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Contact" ? "active" : "")">Contact</a>
+                <a href="@Url.Action("MedicalHistory", "Home")" class="nav-item nav-link @(ViewContext?.RouteData?.Values["action"]?.ToString() == "MedicalHistory" ? "active" : "")">Medical History</a>
         </div>
         <button type="button" class="btn text-dark" data-bs-toggle="modal"
                 data-bs-target="#searchModal">
@@ -221,5 +221,6 @@
 <script src="~/js/home/main.js"></script>
 </body>
 @RenderSection("Scripts", required: false)
+@RenderSection("Sidebar", required: false)
 
 </html>
