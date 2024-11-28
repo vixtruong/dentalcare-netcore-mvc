@@ -21,9 +21,11 @@ namespace DentalCare.Controllers
         private readonly TechniqueService _techniqueService;
         private readonly HealthReportService _healthReportService;
         private readonly MedicalExamService _medicalExamService;
+        private readonly InvoiceService _invoiceService;
 
         public HomeController(ILogger<HomeController> logger, DoctorService doctorService,
-            FacultyService facultyService, AppointmentService appointmentService, CustomerService customerService, TechWorkService techWorkService, TechniqueService techniqueService, HealthReportService healthReportService, MedicalExamService medicalExamService)
+            FacultyService facultyService, AppointmentService appointmentService, CustomerService customerService, TechWorkService techWorkService,
+            TechniqueService techniqueService, HealthReportService healthReportService, MedicalExamService medicalExamService, InvoiceService invoiceService)
         {
             _logger = logger;
             _doctorService = doctorService;
@@ -34,6 +36,7 @@ namespace DentalCare.Controllers
             _techniqueService = techniqueService;
             _healthReportService = healthReportService;
             _medicalExamService = medicalExamService;
+            _invoiceService = invoiceService;
         }
 
         public IActionResult Index()
@@ -167,7 +170,7 @@ namespace DentalCare.Controllers
             var mes = _medicalExamService.GetAll()
                 .Where(m => healthReports.Any(h => h.MedicalexaminationId == m.Id))
                 .ToList();
-            
+
             if (!otp.Equals(storedOtp))
             {
                 ViewBag.ErrorMessage = "OTP not match.";
@@ -177,6 +180,8 @@ namespace DentalCare.Controllers
             ViewBag.HealthReports = healthReports;
             ViewBag.MES = mes;
             ViewBag.Doctors = _doctorService.GetAll().Where(d => mes.Any(m => m.Doctorid == d.Id)).ToList();
+            ViewBag.Invoices = _invoiceService.GetAll().Where(i => mes.Any(m => m.Id == i.Medicalexaminationid))
+                .ToList();
             HttpContext.Session.Remove("CustomerOTP");
             return View();
         }

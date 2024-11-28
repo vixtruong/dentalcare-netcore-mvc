@@ -281,11 +281,12 @@ namespace DentalCare.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Detail(string invoiceId)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
 
-            if (userRole.Contains("D"))
+            if (userRole != null && userRole.Contains("D"))
             {
                 return NotFound();
             }

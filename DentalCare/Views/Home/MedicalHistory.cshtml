@@ -2,6 +2,7 @@
     var healthReports = ViewBag.HealthReports as List<Healthreport>;
     var mesList = ViewBag.MES as List<Medicalexamination>;
     var doctors = ViewBag.Doctors as List<Doctor>;
+    var invoices = ViewBag.Invoices as List<Bill>;
 }
 
 <style>
@@ -102,6 +103,13 @@
                                                     <strong>Description: </strong>
 
                                                     <span>@report.Status</span>
+
+                                                    <br/>
+
+                                                    var invoice = invoices.FirstOrDefault(x => x.Medicalexaminationid == mes.Id);
+                                                    <strong>Invoice: </strong>
+
+                                                    <span><a href="@Url.Action("Detail", "Invoice", new { invoiceId = invoice.Id})" class="text-decoration-none" target="_blank">@invoice.Id</a></span>
                                                 }
                                             }
                                         </div>

@@ -150,7 +150,7 @@ namespace DentalCare.Controllers
             }
 
 
-            if (userId.Contains("D"))
+            if (userId != null && userId.Contains("D"))
             {
                 var doctor = _doctorService.Get(userId);
 
@@ -183,7 +183,7 @@ namespace DentalCare.Controllers
                 TempData["Success"] = "Edit profile successfully.";
                 _doctorService.Update(doctor);
             }
-            else
+            else if (userId != null)
             {
                 var receptionist = _receptionistService.Get(userId);
 
