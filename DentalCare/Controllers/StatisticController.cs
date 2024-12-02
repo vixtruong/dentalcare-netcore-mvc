@@ -70,6 +70,7 @@ namespace DentalCare.Controllers
             return Json(doctorRevenue);
         }
 
+        [Route("statistic/view")]
         public IActionResult Index()
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -81,6 +82,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("statistic/export")]
         public IActionResult Export()
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -93,6 +95,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("statistic/export-invoice")]
         [HttpGet]
         public IActionResult ExportInvoices(DateTime from, DateTime to)
         {
@@ -204,6 +207,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Export");
         }
 
+        [Route("statistic/export-doctor")]
         [HttpGet]
         public IActionResult ExportDoctors(DateTime from, DateTime to)
         {

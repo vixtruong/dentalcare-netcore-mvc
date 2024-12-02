@@ -32,6 +32,7 @@ namespace DentalCare.Controllers
             _invoiceService = invoiceService;
         }
 
+        [Route("prescription/manage")]
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -92,6 +93,7 @@ namespace DentalCare.Controllers
             return Json(medicineList);
         }
 
+        [Route("prescription/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -110,6 +112,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("prescription/add")]
         [HttpPost]
         public IActionResult Add(PrescriptionViewModel model)
         {
@@ -163,6 +166,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("prescription/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -206,6 +210,7 @@ namespace DentalCare.Controllers
             return View(prescriptionViewModel);
         }
 
+        [Route("prescription/edit/{id}")]
         [HttpPost]
         public IActionResult Edit(PrescriptionViewModel model)
         {

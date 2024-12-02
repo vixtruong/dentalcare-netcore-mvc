@@ -24,18 +24,23 @@ namespace DentalCare.Controllers
             _facultyService = facultyService;
         }
 
+        [Route("login")]
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult Index(string returnUrl = null)
         {
             if (HttpContext.Session.GetString("UserId") != null)
             {
                 return RedirectToAction("Index", "Dashboard");
             }
+
+            ViewData["ReturnUrl"] = returnUrl;
+
             return View();
         }
 
+        [Route("login")]
         [HttpPost]
-        public async Task<IActionResult> Index(Account account)
+        public async Task<IActionResult> Index(Account account, string returnUrl = null)
         {
             var allAccounts = _accountService.GetAll();
             var existingAccount = allAccounts.FirstOrDefault(a => a.Phone == account.Phone && a.Password == account.Password);
@@ -97,13 +102,14 @@ namespace DentalCare.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                     new ClaimsPrincipal(claimsIdentity), authProperties);
 
-                return RedirectToAction("Index", "Dashboard");
+                return Redirect(returnUrl ?? "/dashboard");
             }
 
             ViewBag.ErrorMessage = "Incorrect login information. Please try again.";
             return View();
         }
 
+        [Route("logout")]
         public async Task<IActionResult> Logout()
         {
             HttpContext.Session.Clear();
@@ -113,6 +119,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [Route("edit-profile")]
         [HttpGet]
         public IActionResult Edit()
         {
@@ -121,6 +128,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("edit-profile")]
         [HttpPost]
         public async Task<IActionResult> Edit(Employee model)
         {
@@ -218,16 +226,19 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("register")]
         public IActionResult Register()
         {
             return View();
         }
 
+        [Route("change-password")]
         public IActionResult ChangePassword()
         {
             return View();
         }
 
+        [Route("change-password")]
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordViewModel model)
         {
@@ -271,12 +282,14 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("recover")]
         [HttpGet]
         public IActionResult Recover()
         {
             return View();
         }
 
+        [Route("recover")]
         [HttpPost]
         public IActionResult Recover(RecoverPasswordViewModel model)
         {

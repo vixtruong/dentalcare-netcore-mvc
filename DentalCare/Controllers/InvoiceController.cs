@@ -41,7 +41,7 @@ namespace DentalCare.Controllers
             _momoConfig = momoConfig;
         }
 
-        [Route("invoice")]
+        [Route("invoice/manage")]
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -163,6 +163,7 @@ namespace DentalCare.Controllers
             return Json(new { success = true, techDetails, techWorks });
         }
 
+        [Route("invoice/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -189,6 +190,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("invoice/add")]
         [HttpPost]
         public IActionResult Add(Bill model)
         {
@@ -247,7 +249,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Route("invoice/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -263,6 +265,7 @@ namespace DentalCare.Controllers
             return View(invoice);
         }
 
+        [Route("invoice/edit/{id}")]
         [HttpPost]
         public IActionResult Edit(Bill model)
         {
@@ -275,11 +278,13 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("invoice/delete/{id}")]
         public IActionResult Delete(string id)
         {
             return View("Index");
         }
 
+        [Route("invoice/detail/{invoiceId}")]
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Detail(string invoiceId)

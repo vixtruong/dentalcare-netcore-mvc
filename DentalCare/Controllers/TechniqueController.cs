@@ -18,7 +18,7 @@ namespace DentalCare.Controllers
             _techniqueService = techniqueService;
         }
 
-        [Route("technique")]
+        [Route("technique/manage")]
         public IActionResult Index(string sortColumn, string sortDirection, string searchQuery, int? page = 1)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -60,6 +60,7 @@ namespace DentalCare.Controllers
             return View(pagedList);
         }
 
+        [Route("technique/add-tech")]
         [HttpGet]
         public IActionResult AddTech()
         {
@@ -73,6 +74,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("technique/add-tech")]
         [HttpPost]
         public IActionResult AddTech(Technique tech)
         {
@@ -81,6 +83,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("technique/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -95,6 +98,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("technique/add")]
         [HttpPost]
         public async Task<IActionResult> Add(Techposition tech, IFormFile techImg)
         {
@@ -128,6 +132,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("technique/add/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -143,6 +148,7 @@ namespace DentalCare.Controllers
             return View(tech);
         }
 
+        [Route("technique/add/{id}")]
         [HttpPost]
         public async Task<IActionResult> Edit(Techposition tech, IFormFile techImg)
         {

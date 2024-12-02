@@ -22,6 +22,7 @@ namespace DentalCare.Controllers
             _medicalExamService = medicalExamService;
         }
 
+        [Route("medical-exam-slip/add/{appointmentId}")]
         public IActionResult Add(string appointmentId)
         {
             var appointment = _appointmentService.Get(appointmentId);

@@ -25,7 +25,7 @@ namespace DentalCare.Controllers
             return Json(new { quantity });
         }
 
-        [Route("medicine")]
+        [Route("medicine/manage")]
         public IActionResult Index(string sortColumn, string sortDirection, string searchQuery, int? page = 1)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -68,6 +68,7 @@ namespace DentalCare.Controllers
             return View(pagedList);
         }
 
+        [Route("medicine/add-type")]
         [HttpGet]
         public IActionResult AddType()
         {
@@ -81,6 +82,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("medicine/add-type")]
         [HttpPost]
         public IActionResult AddType(Medicinetype type)
         {
@@ -94,6 +96,7 @@ namespace DentalCare.Controllers
             return View("Index");
         }
 
+        [Route("medicine/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -108,6 +111,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("medicine/add")]
         [HttpPost]
         public IActionResult Add(Medicine medicine)
         {
@@ -116,6 +120,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("medicine/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -131,6 +136,7 @@ namespace DentalCare.Controllers
             return View(medicine);
         }
 
+        [Route("medicine/edit/{id}")]
         [HttpPost]
         public IActionResult Edit(Medicine medicine)
         {

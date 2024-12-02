@@ -100,6 +100,7 @@ namespace DentalCare.Controllers
             return Json(new { success = false });
         }
 
+        [Route("appointment/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -122,6 +123,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("appointment/add")]
         [HttpPost]
         public IActionResult Add(AppointmentViewModel model)
         {
@@ -169,8 +171,8 @@ namespace DentalCare.Controllers
             return RedirectToAction("Manage", "Appointment");
         }
 
+        [Route("appointment/manage")]
         [HttpGet]
-        [Route("appointment")]
         public IActionResult Manage(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             ViewBag.Customers = _customerService.GetAll();
@@ -218,6 +220,7 @@ namespace DentalCare.Controllers
             return View(pagedList);
         }
 
+        [Route("appointment/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -231,6 +234,7 @@ namespace DentalCare.Controllers
             return View(appointment);
         }
 
+        [Route("appointment/edit/{id}")]
         [HttpPost]
         public IActionResult Edit(Appointment model)
         {
@@ -244,6 +248,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Manage", "Appointment");
         }
 
+        [Route("appointment/delete/{id}")]
         public IActionResult Delete(string id)
         {
             _appointmentService.Delete(id);

@@ -18,7 +18,7 @@ namespace DentalCare.Controllers
             _equipmentTypeService = equipmentTypeService;
         }
 
-        [Route("equipment")]
+        [Route("equipment/manage")]
         public IActionResult Index(string sortColumn, string sortDirection, string searchQuery, int? page = 1)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -68,6 +68,7 @@ namespace DentalCare.Controllers
             return Json(new { quantity });
         }
 
+        [Route("equipment/add-type")]
         [HttpGet]
         public IActionResult AddType()
         {
@@ -81,6 +82,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("equipment/add-type")]
         [HttpPost]
         public IActionResult AddType(Equipmenttype type)
         {
@@ -89,6 +91,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("equipment/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -103,6 +106,8 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("equipment/add")]
+        [HttpPost]
         public IActionResult Add(Equipment equipment)
         {
             equipment.Id = _equipmentService.GenerateID();
@@ -110,6 +115,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("equipment/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -125,6 +131,7 @@ namespace DentalCare.Controllers
             return View(equipment);
         }
 
+        [Route("equipment/edit/{equipment.Id}")]
         [HttpPost]
         public IActionResult Edit(Equipment equipment)
         {
@@ -132,6 +139,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("equipment/delete/{id}")]
         public IActionResult Delete(string id)
         {
             var userRole = HttpContext.Session.GetString("UserRole");

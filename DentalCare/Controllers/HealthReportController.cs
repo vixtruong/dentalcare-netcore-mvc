@@ -50,6 +50,7 @@ namespace DentalCare.Controllers
             return Json(new { success = true, data });
         }
 
+        [Route("health-record/index")]
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -102,6 +103,7 @@ namespace DentalCare.Controllers
             return View(pagedList);
         }
 
+        [Route("health-record/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -118,6 +120,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("health-record/add")]
         [HttpPost]
         public IActionResult Add(Healthreport model)
         {
@@ -136,6 +139,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("health-record/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -151,6 +155,7 @@ namespace DentalCare.Controllers
             return View(healthReport);
         }
 
+        [Route("health-record/edit/{model}")]
         [HttpPost]
         public IActionResult Edit(Healthreport model)
         {

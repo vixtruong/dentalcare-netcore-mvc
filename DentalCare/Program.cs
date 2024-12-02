@@ -71,8 +71,8 @@ namespace DentalCare
                 .AddCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                    options.LoginPath = "/Account/Index";
-                    options.LogoutPath = "/Account/Logout";
+                    options.LoginPath = "/login";
+                    options.LogoutPath = "/logout";
                     options.SlidingExpiration = true;
                 });
 
@@ -98,7 +98,7 @@ namespace DentalCare
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Account}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

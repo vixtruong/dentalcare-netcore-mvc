@@ -5,7 +5,6 @@ using DentalCare.Services;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace DentalCare.Controllers
 {
@@ -44,17 +43,20 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("home/about")]
         public IActionResult About()
         {
             return View();
         }
 
+        [Route("home/appointment")]
         public IActionResult Appointment()
         {
             ViewBag.Faculties = _facultyService.GetAll();
             return View();
         }
 
+        [Route("home/appointment")]
         [HttpPost]
         public IActionResult Appointment(AppointmentViewModel model)
         {
@@ -108,16 +110,19 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("home/team")]
         public IActionResult Team()
         {
             return View();
         }
 
+        [Route("home/service")]
         public IActionResult Service()
         {
             return View();
         }
 
+        [Route("home/pricing/{typeId?}")]
         [HttpGet]
         public IActionResult Pricing(string typeId = "all")
         {
@@ -136,6 +141,7 @@ namespace DentalCare.Controllers
             return View(techList);
         }
 
+        [Route("home/pricing/detail/{id}")]
         [HttpGet]
         public IActionResult TechDetail(string id)
         {
@@ -143,12 +149,14 @@ namespace DentalCare.Controllers
             return View(tech);
         }
 
+        [Route("home/medical-history")]
         [HttpGet]
         public IActionResult MedicalHistory()
         {
             return View();
         }
 
+        [Route("home/medical-history")]
         [HttpPost]
         public IActionResult MedicalHistory(string email, string otp)
         {
@@ -156,6 +164,12 @@ namespace DentalCare.Controllers
             if (string.IsNullOrEmpty(storedOtp))
             {
                 return RedirectToAction("MedicalHistory");
+            }
+
+            if (!otp.Equals(storedOtp))
+            {
+                ViewBag.ErrorMessage = "OTP not match.";
+                return View();
             }
 
             var customer = _customerService.GetAll().FirstOrDefault(x => x.Email.ToLower().Trim() == email.ToLower().Trim());
@@ -171,12 +185,6 @@ namespace DentalCare.Controllers
                 .Where(m => healthReports.Any(h => h.MedicalexaminationId == m.Id))
                 .ToList();
 
-            if (!otp.Equals(storedOtp))
-            {
-                ViewBag.ErrorMessage = "OTP not match.";
-                return View();
-            }
-
             ViewBag.HealthReports = healthReports;
             ViewBag.MES = mes;
             ViewBag.Doctors = _doctorService.GetAll().Where(d => mes.Any(m => m.Doctorid == d.Id)).ToList();
@@ -186,6 +194,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("home/contact")]
         public IActionResult Contact()
         {
             return View();

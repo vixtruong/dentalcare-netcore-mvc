@@ -63,7 +63,7 @@
                         <div class="col-lg-6 col-sm-6 col-12 mt-0">
                             <div class="form-group">
                                 <label asp-for="MedicalexaminationId">MES</label>
-                                <select asp-for="MedicalexaminationId" id="medicalExam" class="form-control" data-live-search="true" onchange="GetInformationById()">
+                                <select asp-for="MedicalexaminationId" id="medicalExam" class="form-control" data-live-search="true" onchange="GetInformationById()" required>
                                     <option value="" selected disabled>Select MES</option>
                                     @if (ViewBag.MedicalExams != null)
                                     {

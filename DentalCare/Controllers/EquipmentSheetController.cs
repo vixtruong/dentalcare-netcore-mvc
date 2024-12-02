@@ -31,6 +31,7 @@ namespace DentalCare.Controllers
            _invoiceService = invoiceService;
         }
 
+        [Route("equipment-sheet/index")]
         public IActionResult Index(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             var userRole = HttpContext.Session.GetString("UserRole");
@@ -90,6 +91,7 @@ namespace DentalCare.Controllers
             return Json(medicineList);
         }
 
+        [Route("equipment-sheet/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -108,6 +110,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("equipment-sheet/add")]
         [HttpPost]
         public IActionResult Add(EquipmentSheetViewModel model)
         {
@@ -153,6 +156,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("equipment-sheet/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -197,6 +201,7 @@ namespace DentalCare.Controllers
             return View(prescriptionViewModel);
         }
 
+        [Route("equipment-sheet/edit/{model.Id}")]
         [HttpPost]
         public IActionResult Edit(EquipmentSheetViewModel model)
         {
@@ -251,6 +256,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index");
         }
 
+        [Route("equipment-sheet/delete/{id}")]
         public IActionResult Delete(string id)
         {
             var userRole = HttpContext.Session.GetString("UserRole");

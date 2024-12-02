@@ -26,6 +26,7 @@ namespace DentalCare.Controllers
             _accountService = accountService;
         }
 
+        [Route("employee/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -41,6 +42,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("employee/add")]
         [HttpPost]
         public async Task<IActionResult> Add(Employee model)
         {
@@ -179,6 +181,7 @@ namespace DentalCare.Controllers
             return View(model);
         }
 
+        [Route("employee/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -251,6 +254,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("employee/edit/{id}")]
         [HttpPost]
         public async Task<IActionResult> Edit(Employee model)
         {
@@ -286,21 +290,13 @@ namespace DentalCare.Controllers
                     model.AvatarPath = doctor.Avatar;
                 }
 
-                if (doctor.Phone != model.Phone)
+                var account = _accountService.GetByDoctorId(model.id);
+
+                if (account != null)
                 {
-                    var account = _accountService.GetByDoctorId(doctor.Id);
+                    account.Email = model.Email;
 
-                    var newAccount = new Account
-                    {
-                        DoctorId = account.DoctorId,
-                        Phone = model.Phone,
-                        Email = model.Email,
-                        Password = account.Password,
-                        Role = account.Role,
-                    };
-
-                    _accountService.Delete(account.Phone);
-                    _accountService.Add(newAccount);
+                    _accountService.Update(account);
                 }
 
                 doctor.Name = model.FullName;
@@ -345,21 +341,13 @@ namespace DentalCare.Controllers
                     model.AvatarPath = receptionist.Avatar;
                 }
 
-                if (receptionist.Phone != model.Phone)
+                var account = _accountService.GetByReceptionistId(model.id);
+
+                if (account != null)
                 {
-                    var account = _accountService.GetByReceptionistId(receptionist.Id);
+                    account.Email = model.Email;
 
-                    var newAccount = new Account
-                    {
-                        ReceptionistId = account.ReceptionistId,
-                        Phone = model.Phone,
-                        Email = model.Email,
-                        Password = account.Password,
-                        Role = account.Role,
-                    };
-
-                    _accountService.Delete(account.Phone);
-                    _accountService.Add(newAccount);
+                    _accountService.Update(account);
                 }
 
                 receptionist.Name = model.FullName;
@@ -426,7 +414,7 @@ namespace DentalCare.Controllers
         }
 
         [HttpGet]
-        [Route("employee")]
+        [Route("employee/manage")]
         public IActionResult Manage(string role, int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             var userRole = HttpContext.Session.GetString("UserRole");

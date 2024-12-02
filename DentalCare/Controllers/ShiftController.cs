@@ -30,6 +30,7 @@ namespace DentalCare.Controllers
             return Json(doctorList);
         }
 
+        [Route("shift/add")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -50,6 +51,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        [Route("shift/add")]
         [HttpPost]
         public IActionResult Add(Shift shift)
         {
@@ -77,6 +79,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Manage", "Shift");
         }
 
+        [Route("shift/edit/{id}")]
         [HttpGet]
         public IActionResult Edit(string id)
         {
@@ -101,6 +104,7 @@ namespace DentalCare.Controllers
             return View(shift);
         }
 
+        [Route("shift/edit/{id}")]
         [HttpPost]
         public IActionResult Edit(Shift model)
         {
@@ -134,7 +138,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Manage");
         }
 
-        [Route("shift")]
+        [Route("shift/manage")]
         public IActionResult Manage(int? page, string sortColumn, string sortDirection, string searchQuery)
         {
             var userRole = HttpContext.Session.GetString("UserRole");

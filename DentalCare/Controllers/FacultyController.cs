@@ -15,12 +15,14 @@ namespace DentalCare.Controllers
             _facultyService = facultyService;
         }
 
+        [Route("doctor-faculty/add")]
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
 
+        [Route("doctor-faculty/add")]
         [HttpPost]
         public IActionResult Add(string name)
         {
