@@ -91,7 +91,7 @@
                    data-bs-toggle="dropdown">Pages</a>
                 <div class="dropdown-menu m-0">
                     <a href="@Url.Action("Pricing", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Pricing" ? "active" : "")">Pricing Plan</a>
-                    <a href="@Url.Action("Team", "Home")" class="d-none dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Team" ? "active" : "")">Our Dentist</a>
+                    <a href="@Url.Action("Team", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Team" ? "active" : "")">Our Dentist</a>
                     <a href="@Url.Action("Appointment", "Home")" class="dropdown-item @(ViewContext?.RouteData?.Values["action"]?.ToString() == "Appointment" ? "active" : "")">Appointment</a>
                 </div>
             </div>
@@ -156,8 +156,8 @@
                     <a class="text-light mb-2" href="@Url.Action("Index", "Home")">
                         <i class="bi bi-arrow-right text-primary me-2"></i>Home
                     </a>
-                    <a class="text-light mb-2" href="@Url.Action("About", "Home")">
-                        <i class="bi bi-arrow-right text-primary me-2"></i>About Us
+                    <a class="text-light mb-2" href="@Url.Action("Team", "Home")">
+                        <i class="bi bi-arrow-right text-primary me-2"></i>Our Dentists
                     </a>
                     <a class="text-light mb-2" href="@Url.Action("Service", "Home")">
                         <i class="bi bi-arrow-right text-primary me-2"></i>Our Services

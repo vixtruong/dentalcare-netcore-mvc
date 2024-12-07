@@ -24,6 +24,7 @@ namespace DentalCare.Controllers
             _facultyService = facultyService;
         }
 
+        // Login HTTP Method: GET
         [Route("login")]
         [HttpGet]
         public IActionResult Index(string returnUrl = null)
@@ -38,6 +39,7 @@ namespace DentalCare.Controllers
             return View();
         }
 
+        // Login HTTP Method: POST
         [Route("login")]
         [HttpPost]
         public async Task<IActionResult> Index(Account account, string returnUrl = null)
@@ -119,6 +121,7 @@ namespace DentalCare.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        // Edit profile
         [Route("edit-profile")]
         [HttpGet]
         public IActionResult Edit()

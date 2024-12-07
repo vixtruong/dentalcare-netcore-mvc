@@ -113,7 +113,8 @@ namespace DentalCare.Controllers
         [Route("home/team")]
         public IActionResult Team()
         {
-            return View();
+            var doctors = _doctorService.GetAll();
+            return View(doctors);
         }
 
         [Route("home/service")]
