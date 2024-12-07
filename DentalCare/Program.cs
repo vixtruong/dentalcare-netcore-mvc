@@ -14,6 +14,8 @@ namespace DentalCare
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDistributedMemoryCache();
+
+            // Đăng ký thời gian cho Session
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -31,6 +33,8 @@ namespace DentalCare
 
             builder.Services.AddHttpClient();
             builder.Services.AddControllersWithViews();
+
+            // Thay đổi đường dẫn kết nối database trong file appsetting.json 
             builder.Services.AddDbContext<DentalcareContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DBDefault")));
 
@@ -71,8 +75,8 @@ namespace DentalCare
                 .AddCookie(options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-                    options.LoginPath = "/login";
-                    options.LogoutPath = "/logout";
+                    options.LoginPath = "/login"; // đường dẫn đăng nhập
+                    options.LogoutPath = "/logout"; // đường dẫn đăng xuất
                     options.SlidingExpiration = true;
                 });
 
